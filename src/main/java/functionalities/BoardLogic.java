@@ -4,6 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import pieces.Piece;
 
 public class BoardLogic {
 
@@ -13,21 +14,17 @@ public class BoardLogic {
         this.chessBoard = chessBoard;
     }
 
-//    public void updateChessBoardClick(Move move) {
-//        for (Node node : chessBoard.getChildren()) {
-//            if (node instanceof Button button) {
-//                if (move.getPossibleMoves().contains(button.getText()) && button.getUserData() != null) {
-//                    button.setStyle("-fx-background-color: #ff1a1a;-fx-text-fill: transparent;");
-//                } else if (move.getPossibleMoves().contains(button.getText())) {
-//                    button.setStyle("-fx-background-color: #ffff4d;-fx-text-fill: transparent;");
-//                } else if (button.getText().equals(move.getCurrentCoordinate())) {
-//                    button.setStyle("-fx-background-color: #66ff1a;-fx-text-fill: transparent;");
-//                } else {
-//                    button.setDisable(true);
-//                }
-//            }
-//        }
-//    }
+    public void updateChessBoardClick(Piece piece) {
+        for (Node node : chessBoard.getChildren()) {
+            if (node instanceof Button button) {
+                    button.setStyle("-fx-background-color: #ff1a1a;-fx-text-fill: transparent;");
+                    button.setStyle("-fx-background-color: #ffff4d;-fx-text-fill: transparent;");
+                    button.setStyle("-fx-background-color: #66ff1a;-fx-text-fill: transparent;");
+                    button.setDisable(true);
+
+            }
+        }
+    }
 
     public void updateChessBoardMove(String clickedButtonCoordinate, Button destinationButton) {
         setOriginalColor();

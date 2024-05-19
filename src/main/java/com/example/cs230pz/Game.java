@@ -3,6 +3,7 @@ package com.example.cs230pz;
 import functionalities.BoardLogic;
 import functionalities.Handlers;
 import javafx.scene.control.Button;
+import pieces.Piece;
 
 public class Game {
 
@@ -18,21 +19,21 @@ public class Game {
         board.setButtonHandlers(this);
     }
 
-//    public void handleButtonClick(Button squareButton) {
-//        if(!isPieceClicked) {
-//            Handlers handlers = new Handlers();
-//            Move move = handlers.handleClick(squareButton);
-//            clickedPiece = squareButton.getText();
-//            boardLogic.updateChessBoardClick(move);
-//            isPieceClicked = true;
-//        } else {
-//            if(isPieceClicked && clickedPiece.equals(squareButton.getText())) {
-//                boardLogic.setOriginalColor();
-//            } else {
-//                boardLogic.updateChessBoardMove(clickedPiece, squareButton);
-//            }
-//            isPieceClicked = false;
-//        }
-//    }
+    public void handleButtonClick(Button squareButton) {
+        if(!isPieceClicked) {
+            Handlers handlers = new Handlers();
+            Piece piece = handlers.handleClick(squareButton);
+            clickedPiece = squareButton.getText();
+            boardLogic.updateChessBoardClick(piece);
+            isPieceClicked = true;
+        } else {
+            if(isPieceClicked && clickedPiece.equals(squareButton.getText())) {
+                boardLogic.setOriginalColor();
+            } else {
+                boardLogic.updateChessBoardMove(clickedPiece, squareButton);
+            }
+            isPieceClicked = false;
+        }
+    }
 }
 

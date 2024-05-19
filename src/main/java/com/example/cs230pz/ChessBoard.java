@@ -44,8 +44,7 @@ public class ChessBoard extends Pane implements ChessPieceImages {
             if (node instanceof Button) {
                 Button button = (Button) node;
                 (button).setOnAction(event -> {
-                    System.out.println(button.getUserData());
-                    //game.handleButtonClick(button);
+                    game.handleButtonClick(button);
                 });
             }
         }
