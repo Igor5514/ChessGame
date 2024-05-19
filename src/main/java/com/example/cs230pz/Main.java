@@ -4,12 +4,13 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class Main extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         ChessBoard chessBoard = new ChessBoard();
+        Game game = new Game();
+        game.setBoard(chessBoard);
+
         Scene scene = new Scene(chessBoard,640,640);
         stage.setScene(scene);
         stage.setResizable(false);
