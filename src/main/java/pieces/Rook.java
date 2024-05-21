@@ -10,7 +10,55 @@ public class Rook extends Piece{
 
     public Rook(String currentCoordinate, String chessPieceName, boolean jump) {
         super(currentCoordinate,chessPieceName,jump);
+        playRook(currentCoordinate);
     }
+
+    public void playRook(String currentCoordinate){
+        int i = currentCoordinate.charAt(0);
+        int j = currentCoordinate.charAt(1);
+        if(j != 1){
+            for(int k= j ;k>= 1; k--){
+                String coordinate = k+""+j;
+                up.add(coordinate);
+            }
+        }
+        if(j != 8){
+            for(int k= j ;k<= 8; k++){
+                String coordinate = k+""+j;
+                right.add(coordinate);
+            }
+        }
+        if(i != 8){
+            for(int k= i ;k<= 8; k++){
+                String coordinate = i+""+k;
+                down.add(coordinate);
+            }
+        }
+        if(i != 1){
+            for(int k= i ;k>= 1; k--){
+                String coordinate = i+""+k;
+                left.add(coordinate);
+            }
+        }
+    }
+
+    public ArrayList<ArrayList<String>> getAllCoordinates(){
+        ArrayList<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
+        if(!up.isEmpty()){
+            coordinatesArrayList.add(up);
+        }
+        if(!right.isEmpty()){
+            coordinatesArrayList.add(right);
+        }
+        if(!down.isEmpty()){
+            coordinatesArrayList.add(down);
+        }
+        if(!left.isEmpty()){
+            coordinatesArrayList.add(left);
+        }
+        return coordinatesArrayList;
+    }
+
 
     public ArrayList<String> getLeft() {
         return left;

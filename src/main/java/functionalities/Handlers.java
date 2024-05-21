@@ -1,15 +1,16 @@
 package functionalities;
 
 import javafx.scene.control.Button;
-import pieces.Piece;
-import pieces.Rook;
+import pieces.*;
+
+import java.util.ArrayList;
 
 public class Handlers {
 
     public Handlers(){
     }
 
-    public Piece handleClick(Button button){
+    public ArrayList<ArrayList<String>> handleClick(Button button){
         String coordinates = button.getText();
         int i = Integer.parseInt(String.valueOf(coordinates.charAt(0)));
         int j = Integer.parseInt(String.valueOf(coordinates.charAt(1)));
@@ -17,23 +18,30 @@ public class Handlers {
         switch (pieceName){
             case "white_rook":
             case "black_rook":
-                return new Rook(i+" "+j, pieceName, false);
+                Piece rook = new Rook(i+" "+j, pieceName, false);
+                return rook.getAllCoordinates();
             case "white_knight":
             case "black_knight":
-                return playKnight(pieceName,i,j);
+                Piece knight = new Knight(i+" "+j, pieceName, true);
+                return knight.getAllCoordinates();
             case "white_bishop":
             case "black_bishop":
-                return playBishop(pieceName,i,j);
+                Piece bishop = new Bishop(i+" "+j, pieceName, false);
+                return bishop.getAllCoordinates();
             case "white_king":
             case "black_king":
-                return playKing(pieceName,i,j);
+                Piece king = new King(i+" "+j, pieceName, false);
+                return king.getAllCoordinates();
             case "white_queen":
             case "black_queen":
-                return playQueen(pieceName,i,j);
+                Piece queen = new Queen(i+" "+j, pieceName, false);
+                return queen.getAllCoordinates();
             case "white_pawn":
-                return playWhitePawn(pieceName,i,j);
+                Piece whitePawn = new WhitePawn(i+" "+j, pieceName, false);
+                return whitePawn.getAllCoordinates();
             case "black_pawn":
-                return playBlackPawn(pieceName,i,j);
+                Piece blackPawn = new BlackPawn(i+" "+j, pieceName, false);
+                return blackPawn.getAllCoordinates();
             default:
                 return null;
         }

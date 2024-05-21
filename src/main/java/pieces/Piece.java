@@ -1,5 +1,7 @@
 package pieces;
 
+import java.util.ArrayList;
+
 public class Piece {
 
     private String currentCoordinate;
@@ -10,6 +12,11 @@ public class Piece {
         this.currentCoordinate = currentCoordinate;
         this.chessPieceName = chessPieceName;
         this.jump = jump;
+    }
+
+    public ArrayList<ArrayList<String>> getAllCoordinates() {
+        ArrayList<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
+        return coordinatesArrayList;
     }
 
     public String getCurrentCoordinate() {
