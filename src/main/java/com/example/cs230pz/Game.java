@@ -21,11 +21,13 @@ public class Game {
 
     public void handleButtonClick(Button squareButton) {
         if(!isPieceClicked) {
-            Handlers handlers = new Handlers();
-            Piece piece = handlers.handleClick(squareButton);
-            clickedPiece = squareButton.getText();
-            boardLogic.updateChessBoardClick(piece);
-            isPieceClicked = true;
+            if (squareButton.getUserData() != null) {
+                Handlers handlers = new Handlers();
+                Piece piece = handlers.handleClick(squareButton);
+                clickedPiece = squareButton.getText();
+                boardLogic.updateChessBoardClick(piece);
+                isPieceClicked = true;
+            }
         } else {
             if(isPieceClicked && clickedPiece.equals(squareButton.getText())) {
                 boardLogic.setOriginalColor();

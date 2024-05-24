@@ -3,6 +3,7 @@ package pieces;
 import java.util.ArrayList;
 
 public class Rook extends Piece{
+    ArrayList<String> enabledCoordinatesList = new ArrayList<>();
     private ArrayList<String> left = new ArrayList<>();
     private ArrayList<String> right = new ArrayList<>();
     private ArrayList<String> up = new ArrayList<>();
@@ -14,30 +15,36 @@ public class Rook extends Piece{
     }
 
     public void playRook(String currentCoordinate){
-        int i = currentCoordinate.charAt(0);
-        int j = currentCoordinate.charAt(1);
-        if(j != 1){
-            for(int k= j ;k>= 1; k--){
+        int i = Integer.parseInt(String.valueOf(currentCoordinate.charAt(0)));
+        int j = Integer.parseInt(String.valueOf(currentCoordinate.charAt(1)));
+        if(i != 1){
+            for(int k= i ;k>= 1; k--){
                 String coordinate = k+""+j;
                 up.add(coordinate);
+                enabledCoordinatesList.add(coordinate);
             }
         }
         if(j != 8){
             for(int k= j ;k<= 8; k++){
-                String coordinate = k+""+j;
+                String coordinate = i+""+k;
                 right.add(coordinate);
+                enabledCoordinatesList.add(coordinate);
+
             }
         }
         if(i != 8){
             for(int k= i ;k<= 8; k++){
-                String coordinate = i+""+k;
+                String coordinate = k+""+j;
                 down.add(coordinate);
+                enabledCoordinatesList.add(coordinate);
             }
         }
-        if(i != 1){
-            for(int k= i ;k>= 1; k--){
+        if(j != 1){
+            for(int k= j ;k>= 1; k--){
                 String coordinate = i+""+k;
                 left.add(coordinate);
+                enabledCoordinatesList.add(coordinate);
+
             }
         }
     }
@@ -59,6 +66,9 @@ public class Rook extends Piece{
         return coordinatesArrayList;
     }
 
+    public ArrayList<String> getEnabledCoordinatesList() {
+        return enabledCoordinatesList;
+    }
 
     public ArrayList<String> getLeft() {
         return left;

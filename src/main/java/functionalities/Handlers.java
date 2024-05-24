@@ -10,7 +10,7 @@ public class Handlers {
     public Handlers(){
     }
 
-    public ArrayList<ArrayList<String>> handleClick(Button button){
+    public Piece handleClick(Button button){
         String coordinates = button.getText();
         int i = Integer.parseInt(String.valueOf(coordinates.charAt(0)));
         int j = Integer.parseInt(String.valueOf(coordinates.charAt(1)));
@@ -18,30 +18,23 @@ public class Handlers {
         switch (pieceName){
             case "white_rook":
             case "black_rook":
-                Piece rook = new Rook(i+" "+j, pieceName, false);
-                return rook.getAllCoordinates();
+                return new Rook(i+""+j, pieceName, false);
             case "white_knight":
             case "black_knight":
-                Piece knight = new Knight(i+" "+j, pieceName, true);
-                return knight.getAllCoordinates();
+                return new Knight(i+""+j, pieceName, true);
             case "white_bishop":
             case "black_bishop":
-                Piece bishop = new Bishop(i+" "+j, pieceName, false);
-                return bishop.getAllCoordinates();
+                return new Bishop(i+""+j, pieceName, false);
             case "white_king":
             case "black_king":
-                Piece king = new King(i+" "+j, pieceName, false);
-                return king.getAllCoordinates();
+                return new King(i+""+j, pieceName, false);
             case "white_queen":
             case "black_queen":
-                Piece queen = new Queen(i+" "+j, pieceName, false);
-                return queen.getAllCoordinates();
+                return new Queen(i+""+j, pieceName, false);
             case "white_pawn":
-                Piece whitePawn = new WhitePawn(i+" "+j, pieceName, false);
-                return whitePawn.getAllCoordinates();
+                return new WhitePawn(i+""+j, pieceName, false);
             case "black_pawn":
-                Piece blackPawn = new BlackPawn(i+" "+j, pieceName, false);
-                return blackPawn.getAllCoordinates();
+                return new BlackPawn(i+""+j, pieceName, false);
             default:
                 return null;
         }

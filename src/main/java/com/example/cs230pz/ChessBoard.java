@@ -41,9 +41,8 @@ public class ChessBoard extends Pane implements ChessPieceImages {
 
     public void setButtonHandlers(Game game) {
         for (Node node : chessBoard.getChildren()) {
-            if (node instanceof Button) {
-                Button button = (Button) node;
-                (button).setOnAction(event -> {
+            if (node instanceof Button button) {
+                button.setOnAction(event -> {
                     game.handleButtonClick(button);
                 });
             }
@@ -57,7 +56,7 @@ public class ChessBoard extends Pane implements ChessPieceImages {
                 for (Node node2 : gridPane.getChildren()) {
                     Button button = (Button) node2;
                     String buttonCoordinates = button.getText();
-                    if (buttonCoordinates.equals("11") || buttonCoordinates.equals("18")) {
+                    if (buttonCoordinates.equals("55") || buttonCoordinates.equals("18")) {
                         button.setGraphic(getBlackRook());
                         button.setUserData("black_rook");
                     } else if (buttonCoordinates.charAt(0) == '2') {

@@ -12,7 +12,6 @@ public class BlackPawn extends Piece{
     public void playQueen(String currentCoordinate){
         int i = currentCoordinate.charAt(0);
         int j = currentCoordinate.charAt(1);
-
     }
 
     public ArrayList<ArrayList<String>> getAllCoordinates(){
