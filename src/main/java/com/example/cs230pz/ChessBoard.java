@@ -56,7 +56,7 @@ public class ChessBoard extends Pane implements ChessPieceImages {
                 for (Node node2 : gridPane.getChildren()) {
                     Button button = (Button) node2;
                     String buttonCoordinates = button.getText();
-                    if (buttonCoordinates.equals("55") || buttonCoordinates.equals("18")) {
+                    if (buttonCoordinates.equals("11") || buttonCoordinates.equals("18")) {
                         button.setGraphic(getBlackRook());
                         button.setUserData("black_rook");
                     } else if (buttonCoordinates.charAt(0) == '2') {

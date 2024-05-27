@@ -7,11 +7,13 @@ import javafx.scene.layout.GridPane;
 import pieces.Piece;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BoardLogic {
 
     private GridPane chessBoard;
-    private ArrayList<String> enabledCoordinatesList = new ArrayList<>();
+    private Set<String> enabledCoordinatesList = new HashSet<>();
 
     public BoardLogic(GridPane chessBoard) {
         this.chessBoard = chessBoard;
@@ -19,7 +21,7 @@ public class BoardLogic {
 
     public void updateChessBoardClick(Piece piece) {
         for (ArrayList<String> coordinateArrayList : piece.getAllCoordinates()) {
-            if(getDirectionOfArrayList(coordinateArrayList)){
+            if(isIncreasing(coordinateArrayList)){
                 for (Node node : chessBoard.getChildren()) {
                     Button button = (Button) node;
                     if (checkForPiecePostion(piece,coordinateArrayList,button)){
@@ -96,22 +98,22 @@ public class BoardLogic {
         }
     }
 
-    public boolean getDirectionOfArrayList(ArrayList<String> coordinateArrayList){
-        boolean increasing1 = false;
-        boolean increasing2 = false;
-        for (int i = 0; i < coordinateArrayList.size() - 1; i++) {
-            int leftCoordinate = Integer.parseInt(String.valueOf(coordinateArrayList.get(i).charAt(0)));
-            int nextLeftCoordinate = Integer.parseInt(String.valueOf(coordinateArrayList.get(i + 1).charAt(0)));
-            int rightCoordinate = Integer.parseInt(String.valueOf(coordinateArrayList.get(i).charAt(1)));
-            int nextRightCoordinate = Integer.parseInt(String.valueOf(coordinateArrayList.get(i + 1).charAt(1)));
-            if (leftCoordinate < nextLeftCoordinate || leftCoordinate == nextLeftCoordinate) {
-                increasing1 = true;
+    public boolean isIncreasing(ArrayList<String> coordinateArrayList) {
+        int previousRow = -1, previousCol = -1;
+        for (String coordinate : coordinateArrayList) {
+            int row = Integer.parseInt(String.valueOf(coordinate.charAt(0)));
+            int col = Integer.parseInt(String.valueOf(coordinate.charAt(1)));
+            if (previousRow != -1 && (row > previousRow && col < previousCol)) {
+                return true;
+            }else if (previousRow != -1 && (row < previousRow && col < previousCol)) {
+                return false;
+            }else if (previousRow != -1 && (row < previousRow || col < previousCol)) {
+                return false;
             }
-            if (rightCoordinate < nextRightCoordinate || rightCoordinate == nextRightCoordinate) {
-                increasing2 = true;
-            }
+                previousRow = row;
+                previousCol = col;
         }
-        return increasing1 && increasing2;
+        return true;
     }
 
     public void paintSquare(Button button, Piece piece, ArrayList<String> coordinateArrayList){
@@ -135,6 +137,5 @@ public class BoardLogic {
             }
         }
     }
-
 }
 

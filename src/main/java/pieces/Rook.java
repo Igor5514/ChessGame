@@ -3,7 +3,6 @@ package pieces;
 import java.util.ArrayList;
 
 public class Rook extends Piece{
-    ArrayList<String> enabledCoordinatesList = new ArrayList<>();
     private ArrayList<String> left = new ArrayList<>();
     private ArrayList<String> right = new ArrayList<>();
     private ArrayList<String> up = new ArrayList<>();
@@ -11,40 +10,34 @@ public class Rook extends Piece{
 
     public Rook(String currentCoordinate, String chessPieceName, boolean jump) {
         super(currentCoordinate,chessPieceName,jump);
-        playRook(currentCoordinate);
+        playRook(currentCoordinate,left,right,up,down);
     }
 
-    public void playRook(String currentCoordinate){
+    public void playRook(String currentCoordinate,ArrayList<String> left,ArrayList<String> right,ArrayList<String> up,ArrayList<String> down){
         int i = Integer.parseInt(String.valueOf(currentCoordinate.charAt(0)));
         int j = Integer.parseInt(String.valueOf(currentCoordinate.charAt(1)));
         if(i != 1){
             for(int k= i ;k>= 1; k--){
                 String coordinate = k+""+j;
                 up.add(coordinate);
-                enabledCoordinatesList.add(coordinate);
             }
         }
         if(j != 8){
             for(int k= j ;k<= 8; k++){
                 String coordinate = i+""+k;
                 right.add(coordinate);
-                enabledCoordinatesList.add(coordinate);
-
             }
         }
         if(i != 8){
             for(int k= i ;k<= 8; k++){
                 String coordinate = k+""+j;
                 down.add(coordinate);
-                enabledCoordinatesList.add(coordinate);
             }
         }
         if(j != 1){
             for(int k= j ;k>= 1; k--){
                 String coordinate = i+""+k;
                 left.add(coordinate);
-                enabledCoordinatesList.add(coordinate);
-
             }
         }
     }
