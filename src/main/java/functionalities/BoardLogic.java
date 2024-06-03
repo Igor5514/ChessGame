@@ -52,9 +52,17 @@ public class BoardLogic {
         }else if (button.getUserData() != null && !button.getUserData().toString().substring(0,5).equals(piece.getChessPieceColor()) && coordinateArrayList.contains(button.getText())){
             enabledCoordinatesList.add(button.getText());
             paintSquare(button,piece,coordinateArrayList);
-            return true;
+            if (piece.isJump()){
+                return false;
+            }else{
+                return true;
+            }
         }else if (button.getUserData() != null && button.getUserData().toString().substring(0,5).equals(piece.getChessPieceColor()) && coordinateArrayList.contains(button.getText())){
-            return true;
+            if (piece.isJump()){
+                return false;
+            }else{
+                return true;
+            }
         }
         return false;
     }

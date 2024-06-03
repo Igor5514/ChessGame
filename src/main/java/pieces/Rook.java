@@ -10,10 +10,10 @@ public class Rook extends Piece{
 
     public Rook(String currentCoordinate, String chessPieceName, boolean jump) {
         super(currentCoordinate,chessPieceName,jump);
-        playRook(currentCoordinate,left,right,up,down);
+        playRook(currentCoordinate);
     }
 
-    public void playRook(String currentCoordinate,ArrayList<String> left,ArrayList<String> right,ArrayList<String> up,ArrayList<String> down){
+    public void playRook(String currentCoordinate){
         int i = Integer.parseInt(String.valueOf(currentCoordinate.charAt(0)));
         int j = Integer.parseInt(String.valueOf(currentCoordinate.charAt(1)));
         if(i != 1){

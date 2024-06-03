@@ -15,10 +15,10 @@ public class Queen extends Piece{
 
     public Queen(String currentCoordinate, String chessPieceName, boolean jump) {
         super(currentCoordinate,chessPieceName,jump);
-        playQueen(currentCoordinate,chessPieceName);
+        playQueen(currentCoordinate);
     }
 
-    public void playQueen(String currentCoordinate,String chessPieceName){
+    public void playQueen(String currentCoordinate){
         int i = Integer.parseInt(String.valueOf(currentCoordinate.charAt(0)));
         int j = Integer.parseInt(String.valueOf(currentCoordinate.charAt(1)));
         if(i != 1){

@@ -11,10 +11,10 @@ public class Bishop extends Piece {
 
     public Bishop(String currentCoordinate, String chessPieceName, boolean jump) {
         super(currentCoordinate,chessPieceName,jump);
-        playBishop(currentCoordinate,upLeft,upRight,downLeft,downRight);
+        playBishop(currentCoordinate);
     }
 
-    public void playBishop(String currentCoordinate,ArrayList<String> upLeft,ArrayList<String> upRight,ArrayList<String> downLeft,ArrayList<String> downRight){
+    public void playBishop(String currentCoordinate){
         int i = Integer.parseInt(String.valueOf(currentCoordinate.charAt(0)));
         int j = Integer.parseInt(String.valueOf(currentCoordinate.charAt(1)));
         if(!(i==1 || j==1)){
