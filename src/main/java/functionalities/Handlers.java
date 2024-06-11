@@ -30,9 +30,9 @@ public class Handlers {
             case "black_queen":
                 return new Queen(i+""+j, pieceName, false);
             case "white_pawn":
-                return new WhitePawn(i+""+j, pieceName, true);
+                return new WhitePawn(i+""+j, pieceName, false);
             case "black_pawn":
-                return new BlackPawn(i+""+j, pieceName, true);
+                return new BlackPawn(i+""+j, pieceName, false);
             default:
                 return null;
         }
