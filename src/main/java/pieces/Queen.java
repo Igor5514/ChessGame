@@ -1,6 +1,7 @@
 package pieces;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Queen extends Piece{
 
@@ -71,8 +72,9 @@ public class Queen extends Piece{
         }
     }
 
-    public ArrayList<ArrayList<String>> getAllCoordinates(){
-        ArrayList<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
+    @Override
+    public List<ArrayList<String>> getAllCoordinates(){
+        List<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
         if(!up.isEmpty()){
             coordinatesArrayList.add(up);
         }

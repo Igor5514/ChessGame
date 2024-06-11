@@ -2,16 +2,17 @@ package com.example.cs230pz;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+
 public class Main extends Application {
+    static Pane root = new StartingGameScreen();
+
     @Override
     public void start(Stage stage) {
-        ChessBoard chessBoard = new ChessBoard();
-        Game game = new Game();
-        game.setBoard(chessBoard);
 
-        Scene scene = new Scene(chessBoard,640,640);
+        Scene scene = new Scene(root,640,640);
         stage.setScene(scene);
         stage.setResizable(false);
 
@@ -19,6 +20,12 @@ public class Main extends Application {
 
 
     }
+
+    public static void setRootNode(Pane newRoot) {
+        root.getChildren().clear();
+        root.getChildren().add(newRoot);
+    }
+
 
     public static void main(String[] args) {
         launch();

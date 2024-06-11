@@ -3,8 +3,6 @@ package functionalities;
 import javafx.scene.control.Button;
 import pieces.*;
 
-import java.util.ArrayList;
-
 public class Handlers {
 
     public Handlers(){
@@ -27,14 +25,14 @@ public class Handlers {
                 return new Bishop(i+""+j, pieceName, false);
             case "white_king":
             case "black_king":
-                return new King(i+""+j, pieceName, false);
+                return new King(i+""+j, pieceName, true);
             case "white_queen":
             case "black_queen":
                 return new Queen(i+""+j, pieceName, false);
             case "white_pawn":
-                return new WhitePawn(i+""+j, pieceName, false);
+                return new WhitePawn(i+""+j, pieceName, true);
             case "black_pawn":
-                return new BlackPawn(i+""+j, pieceName, false);
+                return new BlackPawn(i+""+j, pieceName, true);
             default:
                 return null;
         }

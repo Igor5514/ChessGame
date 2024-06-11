@@ -2,6 +2,7 @@ package pieces;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Knight extends Piece {
@@ -77,13 +78,12 @@ public class Knight extends Piece {
                 knightMoves.add(coordinate2);
             }
         }
-        System.out.println(knightMoves);
     }
 
 
-
-    public ArrayList<ArrayList<String>> getAllCoordinates(){
-        ArrayList<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
+    @Override
+    public List<ArrayList<String>> getAllCoordinates(){
+        List<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
         coordinatesArrayList.add(knightMoves);
         return coordinatesArrayList;
 

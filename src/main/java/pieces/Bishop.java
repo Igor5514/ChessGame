@@ -1,6 +1,7 @@
 package pieces;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Bishop extends Piece {
 
@@ -21,6 +22,7 @@ public class Bishop extends Piece {
             for(int k= i,n=j; n>= 1 && k>=1; k--, n--){
                 String coordinate = k+""+n;
                 upLeft.add(coordinate);
+
             }
         }
         if(!(i== 1 || j==8)){
@@ -43,8 +45,9 @@ public class Bishop extends Piece {
         }
     }
 
-    public ArrayList<ArrayList<String>> getAllCoordinates(){
-        ArrayList<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
+    @Override
+    public List<ArrayList<String>> getAllCoordinates(){
+        List<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
         if(!upLeft.isEmpty()){
             coordinatesArrayList.add(upLeft);
         }
@@ -57,9 +60,10 @@ public class Bishop extends Piece {
         if(!downRight.isEmpty()){
             coordinatesArrayList.add(downRight);
         }
-        System.out.println(coordinatesArrayList);
         return coordinatesArrayList;
 
     }
+
+
 }
 

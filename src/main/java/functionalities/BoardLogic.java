@@ -5,9 +5,9 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import pieces.Piece;
-
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class BoardLogic {
@@ -20,18 +20,19 @@ public class BoardLogic {
     }
 
     public void updateChessBoardClick(Piece piece) {
+        List<Node> children = chessBoard.getChildren();
         for (ArrayList<String> coordinateArrayList : piece.getAllCoordinates()) {
-            if(isIncreasing(coordinateArrayList)){
-                for (Node node : chessBoard.getChildren()) {
+            if (isIncreasing(coordinateArrayList)) {
+                for (Node node : children) {
                     Button button = (Button) node;
-                    if (checkForPiecePostion(piece,coordinateArrayList,button)){
+                    if (checkForPiecePosition(piece, coordinateArrayList, button)) {
                         break;
                     }
                 }
-            }else{
-                for (int i = chessBoard.getChildren().size() - 1; i >= 0; i--) {
-                    Button button = (Button) chessBoard.getChildren().get(i);
-                    if (checkForPiecePostion(piece,coordinateArrayList,button)){
+            } else {
+                for (int i = children.size() - 1; i >= 0; i--) {
+                    Button button = (Button) children.get(i);
+                    if (checkForPiecePosition(piece, coordinateArrayList, button)) {
                         break;
                     }
                 }
@@ -40,29 +41,25 @@ public class BoardLogic {
         enabledCoordinatesList.clear();
     }
 
-    private boolean checkForPiecePostion(Piece piece, ArrayList<String> coordinateArrayList, Button button) {
-        if (button.getUserData() == null && coordinateArrayList.contains(button.getText())){
-            enabledCoordinatesList.add(button.getText());
-            paintSquare(button,piece,coordinateArrayList);
+    private boolean checkForPiecePosition(Piece piece, ArrayList<String> coordinateArrayList, Button button) {
+        String buttonText = button.getText();
+        Object userData = button.getUserData();
+        String pieceColor = piece.getChessPieceColor();
+
+        if (userData == null && coordinateArrayList.contains(buttonText)) {
+            enabledCoordinatesList.add(buttonText);
+            paintSquare(button, piece, coordinateArrayList);
             return false;
-        }else if(button.getUserData() != null && button.getText().equals(piece.getCurrentCoordinate())){
-            enabledCoordinatesList.add(button.getText());
-            paintSquare(button,piece,coordinateArrayList);
+        } else if (userData != null && buttonText.equals(piece.getCurrentCoordinate())) {
+            enabledCoordinatesList.add(buttonText);
+            paintSquare(button, piece, coordinateArrayList);
             return false;
-        }else if (button.getUserData() != null && !button.getUserData().toString().substring(0,5).equals(piece.getChessPieceColor()) && coordinateArrayList.contains(button.getText())){
-            enabledCoordinatesList.add(button.getText());
-            paintSquare(button,piece,coordinateArrayList);
-            if (piece.isJump()){
-                return false;
-            }else{
-                return true;
-            }
-        }else if (button.getUserData() != null && button.getUserData().toString().substring(0,5).equals(piece.getChessPieceColor()) && coordinateArrayList.contains(button.getText())){
-            if (piece.isJump()){
-                return false;
-            }else{
-                return true;
-            }
+        } else if (userData != null && !userData.toString().substring(0, 5).equals(pieceColor) && coordinateArrayList.contains(buttonText)) {
+            enabledCoordinatesList.add(buttonText);
+            paintSquare(button, piece, coordinateArrayList);
+            return !piece.isJump();
+        } else if (userData != null && userData.toString().substring(0, 5).equals(pieceColor) && coordinateArrayList.contains(buttonText)) {
+            return !piece.isJump();
         }
         return false;
     }
@@ -71,22 +68,23 @@ public class BoardLogic {
         setOriginalColor();
         ImageView pieceImage = new ImageView();
         String chessPieceName = "";
-        for (Node node : chessBoard.getChildren()) {
-            if (node instanceof Button button) {
-                if (button.getText().equals(clickedButtonCoordinate)) {
-                    chessPieceName = (String) button.getUserData();
-                    button.setUserData(null);
-                    pieceImage = (ImageView) button.getGraphic();
-                    button.setGraphic(null);
-                }
+        List<Node> children = chessBoard.getChildren();
+
+        for (Node node : children) {
+            if (node instanceof Button button && button.getText().equals(clickedButtonCoordinate)) {
+                chessPieceName = (String) button.getUserData();
+                button.setUserData(null);
+                pieceImage = (ImageView) button.getGraphic();
+                button.setGraphic(null);
+                break;
             }
         }
-        for (Node node : chessBoard.getChildren()) {
-            if (node instanceof Button button) {
-                if (button.getText().equals(destinationButton.getText())) {
-                    button.setGraphic(pieceImage);
-                    button.setUserData(chessPieceName);
-                }
+
+        for (Node node : children) {
+            if (node instanceof Button button && button.getText().equals(destinationButton.getText())) {
+                button.setGraphic(pieceImage);
+                button.setUserData(chessPieceName);
+                break;
             }
         }
     }
@@ -113,37 +111,72 @@ public class BoardLogic {
             int col = Integer.parseInt(String.valueOf(coordinate.charAt(1)));
             if (previousRow != -1 && (row > previousRow && col < previousCol)) {
                 return true;
-            }else if (previousRow != -1 && (row < previousRow && col < previousCol)) {
+            } else if (previousRow != -1 && (row < previousRow && col < previousCol)) {
                 return false;
-            }else if (previousRow != -1 && (row < previousRow || col < previousCol)) {
+            } else if (previousRow != -1 && (row < previousRow || col < previousCol)) {
                 return false;
             }
-                previousRow = row;
-                previousCol = col;
+            previousRow = row;
+            previousCol = col;
         }
         return true;
     }
 
-    public void paintSquare(Button button, Piece piece, ArrayList<String> coordinateArrayList){
-         if (button.getUserData() != null && button.getText().equals(piece.getCurrentCoordinate())) {
+    public void paintSquare(Button button, Piece piece, ArrayList<String> coordinateArrayList) {
+        String buttonText = button.getText();
+        Object userData = button.getUserData();
+
+        if (userData != null && buttonText.equals(piece.getCurrentCoordinate())) {
             button.setStyle("-fx-background-color: #66ff1a;-fx-text-fill: transparent;");
-        }else if (coordinateArrayList.contains(button.getText()) && button.getUserData() == null) {
+        } else if (coordinateArrayList.contains(buttonText) && userData == null) {
             button.setStyle("-fx-background-color: #ffff4d;-fx-text-fill: transparent;");
-        } else if(coordinateArrayList.contains(button.getText()) && button.getUserData() != null){
+        } else if (coordinateArrayList.contains(buttonText) && userData != null) {
             button.setStyle("-fx-background-color: #ff1a1a;-fx-text-fill: transparent;");
         }
-         disableButtons();
+        disableButtons();
     }
 
-    public void disableButtons(){
+    public void disableButtons() {
         for (Node node : chessBoard.getChildren()) {
             Button button = (Button) node;
-            if(!enabledCoordinatesList.contains(button.getText())){
-                button.setDisable(true);
-            }else{
-                button.setDisable(false);
+            button.setDisable(!enabledCoordinatesList.contains(button.getText()));
+        }
+    }
+
+    public void checkForChessState(List<ArrayList<String>> coordinatesArrayList, Piece piece) {
+        List<Node> children = chessBoard.getChildren();
+        for (ArrayList<String> coordinateArrayList : coordinatesArrayList) {
+            if (isIncreasing(coordinateArrayList)) {
+                for (Node node : children) {
+                    Button button = (Button) node;
+                    if (button.getUserData() != null && coordinateArrayList.contains(button.getText()) && !piece.getChessPieceColor().equals(button.getUserData().toString().substring(0, 5))) {
+                        if (button.getUserData().toString().substring(6).equals("king")) {
+                            chessState(button);
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            } else {
+                for (int i = children.size() - 1; i >= 0; i--) {
+                    Button button = (Button) children.get(i);
+                    if (button.getUserData() != null && coordinateArrayList.contains(button.getText()) && !piece.getChessPieceColor().equals(button.getUserData().toString().substring(0, 5))) {
+                        if (button.getUserData().toString().substring(6).equals("king")) {
+                            chessState(button);
+                        } else {
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
-}
 
+    public void chessState(Button button) {
+        button.setStyle("-fx-background-color: #ff1a1a;-fx-text-fill: transparent;");
+    }
+
+    public boolean checkForKingMoves() {
+        return false;
+    }
+}

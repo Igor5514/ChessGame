@@ -1,9 +1,10 @@
 package pieces;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Piece {
-    ArrayList<String> enabledCoordinatesList = new ArrayList<>();
+
     private String currentCoordinate;
     private String chessPieceName;
     private String chessPieceType;
@@ -18,8 +19,8 @@ public class Piece {
         this.jump = jump;
     }
 
-    public ArrayList<ArrayList<String>> getAllCoordinates() {
-        ArrayList<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
+    public List<ArrayList<String>> getAllCoordinates() {
+        List<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
         return coordinatesArrayList;
     }
 
@@ -29,10 +30,6 @@ public class Piece {
 
     public String getChessPieceColor() {
         return chessPieceColor;
-    }
-
-    public ArrayList<String> getEnabledCoordinatesList() {
-        return enabledCoordinatesList;
     }
 
     public String getCurrentCoordinate() {
@@ -46,4 +43,5 @@ public class Piece {
     public boolean isJump() {
         return jump;
     }
+
 }

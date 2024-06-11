@@ -1,6 +1,7 @@
 package pieces;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Rook extends Piece{
     private ArrayList<String> left = new ArrayList<>();
@@ -42,8 +43,9 @@ public class Rook extends Piece{
         }
     }
 
-    public ArrayList<ArrayList<String>> getAllCoordinates(){
-        ArrayList<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
+    @Override
+    public List<ArrayList<String>> getAllCoordinates(){
+        List<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
         if(!up.isEmpty()){
             coordinatesArrayList.add(up);
         }
@@ -57,10 +59,6 @@ public class Rook extends Piece{
             coordinatesArrayList.add(left);
         }
         return coordinatesArrayList;
-    }
-
-    public ArrayList<String> getEnabledCoordinatesList() {
-        return enabledCoordinatesList;
     }
 
     public ArrayList<String> getLeft() {
