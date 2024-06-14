@@ -5,6 +5,7 @@ import functionalities.GameState;
 import functionalities.Handlers;
 import functionalities.Player;
 import javafx.scene.control.Button;
+import pieces.King;
 import pieces.Piece;
 
 public class Game {
@@ -46,11 +47,19 @@ public class Game {
                     boardLogic.setOriginalColor();
                 } else {
                     boardLogic.updateChessBoardMove(clickedPiece, squareButton);
-                    pieceMoved = true;
-                    changeTurn();
                     Handlers handlers = new Handlers();
                     Piece piece = handlers.handleClick(squareButton);
-                    boardLogic.checkForChessState(piece.getAllCoordinates(), piece);
+                    pieceMoved = true;
+                    changeTurn();
+                    if(piece instanceof King){
+                        King king = (King) piece;
+                        king.checkForOpponents(board.getChessBoard());
+                    }
+                    if(!piece.getChessPieceType().equals("pawn")){
+                        boardLogic.checkForChessState(piece.getAllCoordinates(), piece);
+                    }else{
+                        boardLogic.checkForChessStatePawn(piece);
+                    }
                 }
                 isPieceClicked = false;
             }
