@@ -16,6 +16,10 @@ public class BoardLogic implements ChessPieceImages{
     private Set<String> enabledCoordinatesList = new HashSet<>();
     private boolean isOpoonentPawn = false;
 
+    public BoardLogic(){
+
+    }
+
     public BoardLogic(GridPane chessBoard) {
         this.chessBoard = chessBoard;
     }

@@ -15,6 +15,7 @@ public class Game {
     private boolean isPieceClicked = false;
     private String clickedPiece;
     private boolean pieceMoved = false;
+    private boolean canMove = true;
     GameState gameState = GameState.getInstance();
     boolean isWhiteTurn = gameState.isWhiteTurn();
     private Player player1;
@@ -41,25 +42,31 @@ public class Game {
                     clickedPiece = squareButton.getText();
                     boardLogic.updateChessBoardClick(piece);
                     isPieceClicked = true;
+                    if(piece instanceof King){
+                        King king = (King) piece;
+                        if(king.checkForOpponents(board.getChessBoard(),piece.getCurrentCoordinate())) {
+                            canMove = false;
+                        }
+                    }
                 }
             } else {
                 if (isPieceClicked && clickedPiece.equals(squareButton.getText())) {
                     boardLogic.setOriginalColor();
                 } else {
-                    boardLogic.updateChessBoardMove(clickedPiece, squareButton);
-                    Handlers handlers = new Handlers();
-                    Piece piece = handlers.handleClick(squareButton);
-                    pieceMoved = true;
-                    changeTurn();
-                    if(piece instanceof King){
-                        King king = (King) piece;
-                        king.checkForOpponents(board.getChessBoard());
+                    if(canMove){
+                        boardLogic.updateChessBoardMove(clickedPiece, squareButton);
+                        Handlers handlers = new Handlers();
+                        Piece piece = handlers.handleClick(squareButton);
+                        pieceMoved = true;
+                        changeTurn();
+                        if(!piece.getChessPieceType().equals("pawn")){
+                            boardLogic.checkForChessState(piece.getAllCoordinates(), piece);
+                        }else{
+                            boardLogic.checkForChessStatePawn(piece);
+                        }
                     }
-                    if(!piece.getChessPieceType().equals("pawn")){
-                        boardLogic.checkForChessState(piece.getAllCoordinates(), piece);
-                    }else{
-                        boardLogic.checkForChessStatePawn(piece);
-                    }
+
+
                 }
                 isPieceClicked = false;
             }

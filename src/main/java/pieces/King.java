@@ -1,10 +1,11 @@
 package pieces;
 
+import functionalities.BoardLogic;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class King extends Piece{
 
@@ -17,6 +18,7 @@ public class King extends Piece{
     private ArrayList<String> right = new ArrayList<>();
     private ArrayList<String> up = new ArrayList<>();
     private ArrayList<String> down = new ArrayList<>();
+
 
     public King(String currentCoordinate, String chessPieceName, boolean jump) {
         super(currentCoordinate,chessPieceName,jump);
@@ -90,48 +92,87 @@ public class King extends Piece{
         }
     }
 
-    public List<ArrayList<String>> getKingCoordiantes(){
-        List<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
+    public Map<String, ArrayList<String>> getKingCoordiantes(){
+        Map<String, ArrayList<String>> coodinatesMap = new HashMap<>();
         if(!up.isEmpty()){
-            coordinatesArrayList.add(up);
+            coodinatesMap.put("up",up);
         }
         if(!right.isEmpty()){
-            coordinatesArrayList.add(right);
+            coodinatesMap.put("right",right);
         }
         if(!down.isEmpty()){
-            coordinatesArrayList.add(down);
+            coodinatesMap.put("down",down);
         }
         if(!left.isEmpty()){
-            coordinatesArrayList.add(left);
+            coodinatesMap.put("left",left);
         }
         if(!upLeft.isEmpty()){
-            coordinatesArrayList.add(upLeft);
+            coodinatesMap.put("upLeft",upLeft);
         }
         if(!upRight.isEmpty()){
-            coordinatesArrayList.add(upRight);
+            coodinatesMap.put("upRight",upRight);
         }
         if(!downLeft.isEmpty()){
-            coordinatesArrayList.add(downLeft);
+            coodinatesMap.put("downLeft",downLeft);
         }
         if(!downRight.isEmpty()){
-            coordinatesArrayList.add(downRight);
+            coodinatesMap.put("downRight",downRight);
         }
-        return coordinatesArrayList;
+        return coodinatesMap;
     }
 
-    public boolean checkForOpponents(GridPane chessBoard){
+    public boolean checkForOpponents(GridPane chessBoard,String kingCoordinate){
+        Map<String, ArrayList<String>> coodinatesMap = getKingCoordiantes();
+        checkForChess(kingCoordinate);
+        BoardLogic boardLogic = new BoardLogic();
         List<Node> children = chessBoard.getChildren();
-
-
-
+        for(Map.Entry<String,ArrayList<String>> entry : coodinatesMap.entrySet()) {
+            String arrayListvalue = entry.getKey();
+            ArrayList<String> arrayList = entry.getValue();
+            if (boardLogic.isIncreasing(arrayList, "white_king")) {
+                for (Node node : children) {
+                    Button button = (Button) node;
+                    if(checkForMatching(arrayListvalue,button.getText(),button.getUserData().toString(),arrayList)){
+                        return true;
+                    }
+                    return false;
+                }
+            } else {
+                for (int j = children.size() - 1; j >= 0; j--) {
+                    Button button = (Button) children.get(j);
+                    if(checkForMatching(arrayListvalue,button.getText(),button.getUserData().toString(),arrayList)){
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        }
         return false;
     }
 
+    public boolean checkForMatching(String arrayListvalue, String buttonCoordinate, String buttonUserData, ArrayList<String> arrayList){
+        String[] parallel = {"up","right","left","down"};
+        String[] diagonal = {"upLeft","upRight","downLeft","downRight"};
+        if(Arrays.stream(parallel).anyMatch(arrayListvalue::equals)){
+            if(arrayList.contains(buttonCoordinate)){
+                if(buttonUserData.toString().substring(6).equals("rook") || buttonUserData.toString().substring(6).equals("queen")){
+                    return true;
+                }
+            }
+        } else if (Arrays.stream(diagonal).anyMatch(arrayListvalue::equals)) {
+            if(arrayList.contains(buttonCoordinate)){
+                if(buttonUserData.toString().substring(6).equals("bishop") || buttonUserData.toString().substring(6).equals("queen")){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     @Override
     public List<ArrayList<String>> getAllCoordinates(){
         List<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
-        System.out.println(kingMoves);
+
         coordinatesArrayList.add(kingMoves);
         return coordinatesArrayList;
     }
