@@ -4,6 +4,7 @@ import functionalities.BoardLogic;
 import functionalities.GameState;
 import functionalities.Handlers;
 import functionalities.Player;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import pieces.King;
 import pieces.Piece;
@@ -13,13 +14,16 @@ public class Game {
     private ChessBoard board;
     private BoardLogic boardLogic;
     private boolean isPieceClicked = false;
-    private String clickedPiece;
+    private String clickedPieceCoordinate;
+    private String clickedPieceName;
     private boolean pieceMoved = false;
     private boolean canMove = true;
     GameState gameState = GameState.getInstance();
     boolean isWhiteTurn = gameState.isWhiteTurn();
+    private boolean isInCheck = false;
     private Player player1;
     private Player player2;
+    King currentKing = null;
 
     public Game(Player player1, Player player2) {
         this.player1 = player1;
@@ -39,36 +43,53 @@ public class Game {
                 if (squareButton.getUserData() != null) {
                     Handlers handlers = new Handlers();
                     Piece piece = handlers.handleClick(squareButton);
-                    clickedPiece = squareButton.getText();
+                    clickedPieceCoordinate = squareButton.getText();
+                    clickedPieceName = squareButton.getUserData().toString();
                     boardLogic.updateChessBoardClick(piece);
-                    isPieceClicked = true;
-                    if(piece instanceof King){
-                        King king = (King) piece;
-                        if(king.checkForOpponents(board.getChessBoard(),piece.getCurrentCoordinate())) {
-                            canMove = false;
+                    if(!(piece instanceof King)){
+                        for(Node node : board.getChessBoard().getChildren()){
+                            if(node instanceof Button button){
+                                if (piece.getChessPieceColor().equals("white") && button.getUserData() != null && button.getUserData().toString().equals("white_king")){
+                                    currentKing = new King(button.getText(),button.getUserData().toString(),true);
+                                    isPieceClicked = true;
+                                } else if (piece.getChessPieceColor().equals("black") && button.getUserData() != null && button.getUserData().toString().equals("black_king")) {
+                                    currentKing = new King(button.getText(),button.getUserData().toString(),true);
+                                    isPieceClicked = true;
+                                }
+                            }
                         }
                     }
+                    isPieceClicked = true;
                 }
             } else {
-                if (isPieceClicked && clickedPiece.equals(squareButton.getText())) {
+                if (isPieceClicked && clickedPieceCoordinate.equals(squareButton.getText())) {
                     boardLogic.setOriginalColor();
+                    isPieceClicked = false;
                 } else {
-                    if(canMove){
-                        boardLogic.updateChessBoardMove(clickedPiece, squareButton);
-                        Handlers handlers = new Handlers();
-                        Piece piece = handlers.handleClick(squareButton);
-                        pieceMoved = true;
-                        changeTurn();
-                        if(!piece.getChessPieceType().equals("pawn")){
-                            boardLogic.checkForChessState(piece.getAllCoordinates(), piece);
-                        }else{
-                            boardLogic.checkForChessStatePawn(piece);
+                    if(isInCheck){
+                        if(currentKing != null  && !currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(), squareButton.getText(), clickedPieceName.substring(0, 5))){
+                            System.out.println("aaaaaaaaaaaaaaa");
+                            isInCheck = false;
+                        }
+                    }else {
+                        if (currentKing != null && currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(), squareButton.getText(), clickedPieceName.substring(0, 5))) {
+                            isInCheck = true;
+                        } else {
+                            boardLogic.updateChessBoardMove(clickedPieceCoordinate, squareButton);
+                            Handlers handlers = new Handlers();
+                            Piece piece = handlers.handleClick(squareButton);
+                            pieceMoved = true;
+                            changeTurn();
+                            if (!piece.getChessPieceType().equals("pawn")) {
+                                boardLogic.checkForChessState(piece.getAllCoordinates(), piece);
+                            } else {
+                                boardLogic.checkForChessStatePawn(piece);
+                            }
+                            isPieceClicked = false;
                         }
                     }
-
-
                 }
-                isPieceClicked = false;
+                currentKing = null;
             }
         }
     }
