@@ -158,6 +158,9 @@ public class King extends Piece {
         if (Arrays.asList(parallel).contains(arrayListValue)) {
             if (arrayList.contains(buttonCoordinate)) {
                 if(kingColor.equals("white")){
+                    if(buttonUserData.startsWith("white")){
+                        return false;
+                    }
                     if(buttonCoordinate.equals(updateCoordinate)){
                         return false;
                     }
@@ -165,6 +168,9 @@ public class King extends Piece {
                         return true;
                     }
                 }else if(kingColor.equals("black")){
+                    if(buttonUserData.startsWith("black")){
+                        return false;
+                    }
                     if(buttonCoordinate.equals(updateCoordinate)){
                         return false;
                     }
@@ -177,6 +183,9 @@ public class King extends Piece {
         } else if (Arrays.asList(diagonal).contains(arrayListValue)) {
             if (arrayList.contains(buttonCoordinate)) {
                 if(kingColor.equals("white")){
+                    if(buttonUserData.startsWith("white")){
+                        return false;
+                    }
                     if(buttonCoordinate.equals(updateCoordinate)){
                         return false;
                     }
@@ -185,6 +194,9 @@ public class King extends Piece {
                         return true;
                     }
                 }else if(kingColor.equals("black")){
+                    if(buttonUserData.startsWith("black")){
+                        return false;
+                    }
                     if(buttonCoordinate.equals(updateCoordinate)){
                         return false;
                     }

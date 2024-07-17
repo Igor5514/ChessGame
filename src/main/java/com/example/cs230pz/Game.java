@@ -67,12 +67,14 @@ public class Game {
                     isPieceClicked = false;
                 } else {
                     if(isInCheck){
-                        if(currentKing != null  && !currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(), squareButton.getText(), clickedPieceName.substring(0, 5))){
+                        if(currentKing != null && !currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(), squareButton.getText(), clickedPieceName.substring(0, 5))){
                             System.out.println("aaaaaaaaaaaaaaa");
                             isInCheck = false;
+
                         }
                     }else {
                         if (currentKing != null && currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(), squareButton.getText(), clickedPieceName.substring(0, 5))) {
+                            System.out.println("zaglavljen");
                             isInCheck = true;
                         } else {
                             boardLogic.updateChessBoardMove(clickedPieceCoordinate, squareButton);
