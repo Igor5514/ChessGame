@@ -17,12 +17,12 @@ public class Game {
     private String clickedPieceCoordinate;
     private String clickedPieceName;
     private boolean pieceMoved = false;
-    private boolean canMove = true;
+    private final boolean canMove = true;
     GameState gameState = GameState.getInstance();
     boolean isWhiteTurn = gameState.isWhiteTurn();
     private boolean isInCheck = false;
-    private Player player1;
-    private Player player2;
+    private final Player player1;
+    private final Player player2;
     King currentKing = null;
 
     public Game(Player player1, Player player2) {
@@ -123,11 +123,7 @@ public class Game {
     }
 
     public void changeTurn(){
-        if(isWhiteTurn){
-            isWhiteTurn = false;
-        }else{
-            isWhiteTurn = true;
-        }
+        isWhiteTurn = !isWhiteTurn;
     }
 
     public boolean isWhiteTurn() {

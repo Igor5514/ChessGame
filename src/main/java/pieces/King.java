@@ -10,14 +10,14 @@ import java.util.*;
 public class King extends Piece {
 
     ArrayList<String> kingMoves = new ArrayList<>();
-    private ArrayList<String> up = new ArrayList<>();
-    private ArrayList<String> right = new ArrayList<>();
-    private ArrayList<String> down = new ArrayList<>();
-    private ArrayList<String> left = new ArrayList<>();
-    private ArrayList<String> upLeft = new ArrayList<>();
-    private ArrayList<String> upRight = new ArrayList<>();
-    private ArrayList<String> downLeft = new ArrayList<>();
-    private ArrayList<String> downRight = new ArrayList<>();
+    private final ArrayList<String> up = new ArrayList<>();
+    private final ArrayList<String> right = new ArrayList<>();
+    private final ArrayList<String> down = new ArrayList<>();
+    private final ArrayList<String> left = new ArrayList<>();
+    private final ArrayList<String> upLeft = new ArrayList<>();
+    private final ArrayList<String> upRight = new ArrayList<>();
+    private final ArrayList<String> downLeft = new ArrayList<>();
+    private final ArrayList<String> downRight = new ArrayList<>();
 
     public King(String currentCoordinate, String chessPieceName, boolean jump) {
         super(currentCoordinate, chessPieceName, jump);
@@ -164,9 +164,7 @@ public class King extends Piece {
                     if(buttonCoordinate.equals(updateCoordinate)){
                         return false;
                     }
-                    if ((buttonUserData.equals("black_rook") || buttonUserData.equals("black_queen"))) {
-                        return true;
-                    }
+                    return buttonUserData.equals("black_rook") || buttonUserData.equals("black_queen");
                 }else if(kingColor.equals("black")){
                     if(buttonUserData.startsWith("black")){
                         return false;
@@ -174,9 +172,7 @@ public class King extends Piece {
                     if(buttonCoordinate.equals(updateCoordinate)){
                         return false;
                     }
-                    if ((buttonUserData.equals("white_rook") || buttonUserData.equals("white_queen"))) {
-                        return true;
-                    }
+                    return buttonUserData.equals("white_rook") || buttonUserData.equals("white_queen");
                 }
                 return false;
             }

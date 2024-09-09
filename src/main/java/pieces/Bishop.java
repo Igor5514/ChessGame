@@ -5,10 +5,10 @@ import java.util.List;
 
 public class Bishop extends Piece {
 
-    private ArrayList<String> upLeft = new ArrayList<>();
-    private ArrayList<String> upRight = new ArrayList<>();
-    private ArrayList<String> downLeft = new ArrayList<>();
-    private ArrayList<String> downRight = new ArrayList<>();
+    private final ArrayList<String> upLeft = new ArrayList<>();
+    private final ArrayList<String> upRight = new ArrayList<>();
+    private final ArrayList<String> downLeft = new ArrayList<>();
+    private final ArrayList<String> downRight = new ArrayList<>();
 
     public Bishop(String currentCoordinate, String chessPieceName, boolean jump) {
         super(currentCoordinate,chessPieceName,jump);

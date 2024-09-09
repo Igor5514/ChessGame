@@ -5,14 +5,14 @@ import java.util.List;
 
 public class Queen extends Piece{
 
-    private ArrayList<String> upLeft = new ArrayList<>();
-    private ArrayList<String> upRight = new ArrayList<>();
-    private ArrayList<String> downLeft = new ArrayList<>();
-    private ArrayList<String> downRight = new ArrayList<>();
-    private ArrayList<String> left = new ArrayList<>();
-    private ArrayList<String> right = new ArrayList<>();
-    private ArrayList<String> up = new ArrayList<>();
-    private ArrayList<String> down = new ArrayList<>();
+    private final ArrayList<String> upLeft = new ArrayList<>();
+    private final ArrayList<String> upRight = new ArrayList<>();
+    private final ArrayList<String> downLeft = new ArrayList<>();
+    private final ArrayList<String> downRight = new ArrayList<>();
+    private final ArrayList<String> left = new ArrayList<>();
+    private final ArrayList<String> right = new ArrayList<>();
+    private final ArrayList<String> up = new ArrayList<>();
+    private final ArrayList<String> down = new ArrayList<>();
 
     public Queen(String currentCoordinate, String chessPieceName, boolean jump) {
         super(currentCoordinate,chessPieceName,jump);

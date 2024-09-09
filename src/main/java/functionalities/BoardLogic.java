@@ -13,7 +13,7 @@ import java.util.Set;
 public class BoardLogic implements ChessPieceImages{
 
     private GridPane chessBoard;
-    private Set<String> enabledCoordinatesList = new HashSet<>();
+    private final Set<String> enabledCoordinatesList = new HashSet<>();
     private boolean isOpoonentPawn = false;
 
     public BoardLogic(){
@@ -63,11 +63,11 @@ public class BoardLogic implements ChessPieceImages{
             enabledCoordinatesList.add(buttonCoordinate);
             paintSquare(button, piece, coordinateArrayList);
             return false;
-        } else if (userData != null && !userData.toString().substring(0, 5).equals(pieceColor) && coordinateArrayList.contains(buttonCoordinate)) {
+        } else if (userData != null && !userData.substring(0, 5).equals(pieceColor) && coordinateArrayList.contains(buttonCoordinate)) {
             enabledCoordinatesList.add(buttonCoordinate);
             paintSquare(button, piece, coordinateArrayList);
             return !piece.isJump();
-        } else if (userData != null && userData.toString().substring(0, 5).equals(pieceColor) && coordinateArrayList.contains(buttonCoordinate)) {
+        } else if (userData != null && userData.substring(0, 5).equals(pieceColor) && coordinateArrayList.contains(buttonCoordinate)) {
             return !piece.isJump();
         }
         return false;

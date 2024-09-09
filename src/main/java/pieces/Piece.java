@@ -5,10 +5,10 @@ import java.util.List;
 
 public class Piece {
 
-    private String currentCoordinate;
-    private String chessPieceName;
-    private String chessPieceType;
-    private String chessPieceColor;
+    private final String currentCoordinate;
+    private final String chessPieceName;
+    private final String chessPieceType;
+    private final String chessPieceColor;
     private boolean jump = false;
 
     public Piece(String currentCoordinate, String chessPieceName, boolean jump) {

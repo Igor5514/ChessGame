@@ -13,15 +13,15 @@ import java.io.File;
 
 public class StartingGameScreen extends BorderPane {
 
-    private ImageView imageView = new ImageView(new File("src/main/java/chess_pieces/background.png").toURI().toString());
-    private Label titleLabel = new Label("Chess game");
+    private final ImageView imageView = new ImageView(new File("src/main/java/chess_pieces/background.png").toURI().toString());
+    private final Label titleLabel = new Label("Chess game");
     Button startButton = new Button("Start Game");
-    private Label player1NameLabel = new Label("Player 1 Name:");
-    private Label player1ErrorLabel = new Label("");
-    private TextField player1NameInput = new TextField();
-    private Label player2NameLabel = new Label("Player 2 Name:");
-    private Label player2ErrorLabel = new Label("");
-    private TextField player2NameInput = new TextField();
+    private final Label player1NameLabel = new Label("Player 1 Name:");
+    private final Label player1ErrorLabel = new Label("");
+    private final TextField player1NameInput = new TextField();
+    private final Label player2NameLabel = new Label("Player 2 Name:");
+    private final Label player2ErrorLabel = new Label("");
+    private final TextField player2NameInput = new TextField();
     HBox player1NameBox = new HBox(10);
     HBox player2NameBox = new HBox(10);
     VBox input1Vox = new VBox();
