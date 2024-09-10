@@ -11,6 +11,7 @@ public class King extends Piece {
 
     String[] parallel = {"up", "right", "left", "down"};
     String[] diagonal = {"upLeft", "upRight", "downLeft", "downRight"};
+    boolean isUpdateCoordinatePresent = false;
     ArrayList<String> kingMoves = new ArrayList<>();
     private final ArrayList<String> up = new ArrayList<>();
     private final ArrayList<String> right = new ArrayList<>();
@@ -154,10 +155,8 @@ public class King extends Piece {
                 for (Node node : children) {
                     Button button = (Button) node;
 
-                    if(button.getText().equals(updateCoordinate)){
-                        if(updateChecker(updateCoordinate, button.getText(),movementCoordinatesArrayList)){
-                            return false;
-                        }
+                    if(button.getText().equals(updateCoordinate)) {
+                        updateChecker(updateCoordinate, button.getText(), movementCoordinatesArrayList);
                     }
                     if (button.getUserData() != null) {
                         if (checkForMatching(arrayListValue, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 1) {
@@ -167,13 +166,12 @@ public class King extends Piece {
                         }
                     }
                 }
+                isUpdateCoordinatePresent = false;
             } else {
                 for (int j = children.size() - 1; j >= 0; j--) {
                     Button button = (Button) children.get(j);
-                    if(button.getText().equals(updateCoordinate)){
-                        if(updateChecker(updateCoordinate, button.getText(),movementCoordinatesArrayList)){
-                            return false;
-                        }
+                    if(button.getText().equals(updateCoordinate)) {
+                        updateChecker(updateCoordinate, button.getText(), movementCoordinatesArrayList);
                     }
                     if (button.getUserData() != null) {
                         if (checkForMatching(arrayListValue, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 1) {
@@ -183,6 +181,7 @@ public class King extends Piece {
                         }
                     }
                 }
+                isUpdateCoordinatePresent = false;
             }
         }
         coordinatesMap.clear();
@@ -190,14 +189,12 @@ public class King extends Piece {
     }
 
 
-    public boolean updateChecker(String updateCoordinate,String squareCoordinate, ArrayList<String> movementCoordinatesArrayList){
+    public void updateChecker(String updateCoordinate,String squareCoordinate, ArrayList<String> movementCoordinatesArrayList){
         if (movementCoordinatesArrayList.contains(squareCoordinate)) {
             if(squareCoordinate.equals(updateCoordinate)){
-                System.out.println("update coordinate");
-                return true; //isto vazi i ovde u slucaju da igramo i koordianata kojju igramo preprecavan put
+                isUpdateCoordinatePresent = true;
             }
         }
-        return false;
     }
 
     public int checkForMatching(String arrayListValue, String squareCoordinate, String buttonUserData, ArrayList<String> movementCoordinatesArrayList,String kingColor) {
@@ -208,6 +205,9 @@ public class King extends Piece {
                         return 2;
                     }
                     if(buttonUserData.equals("black_rook") || buttonUserData.equals("black_queen")){
+                        if(isUpdateCoordinatePresent){
+                            return 2;
+                        }
                         return 1;
                     }
                 }else if(kingColor.equals("black")){
@@ -215,6 +215,9 @@ public class King extends Piece {
                         return 2;
                     }
                     if(buttonUserData.equals("white_rook") || buttonUserData.equals("white_queen")){
+                        if(isUpdateCoordinatePresent){
+                            return 2;
+                        }
                         return 1;
                     }
                 }
@@ -226,7 +229,11 @@ public class King extends Piece {
                     if(buttonUserData.startsWith("white")){
                         return 2;
                     }
+                    //dodati slucaj kada buttonUserData crne boje posto tu nastaje problem!!!!!!!!
                     if ((buttonUserData.equals("black_bishop") || buttonUserData.equals("black_queen"))) {
+                        if(isUpdateCoordinatePresent){
+                            return 2;
+                        }
                         return 1;
                     }
                 }else if(kingColor.equals("black")){
@@ -234,6 +241,9 @@ public class King extends Piece {
                         return 2;
                     }
                     if ((buttonUserData.equals("white_bishop") || buttonUserData.equals("white_queen"))) {
+                        if(isUpdateCoordinatePresent){
+                            return 2;
+                        }
                         return 1;
                     }
                 }
