@@ -148,8 +148,6 @@ public class King extends Piece {
             String arrayListValue = entry.getKey();
             ArrayList<String> arrayList = entry.getValue();
 
-
-
             if (boardLogic.isIncreasing(arrayList, "white_king")) {
                 for (Node node : children) {
                     Button button = (Button) node;
