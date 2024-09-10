@@ -9,6 +9,8 @@ import java.util.*;
 
 public class King extends Piece {
 
+    String[] parallel = {"up", "right", "left", "down"};
+    String[] diagonal = {"upLeft", "upRight", "downLeft", "downRight"};
     ArrayList<String> kingMoves = new ArrayList<>();
     private final ArrayList<String> up = new ArrayList<>();
     private final ArrayList<String> right = new ArrayList<>();
@@ -146,15 +148,21 @@ public class King extends Piece {
 
         for (Map.Entry<String, ArrayList<String>> entry : coordinatesMap.entrySet()) {
             String arrayListValue = entry.getKey();
-            ArrayList<String> arrayList = entry.getValue();
+            ArrayList<String> movementCoordinatesArrayList = entry.getValue();
 
-            if (boardLogic.isIncreasing(arrayList, "white_king")) {
+            if (boardLogic.isIncreasing(movementCoordinatesArrayList, "white_king")) {
                 for (Node node : children) {
                     Button button = (Button) node;
+
+                    if(button.getText().equals(updateCoordinate)){
+                        if(updateChecker(updateCoordinate, button.getText(),movementCoordinatesArrayList)){
+                            return false;
+                        }
+                    }
                     if (button.getUserData() != null) {
-                        if (checkForMatching(updateCoordinate, arrayListValue, button.getText(), button.getUserData().toString(), arrayList, kingColor) == 1) {
+                        if (checkForMatching(arrayListValue, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 1) {
                             return true;
-                        }else if(checkForMatching(updateCoordinate, arrayListValue, button.getText(), button.getUserData().toString(), arrayList, kingColor) == 2){
+                        }else if(checkForMatching(arrayListValue, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 2){
                             break;
                         }
                     }
@@ -162,95 +170,76 @@ public class King extends Piece {
             } else {
                 for (int j = children.size() - 1; j >= 0; j--) {
                     Button button = (Button) children.get(j);
+                    if(button.getText().equals(updateCoordinate)){
+                        if(updateChecker(updateCoordinate, button.getText(),movementCoordinatesArrayList)){
+                            return false;
+                        }
+                    }
                     if (button.getUserData() != null) {
-                        if (checkForMatching(updateCoordinate, arrayListValue, button.getText(), button.getUserData().toString(), arrayList, kingColor) == 1) {
+                        if (checkForMatching(arrayListValue, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 1) {
                             return true;
-                        }else if(checkForMatching(updateCoordinate, arrayListValue, button.getText(), button.getUserData().toString(), arrayList, kingColor) == 2){
+                        }else if(checkForMatching(arrayListValue, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 2){
                             break;
                         }
                     }
                 }
             }
         }
-
         coordinatesMap.clear();
         return false;
     }
 
-    public int checkForMatching(String updateCoordinate,String arrayListValue, String buttonCoordinate, String buttonUserData, ArrayList<String> arrayList,String kingColor) {
-        String[] parallel = {"up", "right", "left", "down"};
-        String[] diagonal = {"upLeft", "upRight", "downLeft", "downRight"};
-        System.out.println(arrayList);
-        System.out.println(buttonCoordinate);
-        System.out.println(updateCoordinate);
+
+    public boolean updateChecker(String updateCoordinate,String squareCoordinate, ArrayList<String> movementCoordinatesArrayList){
+        if (movementCoordinatesArrayList.contains(squareCoordinate)) {
+            if(squareCoordinate.equals(updateCoordinate)){
+                System.out.println("update coordinate");
+                return true; //isto vazi i ovde u slucaju da igramo i koordianata kojju igramo preprecavan put
+            }
+        }
+        return false;
+    }
+
+    public int checkForMatching(String arrayListValue, String squareCoordinate, String buttonUserData, ArrayList<String> movementCoordinatesArrayList,String kingColor) {
         if (Arrays.asList(parallel).contains(arrayListValue)) {
-            System.out.println("usao");
-            if (arrayList.contains(buttonCoordinate)) {
-                System.out.println("sadrzi");
+            if (movementCoordinatesArrayList.contains(squareCoordinate)) {
                 if(kingColor.equals("white")){
                     if(buttonUserData.startsWith("white")){
-                        System.out.println("bela figura");
-                        return 2; //ovde treba da stane ukoliko kraljev put naidje na figru koja je njegoba boja
-                    }
-                    if(buttonCoordinate.equals(updateCoordinate)){
-                        System.out.println("update coordinate");
-                        return 2; //isto vazi i ovde u slucaju da igramo i koordianata kojju igramo preprecavan put
+                        return 2;
                     }
                     if(buttonUserData.equals("black_rook") || buttonUserData.equals("black_queen")){
-                        System.out.println("heyy");
                         return 1;
                     }
                 }else if(kingColor.equals("black")){
                     if(buttonUserData.startsWith("black")){
-                        System.out.println("crna figura");
-                        return 2;
-                    }
-                    if(buttonCoordinate.equals(updateCoordinate)){
-                        System.out.println("update coordinate");
                         return 2;
                     }
                     if(buttonUserData.equals("white_rook") || buttonUserData.equals("white_queen")){
-                        System.out.println("heyy");
                         return 1;
                     }
                 }
-                System.out.println("poslednji1");
                 return 3;
             }
         } else if (Arrays.asList(diagonal).contains(arrayListValue)) {
-            if (arrayList.contains(buttonCoordinate)) {
+            if (movementCoordinatesArrayList.contains(squareCoordinate)) {
                 if(kingColor.equals("white")){
                     if(buttonUserData.startsWith("white")){
-                        System.out.println("bela figura");
-                        return 2;
-                    }
-                    if(buttonCoordinate.equals(updateCoordinate)){
-                        System.out.println("update coordinate");
                         return 2;
                     }
                     if ((buttonUserData.equals("black_bishop") || buttonUserData.equals("black_queen"))) {
-                        System.out.println("heyy");
                         return 1;
                     }
                 }else if(kingColor.equals("black")){
                     if(buttonUserData.startsWith("black")){
-                        System.out.println("crna figura");
-                        return 2;
-                    }
-                    if(buttonCoordinate.equals(updateCoordinate)){
-                        System.out.println("update coordinate");
                         return 2;
                     }
                     if ((buttonUserData.equals("white_bishop") || buttonUserData.equals("white_queen"))) {
-                        System.out.println("heyy");
                         return 1;
                     }
                 }
-                System.out.println("poslednji2");
                 return 3;
             }
         }
-        System.out.println("poslednji3");
         return 3;
     }
 

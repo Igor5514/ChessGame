@@ -69,6 +69,7 @@ public class Game {
                     if(isInCheck){
                         if(currentKing != null && !currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(), squareButton.getText(), clickedPieceName.substring(0, 5))){
                             System.out.println("aaaaaaaaaaaaaaa");
+                            executeMove(squareButton);
                             isInCheck = false;
                             isPieceClicked = false;
                         }
@@ -77,23 +78,27 @@ public class Game {
                             System.out.println("zaglavljen");
                             isInCheck = true;
                         } else {
-                            boardLogic.updateChessBoardMove(clickedPieceCoordinate, squareButton);
-                            Handlers handlers = new Handlers();
-                            Piece piece = handlers.handleClick(squareButton);
-                            pieceMoved = true;
-                            changeTurn();
-                            if (!piece.getChessPieceType().equals("pawn")) {
-                                boardLogic.checkForChessState(piece.getAllCoordinates(), piece);
-                            } else {
-                                boardLogic.checkForChessStatePawn(piece);
-                            }
-                            isPieceClicked = false;
+                            executeMove(squareButton);
                         }
                     }
                 }
                 currentKing = null;
             }
         }
+    }
+
+    public void executeMove(Button squareButton){
+        boardLogic.updateChessBoardMove(clickedPieceCoordinate, squareButton);
+        Handlers handlers = new Handlers();
+        Piece piece = handlers.handleClick(squareButton);
+        pieceMoved = true;
+        changeTurn();
+        if (!piece.getChessPieceType().equals("pawn")) {
+            boardLogic.checkForChessState(piece.getAllCoordinates(), piece);
+        } else {
+            boardLogic.checkForChessStatePawn(piece);
+        }
+        isPieceClicked = false;
     }
 
     public boolean whiteTurn(Button button) {
