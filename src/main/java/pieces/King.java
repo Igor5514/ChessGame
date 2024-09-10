@@ -210,6 +210,9 @@ public class King extends Piece {
                         }
                         return 1;
                     }
+                    if(buttonUserData.startsWith("black")){
+                        return 2;
+                    }
                 }else if(kingColor.equals("black")){
                     if(buttonUserData.startsWith("black")){
                         return 2;
@@ -220,6 +223,9 @@ public class King extends Piece {
                         }
                         return 1;
                     }
+                    if(buttonUserData.startsWith("white")){
+                        return 2;
+                    }
                 }
                 return 3;
             }
@@ -229,12 +235,14 @@ public class King extends Piece {
                     if(buttonUserData.startsWith("white")){
                         return 2;
                     }
-                    //dodati slucaj kada buttonUserData crne boje posto tu nastaje problem!!!!!!!!
                     if ((buttonUserData.equals("black_bishop") || buttonUserData.equals("black_queen"))) {
                         if(isUpdateCoordinatePresent){
                             return 2;
                         }
                         return 1;
+                    }
+                    if(buttonUserData.startsWith("black")){
+                        return 2;
                     }
                 }else if(kingColor.equals("black")){
                     if(buttonUserData.startsWith("black")){
@@ -245,6 +253,9 @@ public class King extends Piece {
                             return 2;
                         }
                         return 1;
+                    }
+                    if(buttonUserData.startsWith("white")){
+                        return 2;
                     }
                 }
                 return 3;
