@@ -45,49 +45,66 @@ public class King extends Piece {
         if (i != 1) {
             for (int k = i; k >= 1; k--) {
                 String coordinate = k + "" + j;
-                up.add(coordinate);
+                if (!coordinate.equals(kingCoordinate)){
+                    up.add(coordinate);
+                }
+
             }
         }
         if (j != 8) {
             for (int k = j; k <= 8; k++) {
                 String coordinate = i + "" + k;
-                right.add(coordinate);
+                if (!coordinate.equals(kingCoordinate)) {
+                    right.add(coordinate);
+                }
             }
         }
         if (i != 8) {
             for (int k = i; k <= 8; k++) {
                 String coordinate = k + "" + j;
-                down.add(coordinate);
+                if (!coordinate.equals(kingCoordinate)) {
+                    down.add(coordinate);
+                }
             }
         }
         if (j != 1) {
             for (int k = j; k >= 1; k--) {
                 String coordinate = i + "" + k;
-                left.add(coordinate);
+                if (!coordinate.equals(kingCoordinate)) {
+                    left.add(coordinate);
+                }
             }
         }
         if (!(i == 1 || j == 1)) {
             for (int k = i, n = j; n >= 1 && k >= 1; k--, n--) {
                 String coordinate = k + "" + n;
-                upLeft.add(coordinate);
+                if (!coordinate.equals(kingCoordinate)) {
+                    upLeft.add(coordinate);
+                }
             }
         }
         if (!(i == 1 || j == 8)) {
             for (int k = i, n = j; k >= 1 && n <= 8; k--, n++) {
                 String coordinate = k + "" + n;
-                upRight.add(coordinate);
+                if (!coordinate.equals(kingCoordinate)) {
+                    upRight.add(coordinate);
+                }
             }
         }
         if (!(i == 8 || j == 1)) {
             for (int k = i, n = j; k <= 8 && n >= 1; k++, n--) {
                 String coordinate = k + "" + n;
-                downLeft.add(coordinate);
+                if (!coordinate.equals(kingCoordinate)) {
+                    downLeft.add(coordinate);
+                }
             }
         }
         if (!(i == 8 || j == 8)) {
             for (int k = i, n = j; k <= 8 && n <= 8; k++, n++) {
                 String coordinate = k + "" + n;
-                downRight.add(coordinate);
+                if (!coordinate.equals(kingCoordinate)) {
+                    downRight.add(coordinate);
+                }
             }
         }
     }
@@ -165,9 +182,9 @@ public class King extends Piece {
     public int checkForMatching(String updateCoordinate,String arrayListValue, String buttonCoordinate, String buttonUserData, ArrayList<String> arrayList,String kingColor) {
         String[] parallel = {"up", "right", "left", "down"};
         String[] diagonal = {"upLeft", "upRight", "downLeft", "downRight"};
-        System.out.println(arrayListValue);
         System.out.println(arrayList);
         System.out.println(buttonCoordinate);
+        System.out.println(updateCoordinate);
         if (Arrays.asList(parallel).contains(arrayListValue)) {
             System.out.println("usao");
             if (arrayList.contains(buttonCoordinate)) {
