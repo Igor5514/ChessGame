@@ -17,7 +17,6 @@ public class Game {
     private String clickedPieceCoordinate;
     private String clickedPieceName;
     private boolean pieceMoved = false;
-    private final boolean canMove = true;
     GameState gameState = GameState.getInstance();
     boolean isWhiteTurn = gameState.isWhiteTurn();
     private boolean isInCheck = false;
@@ -67,14 +66,13 @@ public class Game {
                     isPieceClicked = false;
                 } else {
                     if(isInCheck){
-                        if(currentKing != null && !currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(), squareButton.getText(), clickedPieceName.substring(0, 5))){
+                        if(currentKing != null && !currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(),clickedPieceCoordinate, squareButton.getText(), clickedPieceName.substring(0, 5))){
                             executeMove(squareButton);
                             isInCheck = false;
                             isPieceClicked = false;
                         }
                     }else {
-                        if (currentKing != null && currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(), squareButton.getText(), clickedPieceName.substring(0, 5))) {
-                            System.out.println("zaglavljen");
+                        if (currentKing != null && currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(),clickedPieceCoordinate, squareButton.getText(), clickedPieceName.substring(0, 5))) {
                             isInCheck = true;
                         } else {
                             executeMove(squareButton);

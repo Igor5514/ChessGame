@@ -5,16 +5,17 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import pieces.Piece;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 
 public class BoardLogic implements ChessPieceImages{
 
     private GridPane chessBoard;
     private final Set<String> enabledCoordinatesList = new HashSet<>();
     private boolean isOpoonentPawn = false;
+    String[] pieces = {"white_rook","black_rook","white_knight","black_knight","white_bishop","black_bishop","white_queen",
+    "black_queen","white_pawn","black_pawn"};
+
 
     public BoardLogic(){
 
@@ -251,7 +252,7 @@ public class BoardLogic implements ChessPieceImages{
             if (isIncreasing(coordinateArrayList, piece.getChessPieceName())) {
                 for (Node node : children) {
                     Button button = (Button) node;
-                    if (button.getUserData() != null && coordinateArrayList.contains(button.getText()) && !piece.getChessPieceColor().equals(button.getUserData().toString().substring(0, 5))) {
+                    if (button.getUserData() != null && coordinateArrayList.contains(button.getText()) && !Arrays.asList(pieces).contains(piece.getChessPieceName())){
                         if (button.getUserData().toString().substring(6).equals("king")) {
                             chessState(button);
                         } else {
@@ -262,7 +263,7 @@ public class BoardLogic implements ChessPieceImages{
             } else {
                 for (int i = children.size() - 1; i >= 0; i--) {
                     Button button = (Button) children.get(i);
-                    if (button.getUserData() != null && coordinateArrayList.contains(button.getText()) && !piece.getChessPieceColor().equals(button.getUserData().toString().substring(0, 5))) {
+                    if (button.getUserData() != null && coordinateArrayList.contains(button.getText()) && !Arrays.asList(pieces).contains(piece.getChessPieceName())) {
                         if (button.getUserData().toString().substring(6).equals("king")) {
                             chessState(button);
                         } else {

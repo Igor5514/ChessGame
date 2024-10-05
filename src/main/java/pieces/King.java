@@ -9,10 +9,13 @@ import java.util.*;
 
 public class King extends Piece {
 
-    String[] parallel = {"up", "right", "left", "down"};
-    String[] diagonal = {"upLeft", "upRight", "downLeft", "downRight"};
-    boolean isUpdateCoordinatePresent = false;
-    ArrayList<String> kingMoves = new ArrayList<>();
+    private String[] parallel = {"up", "right", "left", "down"};
+    private String[] diagonal = {"upLeft", "upRight", "downLeft", "downRight"};
+    private boolean isUpdateCoordinatePresent = false;
+    private boolean isPieceOnKingsPath = false;
+    private ArrayList<String> kingMoves = new ArrayList<>();
+    private ArrayList<String> checkForCheckList = new ArrayList<>();
+    private String enemyPieceCoordinate;
     private final ArrayList<String> up = new ArrayList<>();
     private final ArrayList<String> right = new ArrayList<>();
     private final ArrayList<String> down = new ArrayList<>();
@@ -141,12 +144,11 @@ public class King extends Piece {
         return coordinatesMap;
     }
 
-    public boolean checkForOpponents(GridPane chessBoard, String kingCoordinate,String updateCoordinate, String kingColor) {
+    public boolean checkForOpponents(GridPane chessBoard, String kingCoordinate,String clickedPieceCoordinate,String updateCoordinate, String kingColor) {
         checkForChess(kingCoordinate);
         Map<String, ArrayList<String>> coordinatesMap = getKingCoordinates();
         BoardLogic boardLogic = new BoardLogic();
         List<Node> children = chessBoard.getChildren();
-
         for (Map.Entry<String, ArrayList<String>> entry : coordinatesMap.entrySet()) {
             String arrayListValue = entry.getKey();
             ArrayList<String> movementCoordinatesArrayList = entry.getValue();
@@ -159,9 +161,9 @@ public class King extends Piece {
                         updateChecker(updateCoordinate, button.getText(), movementCoordinatesArrayList);
                     }
                     if (button.getUserData() != null) {
-                        if (checkForMatching(arrayListValue, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 1) {
+                        if (checkForMatching(arrayListValue,clickedPieceCoordinate, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 1) {
                             return true;
-                        }else if(checkForMatching(arrayListValue, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 2){
+                        }else if(checkForMatching(arrayListValue,clickedPieceCoordinate, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 2){
                             break;
                         }
                     }
@@ -174,14 +176,15 @@ public class King extends Piece {
                         updateChecker(updateCoordinate, button.getText(), movementCoordinatesArrayList);
                     }
                     if (button.getUserData() != null) {
-                        if (checkForMatching(arrayListValue, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 1) {
+                        if (checkForMatching(arrayListValue,clickedPieceCoordinate, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 1) {
                             return true;
-                        }else if(checkForMatching(arrayListValue, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 2){
+                        }else if(checkForMatching(arrayListValue,clickedPieceCoordinate, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 2){
                             break;
                         }
                     }
                 }
                 isUpdateCoordinatePresent = false;
+                isPieceOnKingsPath = false;
             }
         }
         coordinatesMap.clear();
@@ -197,14 +200,21 @@ public class King extends Piece {
         }
     }
 
-    public int checkForMatching(String arrayListValue, String squareCoordinate, String buttonUserData, ArrayList<String> movementCoordinatesArrayList,String kingColor) {
+    public int checkForMatching(String arrayListValue,String clickedPieceCoordinate, String squareCoordinate, String buttonUserData, ArrayList<String> movementCoordinatesArrayList,String kingColor) {
         if (Arrays.asList(parallel).contains(arrayListValue)) {
             if (movementCoordinatesArrayList.contains(squareCoordinate)) {
+                if(squareCoordinate.equals(clickedPieceCoordinate)){
+                    isPieceOnKingsPath = true;
+                    return 3;
+                }
                 if(kingColor.equals("white")){
                     if(buttonUserData.startsWith("white")){
                         return 2;
                     }
                     if(buttonUserData.equals("black_rook") || buttonUserData.equals("black_queen")){
+                        if(isPieceOnKingsPath){
+                            return 1;
+                        }
                         if(isUpdateCoordinatePresent){
                             return 2;
                         }
@@ -230,6 +240,9 @@ public class King extends Piece {
                 return 3;
             }
         } else if (Arrays.asList(diagonal).contains(arrayListValue)) {
+            if(squareCoordinate.equals(clickedPieceCoordinate)){
+                isPieceOnKingsPath = true;
+            }
             if (movementCoordinatesArrayList.contains(squareCoordinate)) {
                 if(kingColor.equals("white")){
                     if(buttonUserData.startsWith("white")){

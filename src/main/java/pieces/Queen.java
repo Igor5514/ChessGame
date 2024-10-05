@@ -99,6 +99,7 @@ public class Queen extends Piece{
         if(!downRight.isEmpty()){
             coordinatesArrayList.add(downRight);
         }
+
         return coordinatesArrayList;
     }
 }
