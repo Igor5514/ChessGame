@@ -14,7 +14,7 @@ public class King extends Piece {
     private boolean isUpdateCoordinatePresent = false;
     private boolean isPieceOnKingsPath = false;
     private ArrayList<String> kingMoves = new ArrayList<>();
-    private ArrayList<String> checkForCheckList = new ArrayList<>();
+    private Set<String> checkForCheckSet = new HashSet<>();
     private final ArrayList<String> up = new ArrayList<>();
     private final ArrayList<String> right = new ArrayList<>();
     private final ArrayList<String> down = new ArrayList<>();
@@ -155,36 +155,25 @@ public class King extends Piece {
             if (boardLogic.isIncreasing(movementCoordinatesArrayList, "white_king")) {
                 for (Node node : children) {
                     Button button = (Button) node;
-
-                    if(button.getText().equals(updateCoordinate)) {
-                        updateChecker(updateCoordinate, button.getText(), movementCoordinatesArrayList);
-                    }
-                    if (button.getUserData() != null) {
-                        if (checkForMatching(arrayListValue,clickedPieceCoordinate, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 1) {
-                            return true;
-                        }else if(checkForMatching(arrayListValue,clickedPieceCoordinate, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 2){
-                            break;
-                        }
+                    if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 1){
+                        return true;
+                    }else if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 2){
+                        break;
                     }
                 }
             } else {
                 for (int j = children.size() - 1; j >= 0; j--) {
                     Button button = (Button) children.get(j);
-                    if(button.getText().equals(updateCoordinate)) {
-                        updateChecker(updateCoordinate, button.getText(), movementCoordinatesArrayList);
-                    }
-                    if (button.getUserData() != null) {
-                        if (checkForMatching(arrayListValue,clickedPieceCoordinate, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 1) {
-                            return true;
-                        }else if(checkForMatching(arrayListValue,clickedPieceCoordinate, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 2){
-                            break;
-                        }
+                    if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 1){
+                        return true;
+                    }else if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 2){
+                        break;
                     }
                 }
 
             }
-            System.out.println(checkForCheckList);
-            checkForCheckList.clear();
+            System.out.println(checkForCheckSet);
+            checkForCheckSet.clear();
             isUpdateCoordinatePresent = false;
             isPieceOnKingsPath = false;
         }
@@ -192,6 +181,22 @@ public class King extends Piece {
         return false;
     }
 
+    public int preValidator(Button button, String updateCoordinate, ArrayList<String> movementCoordinatesArrayList, String arrayListValue, String clickedPieceCoordinate, String kingColor){
+        if(button.getText().equals(updateCoordinate)) {
+            updateChecker(updateCoordinate, button.getText(), movementCoordinatesArrayList);
+        }
+        if (button.getUserData() != null) {
+            if (checkForMatching(arrayListValue,clickedPieceCoordinate, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 1) {
+                return 1;
+            }else if(checkForMatching(arrayListValue,clickedPieceCoordinate, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 2){
+                return 2;
+            }
+        }
+        if(movementCoordinatesArrayList.contains(button.getText())){
+            checkForCheckSet.add(button.getText());
+        }
+        return 3;
+    }
 
     public void updateChecker(String updateCoordinate,String squareCoordinate, ArrayList<String> movementCoordinatesArrayList){
         if (movementCoordinatesArrayList.contains(squareCoordinate)) {
@@ -204,15 +209,11 @@ public class King extends Piece {
     public int checkForMatching(String arrayListValue,String clickedPieceCoordinate, String squareCoordinate, String buttonUserData, ArrayList<String> movementCoordinatesArrayList,String kingColor) {
         if (Arrays.asList(parallel).contains(arrayListValue)) {
             if (movementCoordinatesArrayList.contains(squareCoordinate)) {
+                if(squareCoordinate.equals(clickedPieceCoordinate)){
+                    isPieceOnKingsPath = true;
+                    return 3;
+                }
                 if(kingColor.equals("white")){
-                    if(squareCoordinate.equals(clickedPieceCoordinate)){
-                        isPieceOnKingsPath = true;
-                        checkForCheckList = movementCoordinatesArrayList;
-                        return 3;
-                    }
-                    if(isPieceOnKingsPath){
-                        checkForCheckList.add(squareCoordinate);
-                    }
                     if(buttonUserData.startsWith("white")){
                         return 2;
                     }
@@ -243,16 +244,11 @@ public class King extends Piece {
             }
         } else if (Arrays.asList(diagonal).contains(arrayListValue)) {
             if (movementCoordinatesArrayList.contains(squareCoordinate)) {
-                checkForCheckList.add(squareCoordinate);
+                if(squareCoordinate.equals(clickedPieceCoordinate)){
+                    isPieceOnKingsPath = true;
+                    return 3;
+                }
                 if(kingColor.equals("white")){
-                    if(squareCoordinate.equals(clickedPieceCoordinate)){
-                        isPieceOnKingsPath = true;
-                        checkForCheckList = movementCoordinatesArrayList;
-                        return 3;
-                    }
-                    if(isPieceOnKingsPath){
-                        checkForCheckList.add(squareCoordinate);
-                    }
                     if(buttonUserData.startsWith("white")){
                         return 2;
                     }
