@@ -13,6 +13,7 @@ public class King extends Piece {
     private String[] diagonal = {"upLeft", "upRight", "downLeft", "downRight"};
     private boolean isUpdateCoordinatePresent = false;
     private boolean isPieceOnKingsPath = false;
+    private boolean isEnemyPieceOnKingsEnd = false;
     private ArrayList<String> kingMoves = new ArrayList<>();
     private Set<String> checkForCheckSet = new HashSet<>();
     private final ArrayList<String> up = new ArrayList<>();
@@ -173,8 +174,14 @@ public class King extends Piece {
 
             }
             System.out.println(checkForCheckSet);
+            if(isEnemyPieceOnKingsEnd){
+                if(!checkForCheckSet.contains(updateCoordinate)){
+                    return true;
+                }
+            }
             checkForCheckSet.clear();
             isUpdateCoordinatePresent = false;
+            isEnemyPieceOnKingsEnd = false;
             isPieceOnKingsPath = false;
         }
         coordinatesMap.clear();
@@ -218,6 +225,9 @@ public class King extends Piece {
                         return 2;
                     }
                     if(buttonUserData.equals("black_rook") || buttonUserData.equals("black_queen")){
+                        if(isPieceOnKingsPath){
+                            isEnemyPieceOnKingsEnd = true;
+                        }
                         if(isUpdateCoordinatePresent){
                             return 2;
                         }
@@ -231,6 +241,9 @@ public class King extends Piece {
                         return 2;
                     }
                     if(buttonUserData.equals("white_rook") || buttonUserData.equals("white_queen")){
+                        if(isPieceOnKingsPath){
+                            isEnemyPieceOnKingsEnd = true;
+                        }
                         if(isUpdateCoordinatePresent){
                             return 2;
                         }
@@ -253,6 +266,9 @@ public class King extends Piece {
                         return 2;
                     }
                     if ((buttonUserData.equals("black_bishop") || buttonUserData.equals("black_queen"))) {
+                        if(isPieceOnKingsPath){
+                            isEnemyPieceOnKingsEnd = true;
+                        }
                         if(isUpdateCoordinatePresent){
                             return 2;
                         }
@@ -266,6 +282,9 @@ public class King extends Piece {
                         return 2;
                     }
                     if ((buttonUserData.equals("white_bishop") || buttonUserData.equals("white_queen"))) {
+                        if(isPieceOnKingsPath){
+                            isEnemyPieceOnKingsEnd = true;
+                        }
                         if(isUpdateCoordinatePresent){
                             return 2;
                         }
