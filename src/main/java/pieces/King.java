@@ -285,7 +285,9 @@ public class King extends Piece {
                         if(isPieceOnKingsPath){
                             isEnemyPieceOnKingsEnd = true;
                         }
+                        System.out.println(isUpdateCoordinatePresent);
                         if(isUpdateCoordinatePresent){
+                            System.out.println("present2");
                             return 2;
                         }
                         return 1;
