@@ -69,23 +69,17 @@ public class Game {
                     if(isInCheck){
                         if(currentKing != null && !currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(),clickedPieceCoordinate, squareButton.getText(), clickedPieceName.substring(0, 5))){
                             executeMove(squareButton);
-                            isInCheck = false;
-                            isPieceClicked = false;
-                            currentKing = null;
                         }
                     }else {
                         if (currentKing != null && currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(),clickedPieceCoordinate, squareButton.getText(), clickedPieceName.substring(0, 5))) {
                             isInCheck = true;
                         } else {
                             executeMove(squareButton);
-                            currentKing = null;
                         }
                     }
                 }
-
             }
         }
-
     }
 
     public void executeMove(Button squareButton){
@@ -100,6 +94,8 @@ public class Game {
             boardLogic.checkForChessStatePawn(piece);
         }
         isPieceClicked = false;
+        isInCheck = false;
+        currentKing = null;
     }
 
     public boolean whiteTurn(Button button) {

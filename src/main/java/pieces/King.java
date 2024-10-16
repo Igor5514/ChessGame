@@ -152,11 +152,11 @@ public class King extends Piece {
         for (Map.Entry<String, ArrayList<String>> entry : coordinatesMap.entrySet()) {
             String arrayListValue = entry.getKey();
             ArrayList<String> movementCoordinatesArrayList = entry.getValue();
-
             if (boardLogic.isIncreasing(movementCoordinatesArrayList, "white_king")) {
                 for (Node node : children) {
                     Button button = (Button) node;
                     if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 1){
+                        clearAllLists();
                         return true;
                     }else if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 2){
                         break;
@@ -166,14 +166,13 @@ public class King extends Piece {
                 for (int j = children.size() - 1; j >= 0; j--) {
                     Button button = (Button) children.get(j);
                     if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 1){
+                        clearAllLists();
                         return true;
                     }else if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 2){
                         break;
                     }
                 }
-
             }
-            System.out.println(checkForCheckSet);
             if(isEnemyPieceOnKingsEnd){
                 if(!checkForCheckSet.contains(updateCoordinate)){
                     return true;
@@ -285,9 +284,7 @@ public class King extends Piece {
                         if(isPieceOnKingsPath){
                             isEnemyPieceOnKingsEnd = true;
                         }
-                        System.out.println(isUpdateCoordinatePresent);
                         if(isUpdateCoordinatePresent){
-                            System.out.println("present2");
                             return 2;
                         }
                         return 1;
@@ -300,6 +297,17 @@ public class King extends Piece {
             }
         }
         return 3;
+    }
+
+    public void clearAllLists(){
+        up.clear();
+        right.clear();
+        down.clear();
+        left.clear();
+        upRight.clear();
+        upLeft.clear();
+        downRight.clear();
+        downLeft.clear();
     }
 
     @Override
