@@ -1,13 +1,14 @@
 package pieces;
 
 import functionalities.BoardLogic;
+import functionalities.Movable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
 import java.util.*;
 
-public class King extends Piece {
+public class King extends Piece implements Movable {
 
     private String[] parallel = {"up", "right", "left", "down"};
     private String[] diagonal = {"upLeft", "upRight", "downLeft", "downRight"};
@@ -15,11 +16,13 @@ public class King extends Piece {
     private boolean isPieceOnKingsPath = false;
     private boolean isEnemyPieceOnKingsEnd = false;
     private ArrayList<String> kingMoves = new ArrayList<>();
+    private ArrayList<String> pawnCords = new ArrayList<>();
+    private ArrayList<String> knightCords = new ArrayList<>();
     private Set<String> checkForCheckSet = new HashSet<>();
-    private final ArrayList<String> up = new ArrayList<>();
-    private final ArrayList<String> right = new ArrayList<>();
-    private final ArrayList<String> down = new ArrayList<>();
-    private final ArrayList<String> left = new ArrayList<>();
+    private ArrayList<String> up = new ArrayList<>();
+    private ArrayList<String> right = new ArrayList<>();
+    private ArrayList<String> down = new ArrayList<>();
+    private ArrayList<String> left = new ArrayList<>();
     private final ArrayList<String> upLeft = new ArrayList<>();
     private final ArrayList<String> upRight = new ArrayList<>();
     private final ArrayList<String> downLeft = new ArrayList<>();
@@ -44,43 +47,15 @@ public class King extends Piece {
         }
     }
 
-    public void checkForChess(String kingCoordinate) {
+    public void checkForChess(String kingCoordinate, String kingColor) {
         int i = Integer.parseInt(String.valueOf(kingCoordinate.charAt(0)));
         int j = Integer.parseInt(String.valueOf(kingCoordinate.charAt(1)));
 
-        if (i != 1) {
-            for (int k = i; k >= 1; k--) {
-                String coordinate = k + "" + j;
-                if (!coordinate.equals(kingCoordinate)){
-                    up.add(coordinate);
-                }
+        up = rookMoves(false,false,i,j, 1, kingCoordinate);
+        right = rookMoves(true,true,j,i, 8, kingCoordinate);
+        down = rookMoves(true,false,i,j, 8, kingCoordinate);
+        left = rookMoves(false,true,j,i, 1, kingCoordinate);
 
-            }
-        }
-        if (j != 8) {
-            for (int k = j; k <= 8; k++) {
-                String coordinate = i + "" + k;
-                if (!coordinate.equals(kingCoordinate)) {
-                    right.add(coordinate);
-                }
-            }
-        }
-        if (i != 8) {
-            for (int k = i; k <= 8; k++) {
-                String coordinate = k + "" + j;
-                if (!coordinate.equals(kingCoordinate)) {
-                    down.add(coordinate);
-                }
-            }
-        }
-        if (j != 1) {
-            for (int k = j; k >= 1; k--) {
-                String coordinate = i + "" + k;
-                if (!coordinate.equals(kingCoordinate)) {
-                    left.add(coordinate);
-                }
-            }
-        }
         if (!(i == 1 || j == 1)) {
             for (int k = i, n = j; n >= 1 && k >= 1; k--, n--) {
                 String coordinate = k + "" + n;
@@ -111,6 +86,33 @@ public class King extends Piece {
                 if (!coordinate.equals(kingCoordinate)) {
                     downRight.add(coordinate);
                 }
+            }
+        }
+        if(kingColor.equals("black")){
+            if(i != 8 || j != 1){
+                int k = i + 1;
+                int n = j - 1;
+                String coordinate = k + "" + n;
+                pawnCords.add(coordinate);
+            }
+            if(i != 8 || j != 8){
+                int k = i + 1;
+                int n = j + 1;
+                String coordinate = k + "" + n;
+                pawnCords.add(coordinate);
+            }
+        }else if(kingColor.equals("white")){
+            if(i != 1 || j != 1){
+                int k = i - 1;
+                int n = j - 1;
+                String coordinate = k + "" + n;
+                pawnCords.add(coordinate);
+            }
+            if(i != 1 || j != 8){
+                int k = i - 1;
+                int n = j + 1;
+                String coordinate = k + "" + n;
+                pawnCords.add(coordinate);
             }
         }
     }
@@ -145,7 +147,7 @@ public class King extends Piece {
     }
 
     public boolean checkForOpponents(GridPane chessBoard, String kingCoordinate,String clickedPieceCoordinate,String updateCoordinate, String kingColor) {
-        checkForChess(kingCoordinate);
+        checkForChess(kingCoordinate, kingColor);
         Map<String, ArrayList<String>> coordinatesMap = getKingCoordinates();
         BoardLogic boardLogic = new BoardLogic();
         List<Node> children = chessBoard.getChildren();
@@ -187,6 +189,12 @@ public class King extends Piece {
         return false;
     }
 
+    public boolean pawnValidator(String kingCoordinate, ArrayList<String> pawnCords, Button squareButton){
+
+
+        return false;
+    }
+
     public int preValidator(Button button, String updateCoordinate, ArrayList<String> movementCoordinatesArrayList, String arrayListValue, String clickedPieceCoordinate, String kingColor){
         if(button.getText().equals(updateCoordinate)) {
             updateChecker(updateCoordinate, button.getText(), movementCoordinatesArrayList);
@@ -211,6 +219,8 @@ public class King extends Piece {
             }
         }
     }
+
+
 
     public int checkForMatching(String arrayListValue,String clickedPieceCoordinate, String squareCoordinate, String buttonUserData, ArrayList<String> movementCoordinatesArrayList,String kingColor) {
         if (Arrays.asList(parallel).contains(arrayListValue)) {
