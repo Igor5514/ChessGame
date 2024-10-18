@@ -20,15 +20,10 @@ public class Rook extends Piece implements Movable {
         int i = Integer.parseInt(String.valueOf(currentCoordinate.charAt(0)));
         int j = Integer.parseInt(String.valueOf(currentCoordinate.charAt(1)));
 
-        up = rookMoves(false,false,i,j, 1, currentCoordinate);
-        right = rookMoves(true,true,j,i, 8, currentCoordinate);
-        down = rookMoves(true,false,i,j, 8, currentCoordinate);
-        left = rookMoves(false,true,j,i, 1, currentCoordinate);
-
-        System.out.println(up);
-        System.out.println(right);
-        System.out.println(down);
-        System.out.println(left);
+        up = rookMoves(false, false, i, j, 1, currentCoordinate);
+        right = rookMoves(true, true, j, i, 8, currentCoordinate);
+        down = rookMoves(true, false, i, j, 8, currentCoordinate);
+        left = rookMoves(false, true, j, i, 1, currentCoordinate);
     }
 
     @Override
@@ -48,23 +43,5 @@ public class Rook extends Piece implements Movable {
         }
         return coordinatesArrayList;
     }
-
-    public ArrayList<String> getLeft() {
-        return left;
-    }
-
-    public ArrayList<String> getRight() {
-        return right;
-    }
-
-    public ArrayList<String> getUp() {
-        return up;
-    }
-
-    public ArrayList<String> getDown() {
-        return down;
-    }
-
-
 
 }

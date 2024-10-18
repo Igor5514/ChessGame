@@ -13,7 +13,7 @@ import java.io.File;
 
 public class StartingGameScreen extends BorderPane {
 
-    private final ImageView imageView = new ImageView(new File("src/main/java/chess_pieces/background.png").toURI().toString());
+    private final ImageView imageView = new ImageView(new File("src/main/resources/chess_pieces/background.png").toURI().toString());
     private final Label titleLabel = new Label("Chess game");
     Button startButton = new Button("Start Game");
     private final Label player1NameLabel = new Label("Player 1 Name:");

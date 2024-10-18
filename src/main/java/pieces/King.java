@@ -10,23 +10,23 @@ import java.util.*;
 
 public class King extends Piece implements Movable {
 
-    private String[] parallel = {"up", "right", "left", "down"};
-    private String[] diagonal = {"upLeft", "upRight", "downLeft", "downRight"};
+    private final String[] parallel = {"up", "right", "left", "down"};
+    private final String[] diagonal = {"upLeft", "upRight", "downLeft", "downRight"};
     private boolean isUpdateCoordinatePresent = false;
     private boolean isPieceOnKingsPath = false;
     private boolean isEnemyPieceOnKingsEnd = false;
-    private ArrayList<String> kingMoves = new ArrayList<>();
-    private ArrayList<String> pawnCords = new ArrayList<>();
-    private ArrayList<String> knightCords = new ArrayList<>();
-    private Set<String> checkForCheckSet = new HashSet<>();
+    private final ArrayList<String> kingMoves = new ArrayList<>();
+    private final ArrayList<String> pawnCords = new ArrayList<>();
+    private final ArrayList<String> knightCords = new ArrayList<>();
+    private final Set<String> checkForCheckSet = new HashSet<>();
     private ArrayList<String> up = new ArrayList<>();
     private ArrayList<String> right = new ArrayList<>();
     private ArrayList<String> down = new ArrayList<>();
     private ArrayList<String> left = new ArrayList<>();
-    private final ArrayList<String> upLeft = new ArrayList<>();
-    private final ArrayList<String> upRight = new ArrayList<>();
-    private final ArrayList<String> downLeft = new ArrayList<>();
-    private final ArrayList<String> downRight = new ArrayList<>();
+    private ArrayList<String> upRight = new ArrayList<>();
+    private ArrayList<String> upLeft = new ArrayList<>();
+    private ArrayList<String> downRight = new ArrayList<>();
+    private ArrayList<String> downLeft = new ArrayList<>();
 
     public King(String currentCoordinate, String chessPieceName, boolean jump) {
         super(currentCoordinate, chessPieceName, jump);
@@ -51,43 +51,16 @@ public class King extends Piece implements Movable {
         int i = Integer.parseInt(String.valueOf(kingCoordinate.charAt(0)));
         int j = Integer.parseInt(String.valueOf(kingCoordinate.charAt(1)));
 
-        up = rookMoves(false,false,i,j, 1, kingCoordinate);
-        right = rookMoves(true,true,j,i, 8, kingCoordinate);
-        down = rookMoves(true,false,i,j, 8, kingCoordinate);
-        left = rookMoves(false,true,j,i, 1, kingCoordinate);
+        up = rookMoves(false, false, i, j, 1, kingCoordinate);
+        right = rookMoves(true, true, j, i, 8, kingCoordinate);
+        down = rookMoves(true, false, i, j, 8, kingCoordinate);
+        left = rookMoves(false, true, j, i, 1, kingCoordinate);
 
-        if (!(i == 1 || j == 1)) {
-            for (int k = i, n = j; n >= 1 && k >= 1; k--, n--) {
-                String coordinate = k + "" + n;
-                if (!coordinate.equals(kingCoordinate)) {
-                    upLeft.add(coordinate);
-                }
-            }
-        }
-        if (!(i == 1 || j == 8)) {
-            for (int k = i, n = j; k >= 1 && n <= 8; k--, n++) {
-                String coordinate = k + "" + n;
-                if (!coordinate.equals(kingCoordinate)) {
-                    upRight.add(coordinate);
-                }
-            }
-        }
-        if (!(i == 8 || j == 1)) {
-            for (int k = i, n = j; k <= 8 && n >= 1; k++, n--) {
-                String coordinate = k + "" + n;
-                if (!coordinate.equals(kingCoordinate)) {
-                    downLeft.add(coordinate);
-                }
-            }
-        }
-        if (!(i == 8 || j == 8)) {
-            for (int k = i, n = j; k <= 8 && n <= 8; k++, n++) {
-                String coordinate = k + "" + n;
-                if (!coordinate.equals(kingCoordinate)) {
-                    downRight.add(coordinate);
-                }
-            }
-        }
+        upRight = bishopMoves(true, false, i, j, 1, 8, kingCoordinate);
+        upLeft = bishopMoves(true, true, i, j, 1, 1, kingCoordinate);
+        downRight = bishopMoves(false, false, i, j, 8, 8, kingCoordinate);
+        downLeft = bishopMoves(false, true, i, j, 8, 1, kingCoordinate);
+
         if(kingColor.equals("black")){
             if(i != 8 || j != 1){
                 int k = i + 1;

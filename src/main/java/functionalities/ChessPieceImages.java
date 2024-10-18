@@ -7,7 +7,7 @@ import java.io.File;
 public interface ChessPieceImages {
 
     default ImageView getWhitePawn() {
-        ImageView imageView = new ImageView(new File("src/main/java/chess_pieces/white_pawn.png").toURI().toString());
+        ImageView imageView = new ImageView(new File("src/main/resources/chess_pieces/white_pawn.png").toURI().toString());
         imageView.setFitWidth(30);
         imageView.setFitHeight(50);
         imageView.setTranslateX(8);
@@ -15,7 +15,7 @@ public interface ChessPieceImages {
     }
 
     default ImageView getBlackPawn() {
-        ImageView imageView = new ImageView(new File("src/main/java/chess_pieces/pawn.png").toURI().toString());
+        ImageView imageView = new ImageView(new File("src/main/resources/chess_pieces/pawn.png").toURI().toString());
         imageView.setFitWidth(30);
         imageView.setFitHeight(50);
         imageView.setTranslateX(8);
@@ -23,7 +23,7 @@ public interface ChessPieceImages {
     }
 
     default ImageView getWhiteRook() {
-        ImageView imageView = new ImageView(new File("src/main/java/chess_pieces/white_rook.png").toURI().toString());
+        ImageView imageView = new ImageView(new File("src/main/resources/chess_pieces/white_rook.png").toURI().toString());
         imageView.setFitWidth(40);
         imageView.setFitHeight(60);
         imageView.setTranslateX(8);
@@ -31,7 +31,7 @@ public interface ChessPieceImages {
     }
 
     default ImageView getBlackRook() {
-        ImageView imageView = new ImageView(new File("src/main/java/chess_pieces/rook.png").toURI().toString());
+        ImageView imageView = new ImageView(new File("src/main/resources/chess_pieces/rook.png").toURI().toString());
         imageView.setFitWidth(40);
         imageView.setFitHeight(60);
         imageView.setTranslateX(8);
@@ -39,7 +39,7 @@ public interface ChessPieceImages {
     }
 
     default ImageView getWhiteKnight() {
-        ImageView imageView = new ImageView(new File("src/main/java/chess_pieces/white_knight.png").toURI().toString());
+        ImageView imageView = new ImageView(new File("src/main/resources/chess_pieces/white_knight.png").toURI().toString());
         imageView.setFitWidth(40);
         imageView.setFitHeight(60);
         imageView.setTranslateX(10);
@@ -47,7 +47,7 @@ public interface ChessPieceImages {
     }
 
     default ImageView getBlackKnight() {
-        ImageView imageView = new ImageView(new File("src/main/java/chess_pieces/knight.png").toURI().toString());
+        ImageView imageView = new ImageView(new File("src/main/resources/chess_pieces/knight.png").toURI().toString());
         imageView.setFitWidth(40);
         imageView.setFitHeight(60);
         imageView.setTranslateX(10);
@@ -55,7 +55,7 @@ public interface ChessPieceImages {
     }
 
     default ImageView getWhiteBishop() {
-        ImageView imageView = new ImageView(new File("src/main/java/chess_pieces/white_bishop.png").toURI().toString());
+        ImageView imageView = new ImageView(new File("src/main/resources/chess_pieces/white_bishop.png").toURI().toString());
         imageView.setFitWidth(35);
         imageView.setFitHeight(65);
         imageView.setTranslateX(9);
@@ -63,7 +63,7 @@ public interface ChessPieceImages {
     }
 
     default ImageView getBlackBishop() {
-        ImageView imageView = new ImageView(new File("src/main/java/chess_pieces/bishop.png").toURI().toString());
+        ImageView imageView = new ImageView(new File("src/main/resources/chess_pieces/bishop.png").toURI().toString());
         imageView.setFitWidth(35);
         imageView.setFitHeight(65);
         imageView.setTranslateX(9);
@@ -71,7 +71,7 @@ public interface ChessPieceImages {
     }
 
     default ImageView getWhiteQueen() {
-        ImageView imageView = new ImageView(new File("src/main/java/chess_pieces/white_queen.png").toURI().toString());
+        ImageView imageView = new ImageView(new File("src/main/resources/chess_pieces/white_queen.png").toURI().toString());
         imageView.setFitWidth(35);
         imageView.setFitHeight(65);
         imageView.setTranslateX(9);
@@ -79,7 +79,7 @@ public interface ChessPieceImages {
     }
 
     default ImageView getBlackQueen() {
-        ImageView imageView = new ImageView(new File("src/main/java/chess_pieces/queen.png").toURI().toString());
+        ImageView imageView = new ImageView(new File("src/main/resources/chess_pieces/queen.png").toURI().toString());
         imageView.setFitWidth(35);
         imageView.setFitHeight(65);
         imageView.setTranslateX(9);
@@ -87,7 +87,7 @@ public interface ChessPieceImages {
     }
 
     default ImageView getWhiteKing() {
-        ImageView imageView = new ImageView(new File("src/main/java/chess_pieces/white_king.png").toURI().toString());
+        ImageView imageView = new ImageView(new File("src/main/resources/chess_pieces/white_king.png").toURI().toString());
         imageView.setFitWidth(35);
         imageView.setFitHeight(65);
         imageView.setTranslateX(9);
@@ -95,7 +95,7 @@ public interface ChessPieceImages {
     }
 
     default ImageView getBlackKing() {
-        ImageView imageView = new ImageView(new File("src/main/java/chess_pieces/king.png").toURI().toString());
+        ImageView imageView = new ImageView(new File("src/main/resources/chess_pieces/king.png").toURI().toString());
         imageView.setFitWidth(35);
         imageView.setFitHeight(65);
         imageView.setTranslateX(9);

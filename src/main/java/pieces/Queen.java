@@ -7,10 +7,10 @@ import java.util.List;
 
 public class Queen extends Piece implements Movable {
 
-    private final ArrayList<String> upLeft = new ArrayList<>();
-    private final ArrayList<String> upRight = new ArrayList<>();
-    private final ArrayList<String> downLeft = new ArrayList<>();
-    private final ArrayList<String> downRight = new ArrayList<>();
+    private ArrayList<String> upRight = new ArrayList<>();
+    private ArrayList<String> upLeft = new ArrayList<>();
+    private ArrayList<String> downRight = new ArrayList<>();
+    private ArrayList<String> downLeft = new ArrayList<>();
     private ArrayList<String> left = new ArrayList<>();
     private ArrayList<String> right = new ArrayList<>();
     private ArrayList<String> up = new ArrayList<>();
@@ -30,31 +30,12 @@ public class Queen extends Piece implements Movable {
         down = rookMoves(true,false,i,j, 8, currentCoordinate);
         left = rookMoves(false,true,j,i, 1, currentCoordinate);
 
+        upRight = bishopMoves(true, false, i, j, 1, 8, currentCoordinate);
+        upLeft = bishopMoves(true, true, i, j, 1, 1, currentCoordinate);
+        downRight = bishopMoves(false, false, i, j, 8, 8, currentCoordinate);
+        downLeft = bishopMoves(false, true, i, j, 8, 1, currentCoordinate);
 
-        if(!(i==1 || j==1)){
-            for(int k= i,n=j; n>= 1 && k>=1; k--, n--){
-                String coordinate = k+""+n;
-                upLeft.add(coordinate);
-            }
-        }
-        if(!(i== 1 || j==8)){
-            for(int k= i,n=j; k>= 1 && n<=8; k--, n++){
-                String coordinate = k+""+n;
-                upRight.add(coordinate);
-            }
-        }
-        if(!(i== 8 || j==1)){
-            for(int k= i,n=j; k<= 8 && n>=1; k++, n--){
-                String coordinate = k+""+n;
-                downLeft.add(coordinate);
-            }
-        }
-        if(!(i== 8 || j==8)){
-            for(int k= i,n=j; k<= 8 && n<=8; k++, n++){
-                String coordinate = k+""+n;
-                downRight.add(coordinate);
-            }
-        }
+        System.out.println(up);
     }
 
     @Override
@@ -72,18 +53,16 @@ public class Queen extends Piece implements Movable {
         if(!left.isEmpty()){
             coordinatesArrayList.add(left);
         }
-        if(!upLeft.isEmpty()){
-            coordinatesArrayList.add(upLeft);
-        }
         if(!upRight.isEmpty()){
             coordinatesArrayList.add(upRight);
+        }
+        if(!upLeft.isEmpty()){
+            coordinatesArrayList.add(upLeft);
         }
         if(!downLeft.isEmpty()){
             coordinatesArrayList.add(downLeft);
         }
-        if(!downRight.isEmpty()){
-            coordinatesArrayList.add(downRight);
-        }
+
 
         return coordinatesArrayList;
     }
