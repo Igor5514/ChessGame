@@ -45,19 +45,7 @@ public class Game {
                     clickedPieceCoordinate = squareButton.getText();
                     clickedPieceName = squareButton.getUserData().toString();
                     boardLogic.updateChessBoardClick(piece);
-                    if(!(piece instanceof King)){
-                        for(Node node : board.getChessBoard().getChildren()){
-                            if(node instanceof Button button){
-                                if (piece.getChessPieceColor().equals("white") && button.getUserData() != null && button.getUserData().toString().equals("white_king")){
-                                    currentKing = new King(button.getText(),button.getUserData().toString(),true);
-                                    isPieceClicked = true;
-                                } else if (piece.getChessPieceColor().equals("black") && button.getUserData() != null && button.getUserData().toString().equals("black_king")) {
-                                    currentKing = new King(button.getText(),button.getUserData().toString(),true);
-                                    isPieceClicked = true;
-                                }
-                            }
-                        }
-                    }
+                    makeInstanceOfKing(piece);
                     isPieceClicked = true;
                 }
             } else {
@@ -89,6 +77,7 @@ public class Game {
         pieceMoved = true;
         changeTurn();
         if (!piece.getChessPieceType().equals("pawn")) {
+            System.out.println("aaaaaaaaaaaaaa");
             boardLogic.checkForChessState(piece.getAllCoordinates(), piece);
         } else {
             boardLogic.checkForChessStatePawn(piece);
@@ -96,6 +85,22 @@ public class Game {
         isPieceClicked = false;
         isInCheck = false;
         currentKing = null;
+    }
+
+    public void makeInstanceOfKing(Piece piece){
+        if(!(piece instanceof King)){
+            for(Node node : board.getChessBoard().getChildren()){
+                if(node instanceof Button button){
+                    if (piece.getChessPieceColor().equals("white") && button.getUserData() != null && button.getUserData().toString().equals("white_king")){
+                        currentKing = new King(button.getText(),button.getUserData().toString(),true);
+                        isPieceClicked = true;
+                    } else if (piece.getChessPieceColor().equals("black") && button.getUserData() != null && button.getUserData().toString().equals("black_king")) {
+                        currentKing = new King(button.getText(),button.getUserData().toString(),true);
+                        isPieceClicked = true;
+                    }
+                }
+            }
+        }
     }
 
     public boolean whiteTurn(Button button) {

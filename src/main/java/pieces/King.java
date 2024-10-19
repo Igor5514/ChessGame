@@ -48,6 +48,8 @@ public class King extends Piece implements Movable {
     }
 
     public void checkForChess(String kingCoordinate, String kingColor) {
+        Set<String> coordinateSet = new HashSet<>();
+
         int i = Integer.parseInt(String.valueOf(kingCoordinate.charAt(0)));
         int j = Integer.parseInt(String.valueOf(kingCoordinate.charAt(1)));
 
@@ -61,6 +63,12 @@ public class King extends Piece implements Movable {
         downRight = bishopMoves(false, false, i, j, 8, 8, kingCoordinate);
         downLeft = bishopMoves(false, true, i, j, 8, 1, kingCoordinate);
 
+        coordinateSet.addAll(knightMoves(false,false,false,true,i, i, j, 2,1,2));
+        coordinateSet.addAll(knightMoves(false,true,true,true,j, i, j,  1,2,7));
+        coordinateSet.addAll(knightMoves(true,false,true,true,i,  i, j, 2,1,7));
+        coordinateSet.addAll(knightMoves(false,false,true,false,j, i, j, 1,2,2));
+
+        knightCords.addAll(coordinateSet);
 
         if(kingColor.equals("black")){
             if(i != 8 || j != 1){
@@ -154,6 +162,12 @@ public class King extends Piece implements Movable {
     }
 
     public boolean pawnValidator(String kingCoordinate, ArrayList<String> pawnCords, Button squareButton){
+
+
+        return false;
+    }
+
+    public boolean knightValidator(String kingCoordinate, ArrayList<String> pawnCords, Button squareButton){
 
 
         return false;

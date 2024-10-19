@@ -1,6 +1,8 @@
 package functionalities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public interface Movable {
 
@@ -30,5 +32,19 @@ public interface Movable {
         return coordinateList;
     }
 
+    default Set<String> knightMoves(boolean asc1,boolean asc2,boolean asc3,boolean asc4,int u,int i,int j,int x,int y,int z) {
+        Set<String> coordinateSet = new HashSet<>();
+        if(!(z==2 ? u <= z: u >= z)) {
+            int k = i + (x * (asc1 ? 1 : -1));
+            int n = j + (y * (asc2 ? 1 : -1));
+            int a = i + (x * (asc3 ? 1 : -1));
+            int b = j + (y * (asc4 ? 1 : -1));
+            String coordinate1 = k + "" + n;
+            String coordinate2 = a + "" + b;
 
+            coordinateSet.add(coordinate1);
+            coordinateSet.add(coordinate2);
+        }
+        return coordinateSet;
+    }
 }

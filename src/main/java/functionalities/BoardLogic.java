@@ -249,26 +249,16 @@ public class BoardLogic implements ChessPieceImages{
     public void checkForChessState(List<ArrayList<String>> coordinatesArrayList, Piece piece) {
         List<Node> children = chessBoard.getChildren();
         for (ArrayList<String> coordinateArrayList : coordinatesArrayList) {
-            if (isIncreasing(coordinateArrayList, piece.getChessPieceName())) {
-                for (Node node : children) {
-                    Button button = (Button) node;
-                    if (button.getUserData() != null && coordinateArrayList.contains(button.getText()) && !Arrays.asList(pieces).contains(piece.getChessPieceName())){
-                        if (button.getUserData().toString().substring(6).equals("king")) {
-                            chessState(button);
-                        } else {
-                            break;
-                        }
-                    }
-                }
-            } else {
-                for (int i = children.size() - 1; i >= 0; i--) {
-                    Button button = (Button) children.get(i);
-                    if (button.getUserData() != null && coordinateArrayList.contains(button.getText()) && !Arrays.asList(pieces).contains(piece.getChessPieceName())) {
-                        if (button.getUserData().toString().substring(6).equals("king")) {
-                            chessState(button);
-                        } else {
-                            break;
-                        }
+            boolean asc = isIncreasing(coordinateArrayList, piece.getChessPieceName());
+            int size = children.size() - 1;
+            System.out.println("checkkkkk");
+            for (int i = asc ? 0 : size; (asc ? i <= size : i>=0); i = (asc ? i+1 : i-1)) {
+                Button button = (Button) children.get(i);
+                if (button.getUserData() != null && coordinateArrayList.contains(button.getText()) && !Arrays.asList(pieces).contains(piece.getChessPieceName())){
+                    if (button.getUserData().toString().substring(6).equals("king")) {
+                        chessState(button);
+                    } else {
+                        break;
                     }
                 }
             }
