@@ -61,6 +61,7 @@ public class King extends Piece implements Movable {
         downRight = bishopMoves(false, false, i, j, 8, 8, kingCoordinate);
         downLeft = bishopMoves(false, true, i, j, 8, 1, kingCoordinate);
 
+
         if(kingColor.equals("black")){
             if(i != 8 || j != 1){
                 int k = i + 1;
@@ -127,25 +128,15 @@ public class King extends Piece implements Movable {
         for (Map.Entry<String, ArrayList<String>> entry : coordinatesMap.entrySet()) {
             String arrayListValue = entry.getKey();
             ArrayList<String> movementCoordinatesArrayList = entry.getValue();
-            if (boardLogic.isIncreasing(movementCoordinatesArrayList, "white_king")) {
-                for (Node node : children) {
-                    Button button = (Button) node;
-                    if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 1){
-                        clearAllLists();
-                        return true;
-                    }else if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 2){
-                        break;
-                    }
-                }
-            } else {
-                for (int j = children.size() - 1; j >= 0; j--) {
-                    Button button = (Button) children.get(j);
-                    if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 1){
-                        clearAllLists();
-                        return true;
-                    }else if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 2){
-                        break;
-                    }
+            int size = children.size() -1;
+            boolean asc = boardLogic.isIncreasing(movementCoordinatesArrayList, "white_king");
+            for (int j = (asc ? 0 : size); (asc ? j <= size : j>= 0); j+=(asc ? 1 : -1)) {
+                Button button = (Button) children.get(j);
+                if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 1){
+                    clearAllLists();
+                    return true;
+                }else if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 2){
+                    break;
                 }
             }
             if(isEnemyPieceOnKingsEnd){
