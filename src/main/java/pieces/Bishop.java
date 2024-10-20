@@ -31,18 +31,23 @@ public class Bishop extends Piece implements Movable {
     @Override
     public List<ArrayList<String>> getAllCoordinates(){
         List<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
-        if(!upLeft.isEmpty()){
-            coordinatesArrayList.add(upLeft);
-        }
         if(!upRight.isEmpty()){
             coordinatesArrayList.add(upRight);
+            upRight.clear();
         }
-        if(!downLeft.isEmpty()){
-            coordinatesArrayList.add(downLeft);
+        if(!upLeft.isEmpty()){
+            coordinatesArrayList.add(upLeft);
+            upLeft.clear();
         }
         if(!downRight.isEmpty()){
             coordinatesArrayList.add(downRight);
+            downRight.clear();
         }
+        if(!downLeft.isEmpty()){
+            coordinatesArrayList.add(downLeft);
+            downLeft.clear();
+        }
+
         return coordinatesArrayList;
     }
 

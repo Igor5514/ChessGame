@@ -59,6 +59,9 @@ public class Queen extends Piece implements Movable {
         if(!upLeft.isEmpty()){
             coordinatesArrayList.add(upLeft);
         }
+        if(!downRight.isEmpty()){
+            coordinatesArrayList.add(downRight);
+        }
         if(!downLeft.isEmpty()){
             coordinatesArrayList.add(downLeft);
         }

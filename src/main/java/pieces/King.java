@@ -149,15 +149,16 @@ public class King extends Piece implements Movable {
             }
             if(isEnemyPieceOnKingsEnd){
                 if(!checkForCheckSet.contains(updateCoordinate)){
+                    clearAllLists();
                     return true;
                 }
             }
-            checkForCheckSet.clear();
+
             isUpdateCoordinatePresent = false;
             isEnemyPieceOnKingsEnd = false;
             isPieceOnKingsPath = false;
         }
-        coordinatesMap.clear();
+        clearAllLists();
         return false;
     }
 
@@ -288,6 +289,7 @@ public class King extends Piece implements Movable {
     }
 
     public void clearAllLists(){
+        kingMoves.clear();
         up.clear();
         right.clear();
         down.clear();

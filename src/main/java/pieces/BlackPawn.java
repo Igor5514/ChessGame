@@ -32,7 +32,6 @@ public class BlackPawn extends Piece{
     public List<ArrayList<String>> getAllCoordinates(){
         List<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
         coordinatesArrayList.add(blackPawnMoves);
-
         return coordinatesArrayList;
     }
 }

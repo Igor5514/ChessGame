@@ -28,22 +28,13 @@ public class BoardLogic implements ChessPieceImages{
     public void updateChessBoardClick(Piece piece) {
         List<Node> children = chessBoard.getChildren();
         for (ArrayList<String> coordinateArrayList : piece.getAllCoordinates()) {
-            if (isIncreasing(coordinateArrayList, piece.getChessPieceName())) {
-                for (Node node : children) {
-                    Button button = (Button) node;
-                    if (checkForPiecePosition(piece, coordinateArrayList, button)) {
-                        break;
-                    }
+            boolean asc = isIncreasing(coordinateArrayList, piece.getChessPieceName());
+            int size = children.size() - 1;
+            for (int i = (asc ? 0 : size); (asc ? i <= size : i >= 0); i = (asc ? i+1 : i-1)) {
+                Button button = (Button) children.get(i);
+                if (checkForPiecePosition(piece, coordinateArrayList, button)) {
+                    break;
                 }
-                isOpoonentPawn = false;
-            } else {
-                for (int i = children.size() - 1; i >= 0; i--) {
-                    Button button = (Button) children.get(i);
-                    if (checkForPiecePosition(piece, coordinateArrayList, button)) {
-                        break;
-                    }
-                }
-                isOpoonentPawn = false;
             }
         }
         enabledCoordinatesList.clear();
@@ -284,26 +275,15 @@ public class BoardLogic implements ChessPieceImages{
         int x = Integer.parseInt(String.valueOf(piece.getCurrentCoordinate().charAt(0)));
         int y = Integer.parseInt(String.valueOf(piece.getCurrentCoordinate().charAt(1)));
         List<Node> children = chessBoard.getChildren();
-        if (piece.getChessPieceColor().equals("white")){
-            String opponentCoordinate1 = (x - 1) + "" + (y - 1);
-            String opponentCoordinate2 = (x - 1) + "" + (y + 1);
-            for (Node node : children) {
-                Button button = (Button) node;
-                if(button.getUserData() != null && button.getUserData().equals("black_king")){
-                    if(button.getText().equals(opponentCoordinate1) || button.getText().equals(opponentCoordinate2)){
-                        chessState(button);
-                    }
-                }
-            }
-        }else{
-            String opponentCoordinate1 = (x + 1) + "" + (y - 1);
-            String opponentCoordinate2 = (x + 1) + "" + (y + 1);
-            for (int i = children.size() - 1; i >= 0; i--) {
-                Button button = (Button) children.get(i);
-                if(button.getUserData() != null && button.getUserData().equals("black_king")){
-                    if(button.getText().equals(opponentCoordinate1) || button.getText().equals(opponentCoordinate2)){
-                        chessState(button);
-                    }
+        boolean isWhite = piece.getChessPieceColor().equals("white");
+        String opponentCoordinate1 = (isWhite ? (x - 1) : (x + 1)) + "" + (y - 1);
+        String opponentCoordinate2 = (isWhite ? (x - 1) : (x + 1)) + "" + (y + 1);
+        int size = children.size() - 1;
+        for (int i = (isWhite ? size : 0); (isWhite ? i >= 0 : i<=size); i = (isWhite ? i-1 : i+1)) {
+            Button button = (Button) children.get(i);
+            if(button.getUserData() != null && button.getUserData().equals(isWhite ? "black_king" : "white_king")){
+                if(button.getText().equals(opponentCoordinate1) || button.getText().equals(opponentCoordinate2)){
+                    chessState(button);
                 }
             }
         }
