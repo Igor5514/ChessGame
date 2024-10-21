@@ -2,12 +2,10 @@ package com.example.cs230pz;
 
 import functionalities.BoardLogic;
 import functionalities.GameState;
-import functionalities.Handlers;
 import functionalities.Player;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import pieces.King;
-import pieces.Piece;
+import pieces.*;
 
 public class Game {
 
@@ -40,8 +38,7 @@ public class Game {
         if (whiteTurn(squareButton) || squareButton.getUserData() == null || isPieceClicked) {
             if (!isPieceClicked) {
                 if (squareButton.getUserData() != null) {
-                    Handlers handlers = new Handlers();
-                    Piece piece = handlers.handleClick(squareButton);
+                    Piece piece = handleClick(squareButton);
                     clickedPieceCoordinate = squareButton.getText();
                     clickedPieceName = squareButton.getUserData().toString();
                     boardLogic.updateChessBoardClick(piece);
@@ -72,8 +69,7 @@ public class Game {
 
     public void executeMove(Button squareButton){
         boardLogic.updateChessBoardMove(clickedPieceCoordinate, squareButton);
-        Handlers handlers = new Handlers();
-        Piece piece = handlers.handleClick(squareButton);
+        Piece piece = handleClick(squareButton);
         pieceMoved = true;
         changeTurn();
         if (!piece.getChessPieceType().equals("pawn")) {
@@ -126,6 +122,36 @@ public class Game {
             } else {
                 return false;
             }
+        }
+    }
+
+    public Piece handleClick(Button button){
+        String coordinates = button.getText();
+        int i = Integer.parseInt(String.valueOf(coordinates.charAt(0)));
+        int j = Integer.parseInt(String.valueOf(coordinates.charAt(1)));
+        String pieceName = (String) button.getUserData();
+        switch (pieceName){
+            case "white_rook":
+            case "black_rook":
+                return new Rook(i+""+j, pieceName, false);
+            case "white_knight":
+            case "black_knight":
+                return new Knight(i+""+j, pieceName, true);
+            case "white_bishop":
+            case "black_bishop":
+                return new Bishop(i+""+j, pieceName, false);
+            case "white_king":
+            case "black_king":
+                return new King(i+""+j, pieceName, true);
+            case "white_queen":
+            case "black_queen":
+                return new Queen(i+""+j, pieceName, false);
+            case "white_pawn":
+                return new WhitePawn(i+""+j, pieceName, false);
+            case "black_pawn":
+                return new BlackPawn(i+""+j, pieceName, false);
+            default:
+                return null;
         }
     }
 

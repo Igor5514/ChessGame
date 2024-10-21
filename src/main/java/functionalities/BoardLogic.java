@@ -149,66 +149,34 @@ public class BoardLogic implements ChessPieceImages{
         }else if(isOpoonentPawn && button.getText().equals(blackCoordinate)) {
             return false;
         }
+        boolean isWhite = pieceColor.equals("white");
         if (piece.getChessPieceType().equals("pawn") && userData != null && coordinateArrayList.contains(buttonCoordinate)){
-            if (pieceColor.equals("white")) {
-                String coordinate1 = (x - 1) + "" + y;
-                String coordinate2 = (x - 2) + "" + y;
-
-                if (button.getText().equals(coordinate1) || button.getText().equals(coordinate2)) {
-                    isOpoonentPawn = true;
-                    return false;
-                } else {
-                    enabledCoordinatesList.add(coordinate1);
-                    coordinateArrayList.add(coordinate2);
-                    paintSquare(button, piece, coordinateArrayList);
-                    return false;
-                }
-            } else if (pieceColor.equals("black")) {
-                String coordinate1 = (x + 1) + "" + y;
-                String coordinate2 = (x + 2) + "" + y;
-
-                if (button.getText().equals(coordinate1) || button.getText().equals(coordinate2)) {
-                    isOpoonentPawn = true;
-                    return false;
-                }else{
-                    enabledCoordinatesList.add(coordinate1);
-                    coordinateArrayList.add(coordinate2);
-                    paintSquare(button, piece, coordinateArrayList);
-                    return false;
-                }
+            String coordinate1 = (isWhite ? (x - 1) : (x + 1))  + "" + y;
+            String coordinate2 = (isWhite ? (x - 2) : (x + 2)) + "" + y;
+            if (button.getText().equals(coordinate1) || button.getText().equals(coordinate2)) {
+                isOpoonentPawn = true;
+                return false;
+            } else {
+                enabledCoordinatesList.add(coordinate1);
+                coordinateArrayList.add(coordinate2);
+                paintSquare(button, piece, coordinateArrayList);
+                return false;
             }
         } else if (piece.getChessPieceType().equals("pawn")) {
-            if (pieceColor.equals("white")) {
-                String opponentCoordinate1 = (x - 1) + "" + (y - 1);
-                String opponentCoordinate2 = (x - 1) + "" + (y + 1);
-                if (button.getUserData() != null && userData.startsWith("black")) {
-                    if (button.getText().equals(opponentCoordinate1)) {
-                        enabledCoordinatesList.add(opponentCoordinate1);
-                        coordinateArrayList.add(opponentCoordinate1);
-                        paintSquare(button, piece, coordinateArrayList);
-                        return false;
-                    } else if (button.getText().equals(opponentCoordinate2)) {
-                        enabledCoordinatesList.add(opponentCoordinate2);
-                        coordinateArrayList.add(opponentCoordinate2);
-                        paintSquare(button, piece, coordinateArrayList);
-                        return false;
-                    }
+            String opponentCoordinate1 = (isWhite ? (x - 1) : (x + 1)) + "" + (y - 1);
+            String opponentCoordinate2 = (isWhite ? (x - 1) : (x + 1)) + "" + (y + 1);
+            if (button.getUserData() != null && userData.startsWith(isWhite ? "black" : "white")) {
+                String selectedCoordinate = null;
+                if (button.getText().equals(opponentCoordinate1)) {
+                    selectedCoordinate = opponentCoordinate1;
+                } else if (button.getText().equals(opponentCoordinate2)) {
+                    selectedCoordinate = opponentCoordinate2;
                 }
-            } else if (pieceColor.equals("black")) {
-                String opponentCoordinate1 = (x + 1) + "" + (y - 1);
-                String opponentCoordinate2 = (x + 1) + "" + (y + 1);
-                if (button.getUserData() != null && userData.startsWith("white")) {
-                    if (button.getText().equals(opponentCoordinate1)) {
-                        enabledCoordinatesList.add(opponentCoordinate1);
-                        coordinateArrayList.add(opponentCoordinate1);
-                        paintSquare(button, piece, coordinateArrayList);
-                        return false;
-                    } else if (button.getText().equals(opponentCoordinate2)) {
-                        enabledCoordinatesList.add(opponentCoordinate2);
-                        coordinateArrayList.add(opponentCoordinate2);
-                        paintSquare(button, piece, coordinateArrayList);
-                        return false;
-                    }
+                if (selectedCoordinate != null) {
+                    enabledCoordinatesList.add(selectedCoordinate);
+                    coordinateArrayList.add(selectedCoordinate);
+                    paintSquare(button, piece, coordinateArrayList);
+                    return false;
                 }
             }
         }
