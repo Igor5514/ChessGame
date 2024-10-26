@@ -210,7 +210,6 @@ public class BoardLogic implements ChessPieceImages{
         for (ArrayList<String> coordinateArrayList : coordinatesArrayList) {
             boolean asc = isIncreasing(coordinateArrayList, piece.getChessPieceName());
             int size = children.size() - 1;
-            System.out.println("checkkkkk");
             for (int i = asc ? 0 : size; (asc ? i <= size : i>=0); i = (asc ? i+1 : i-1)) {
                 Button button = (Button) children.get(i);
                 if (button.getUserData() != null && coordinateArrayList.contains(button.getText()) && !Arrays.asList(pieces).contains(piece.getChessPieceName())){
