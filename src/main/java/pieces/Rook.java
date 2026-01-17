@@ -31,19 +31,15 @@ public class Rook extends Piece implements Movable {
         List<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
         if(!up.isEmpty()){
             coordinatesArrayList.add(up);
-            up.clear();
         }
         if(!right.isEmpty()){
             coordinatesArrayList.add(right);
-            right.clear();
         }
         if(!down.isEmpty()){
             coordinatesArrayList.add(down);
-            down.clear();
         }
         if(!left.isEmpty()){
             coordinatesArrayList.add(left);
-            left.clear();
         }
         return coordinatesArrayList;
     }

@@ -36,16 +36,12 @@ public interface Movable {
         Set<String> coordinateSet = new HashSet<>();
         System.out.println(i+""+j);
         if(!(z==2 ? u <= z: u >= z)) {
-            System.out.println(!(z==2 ? u <= z: u >= z));
             int k = i + (x * (asc1 ? 1 : -1));
             int n = j + (y * (asc2 ? 1 : -1));
             int a = i + (x * (asc3 ? 1 : -1));
             int b = j + (y * (asc4 ? 1 : -1));
             String coordinate1 = k + "" + n;
             String coordinate2 = a + "" + b;
-            System.out.println(coordinate1);
-            System.out.println(coordinate2);
-
 
             coordinateSet.add(coordinate1);
             coordinateSet.add(coordinate2);

@@ -35,7 +35,6 @@ public class Queen extends Piece implements Movable {
         downRight = bishopMoves(false, false, i, j, 8, 8, currentCoordinate);
         downLeft = bishopMoves(false, true, i, j, 8, 1, currentCoordinate);
 
-        System.out.println(up);
     }
 
     @Override

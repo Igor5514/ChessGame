@@ -73,7 +73,6 @@ public class Game {
         pieceMoved = true;
         changeTurn();
         if (!piece.getChessPieceType().equals("pawn")) {
-            System.out.println("aaaaaaaaaaaaaa");
             boardLogic.checkForChessState(piece.getAllCoordinates(), piece);
         } else {
             boardLogic.checkForChessStatePawn(piece);
