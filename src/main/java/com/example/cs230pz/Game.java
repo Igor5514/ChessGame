@@ -35,6 +35,7 @@ public class Game {
     }
 
     public void handleButtonClick(Button squareButton) {
+        System.out.println(whiteTurn(squareButton));
         if (whiteTurn(squareButton) || squareButton.getUserData() == null || isPieceClicked) {
             if (!isPieceClicked) {
                 if (squareButton.getUserData() != null) {
@@ -100,27 +101,20 @@ public class Game {
 
     public boolean whiteTurn(Button button) {
         if (isWhiteTurn) {
-            if (button.getUserData() != null && button.getUserData().toString().startsWith("white")) {
-                if(pieceMoved){
-                    pieceMoved = false;
-                    return true;
-                }else{
-                    return true;
-                }
-            } else {
-                return false;
-            }
+            return checkForPlayingPermission(button, "white");
         } else {
-            if (button.getUserData() != null && button.getUserData().toString().startsWith("black")) {
-                if(pieceMoved){
-                    pieceMoved = false;
-                    return true;
-                }else{
-                    return true;
-                }
-            } else {
-                return false;
+            return checkForPlayingPermission(button, "black");
+        }
+    }
+
+    public boolean checkForPlayingPermission(Button button, String pieceType){
+        if (button.getUserData() != null && button.getUserData().toString().startsWith(pieceType)) {
+            if(pieceMoved){
+                pieceMoved = false;
             }
+            return true;
+        } else {
+            return false;
         }
     }
 

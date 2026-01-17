@@ -206,9 +206,6 @@ public class BoardLogic implements ChessPieceImages{
     }
 
     public void checkForChessState(List<ArrayList<String>> coordinatesArrayList, Piece piece) {
-        System.out.println("/////////////////////////");
-        System.out.println(coordinatesArrayList);
-        System.out.println("/////////////////////////");
         List<Node> children = chessBoard.getChildren();
         for (ArrayList<String> coordinateArrayList : coordinatesArrayList) {
             boolean asc = isIncreasing(coordinateArrayList, piece.getChessPieceName());
