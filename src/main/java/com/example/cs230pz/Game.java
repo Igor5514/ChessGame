@@ -81,6 +81,7 @@ public class Game {
         isPieceClicked = false;
         isInCheck = false;
         currentKing = null;
+        boardLogic.setOpoonentPawn(false);
     }
 
     public void makeInstanceOfKing(Piece piece){

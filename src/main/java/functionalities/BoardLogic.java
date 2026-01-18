@@ -264,5 +264,11 @@ public class BoardLogic implements ChessPieceImages{
         return false;
     }
 
+    public boolean isOpoonentPawn() {
+        return isOpoonentPawn;
+    }
 
+    public void setOpoonentPawn(boolean opoonentPawn) {
+        isOpoonentPawn = opoonentPawn;
+    }
 }
