@@ -27,12 +27,20 @@ public class BoardLogic implements ChessPieceImages{
 
     public void updateChessBoardClick(Piece piece) {
         List<Node> children = chessBoard.getChildren();
+        int size = children.size() - 1;
         for (ArrayList<String> coordinateArrayList : piece.getAllCoordinates()) {
             boolean asc = isIncreasing(coordinateArrayList, piece.getChessPieceName());
-            int size = children.size() - 1;
-            for (int i = (asc ? 0 : size); (asc ? i <= size : i >= 0); i = (asc ? i+1 : i-1)) {
+            for (int i = (asc ? 0 : size),k =0;
+                 (asc ? i <= size : i >= 0) && k < coordinateArrayList.size(); i = (asc ? i+1 : i-1)) {
+
                 Button button = (Button) children.get(i);
-                if (checkForPiecePosition(piece, coordinateArrayList, button)) {
+                String buttonCoordinate = button.getText();
+                if(buttonCoordinate.equals(coordinateArrayList.get(k))){
+                    if (checkForPiecePosition(piece, coordinateArrayList , button, true)) {
+                        break;
+                    }
+                    k++;
+                }else if(checkForPiecePosition(piece, coordinateArrayList , button, false)){
                     break;
                 }
             }
@@ -40,7 +48,7 @@ public class BoardLogic implements ChessPieceImages{
         enabledCoordinatesList.clear();
     }
 
-    private boolean checkForPiecePosition(Piece piece, ArrayList<String> coordinateArrayList, Button button) {
+    private boolean checkForPiecePosition(Piece piece, ArrayList<String> coordinateArrayList, Button button, boolean coordinatesMatch) {
         String buttonCoordinate = button.getText();
         String userData = (String) button.getUserData();
         String pieceColor = piece.getChessPieceColor();
@@ -55,11 +63,11 @@ public class BoardLogic implements ChessPieceImages{
             enabledCoordinatesList.add(buttonCoordinate);
             paintSquare(button, piece, coordinateArrayList);
             return false;
-        } else if (userData != null && !userData.substring(0, 5).equals(pieceColor) && coordinateArrayList.contains(buttonCoordinate)) {
+        } else if (userData != null && !userData.substring(0, 5).equals(pieceColor) && coordinatesMatch) {
             enabledCoordinatesList.add(buttonCoordinate);
             paintSquare(button, piece, coordinateArrayList);
             return !piece.isJump();
-        } else if (userData != null && userData.substring(0, 5).equals(pieceColor) && coordinateArrayList.contains(buttonCoordinate)) {
+        } else if (userData != null && userData.substring(0, 5).equals(pieceColor) && coordinatesMatch) {
             return !piece.isJump();
         }
         return false;
