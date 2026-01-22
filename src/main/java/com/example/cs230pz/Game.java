@@ -35,7 +35,6 @@ public class Game {
     }
 
     public void handleButtonClick(Button squareButton) {
-        System.out.println(whiteTurn(squareButton));
         if (whiteTurn(squareButton) || squareButton.getUserData() == null || isPieceClicked) {
             if (!isPieceClicked) {
                 if (squareButton.getUserData() != null) {
