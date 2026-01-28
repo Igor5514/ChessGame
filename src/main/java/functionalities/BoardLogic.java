@@ -1,5 +1,6 @@
 package functionalities;
 
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -143,7 +144,13 @@ public class BoardLogic implements ChessPieceImages{
         return true;
     }
 
+    public List<Node> prePlayedBoardSnippet(){
+        List<Node> boardSnippet = chessBoard.getChildren();
 
+
+
+        return boardSnippet;
+    }
 
     private boolean handlePawnMovesAndAttacks(ArrayList<String> coordinateArrayList, String buttonCoordinate, String userData, Piece piece, Button button) {
         String pieceColor = piece.getChessPieceColor();
@@ -220,7 +227,7 @@ public class BoardLogic implements ChessPieceImages{
             int size = children.size() - 1;
             for (int i = asc ? 0 : size; (asc ? i <= size : i>=0); i = (asc ? i+1 : i-1)) {
                 Button button = (Button) children.get(i);
-                if (button.getUserData() != null && coordinateArrayList.contains(button.getText()) && !Arrays.asList(pieces).contains(piece.getChessPieceName())){
+                if (button.getUserData() != null && coordinateArrayList.contains(button.getText()) && Arrays.asList(pieces).contains(piece.getChessPieceName())){
                     if (button.getUserData().toString().substring(6).equals("king")) {
                         chessState(button);
                     }
