@@ -1,6 +1,6 @@
 package pieces;
 
-import functionalities.Movable;
+import utils.Movable;
 
 import java.util.ArrayList;
 import java.util.List;

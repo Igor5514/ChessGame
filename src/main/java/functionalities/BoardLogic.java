@@ -1,15 +1,17 @@
 package functionalities;
 
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import pieces.Field;
 import pieces.Piece;
+import utils.ChessPieceImages;
+import utils.Util;
 
 import java.util.*;
 
-public class BoardLogic implements ChessPieceImages{
+public class BoardLogic implements ChessPieceImages, Util {
 
     private GridPane chessBoard;
     private final Set<String> enabledCoordinatesList = new HashSet<>();
@@ -31,7 +33,7 @@ public class BoardLogic implements ChessPieceImages{
         int size = children.size() - 1;
         for (ArrayList<String> coordinateArrayList : piece.getAllCoordinates()) {
             boolean asc = isIncreasing(coordinateArrayList, piece.getChessPieceName());
-            for (int i = (asc ? 0 : size),k =0;
+            for (int i = (asc ? 0 : size), k = 0;
                  (asc ? i <= size : i >= 0) && k < coordinateArrayList.size(); i = (asc ? i+1 : i-1)) {
 
                 Button button = (Button) children.get(i);
@@ -59,6 +61,7 @@ public class BoardLogic implements ChessPieceImages{
             paintSquare(button, piece, coordinateArrayList);
             return false;
         }else if(!handlePawnMovesAndAttacks(coordinateArrayList,buttonCoordinate,userData, piece, button)) {
+            isOpoonentPawn = false;
             return false;
         } else if (userData == null && coordinateArrayList.contains(buttonCoordinate)) {
             enabledCoordinatesList.add(buttonCoordinate);
@@ -142,14 +145,6 @@ public class BoardLogic implements ChessPieceImages{
             previousCol = col;
         }
         return true;
-    }
-
-    public List<Node> prePlayedBoardSnippet(){
-        List<Node> boardSnippet = chessBoard.getChildren();
-
-
-
-        return boardSnippet;
     }
 
     private boolean handlePawnMovesAndAttacks(ArrayList<String> coordinateArrayList, String buttonCoordinate, String userData, Piece piece, Button button) {

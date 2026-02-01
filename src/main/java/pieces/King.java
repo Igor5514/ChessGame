@@ -1,7 +1,7 @@
 package pieces;
 
 import functionalities.BoardLogic;
-import functionalities.Movable;
+import utils.Movable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;

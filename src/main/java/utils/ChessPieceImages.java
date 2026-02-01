@@ -1,4 +1,4 @@
-package functionalities;
+package utils;
 
 import javafx.scene.image.ImageView;
 
