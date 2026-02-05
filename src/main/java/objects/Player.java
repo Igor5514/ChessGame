@@ -1,4 +1,4 @@
-package functionalities;
+package objects;
 
 public class Player {
 

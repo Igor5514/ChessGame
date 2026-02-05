@@ -2,20 +2,22 @@ package utils;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import pieces.Field;
+import objects.Field;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public interface Util {
 
-    default List<Field> deepCopyArrayList(List<Node> list){
-        List<Field> nodes = new ArrayList<>();
+    default List<Button> deepCopyArrayList(List<Node> list){
+        List<Button> nodes = new ArrayList<>();
 
         for(int i = 0; i < list.size(); i++){
             if(list.get(i) instanceof Button button){
                 Object data = button.getUserData();
-                nodes.add(new Field(button.getText(), data == null ? null : data.toString()));
+                Button newButton = new Button(button.getText());
+                newButton.setUserData(data == null ? null : data.toString());
+                nodes.add(newButton);
             }
         }
         return nodes;

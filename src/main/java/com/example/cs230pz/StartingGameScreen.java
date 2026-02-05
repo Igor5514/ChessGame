@@ -1,6 +1,6 @@
 package com.example.cs230pz;
 
-import functionalities.Player;
+import objects.Player;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

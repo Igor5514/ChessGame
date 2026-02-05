@@ -2,7 +2,7 @@ package com.example.cs230pz;
 
 import functionalities.BoardLogic;
 import functionalities.GameState;
-import functionalities.Player;
+import objects.Player;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import pieces.*;
@@ -68,7 +68,7 @@ public class Game {
     }
 
     public void executeMove(Button squareButton){
-        boardLogic.updateChessBoardMove(clickedPieceCoordinate, squareButton);
+        boardLogic.updateChessBordMove(clickedPieceCoordinate, squareButton, board.getChessBoard().getChildren());
         Piece piece = handleClick(squareButton);
         pieceMoved = true;
         changeTurn();

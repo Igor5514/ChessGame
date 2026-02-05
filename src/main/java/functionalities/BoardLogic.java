@@ -4,7 +4,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import pieces.Field;
 import pieces.Piece;
 import utils.ChessPieceImages;
 import utils.Util;
@@ -77,11 +76,10 @@ public class BoardLogic implements ChessPieceImages, Util {
         return false;
     }
 
-    public void updateChessBoardMove(String clickedButtonCoordinate, Button destinationButton) {
+    public void updateChessBordMove(String clickedButtonCoordinate, Button destinationButton, List<Node> children) {
         setOriginalColor();
         ImageView pieceImage = new ImageView();
         String chessPieceName = "";
-        List<Node> children = chessBoard.getChildren();
 
         for (Node node : children) {
             if (node instanceof Button button && button.getText().equals(clickedButtonCoordinate)) {

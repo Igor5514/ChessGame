@@ -1,8 +1,8 @@
 ------------------------------------------------problems report------------------------------------------------------
 
 -pieces trigger check state on the king of their fucking color as well //must
--stupid pawn attacks arent consistent and trigger unexpected bugs //must
--fucking king doesnt recognise attack from enemy knight, and other pieces move freely //must
+-stupid pawn attacks aren't consistent and trigger unexpected bugs //must
+-king doesn't recognise attack from a fucking enemy knight, and other pieces move freely //must
 -this fucking project needs to be rewritten from scratch to prevent mental issues down the line //nice to consider
 
 

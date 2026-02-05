@@ -1,4 +1,4 @@
-package pieces;
+package objects;
 
 public class Field {
 

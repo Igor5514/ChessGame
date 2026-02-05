@@ -11,4 +11,6 @@ module com.example.cs230pz {
     opens pieces to javafx.fxml;
     exports utils;
     opens utils to javafx.fxml;
+    exports objects;
+    opens objects to javafx.fxml;
 }
