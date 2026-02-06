@@ -6,8 +6,11 @@ import objects.Player;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import pieces.*;
+import utils.Util;
 
-public class Game {
+import java.util.List;
+
+public class Game implements Util {
 
     private ChessBoard board;
     private BoardLogic boardLogic;
@@ -42,7 +45,7 @@ public class Game {
                     clickedPieceCoordinate = squareButton.getText();
                     clickedPieceName = squareButton.getUserData().toString();
                     boardLogic.updateChessBoardClick(piece);
-                    makeInstanceOfKing(piece);
+                    makeInstanceOfKing(piece, squareButton);
                     isPieceClicked = true;
                 }
             } else {
@@ -68,7 +71,7 @@ public class Game {
     }
 
     public void executeMove(Button squareButton){
-        boardLogic.updateChessBordMove(clickedPieceCoordinate, squareButton, board.getChessBoard().getChildren());
+        boardLogic.updateChessBoardMove(clickedPieceCoordinate, squareButton, board.getChessBoard().getChildren());
         Piece piece = handleClick(squareButton);
         pieceMoved = true;
         changeTurn();
@@ -83,16 +86,20 @@ public class Game {
         boardLogic.setOpoonentPawn(false);
     }
 
-    public void makeInstanceOfKing(Piece piece){
+    public void makeInstanceOfKing(Piece piece, Button squareButton){
         if(!(piece instanceof King)){
+            List<Node> chessboardCopy = deepCopyArrayList(board.getChessBoard().getChildren());
+            boardLogic.updateChessBoardMove(clickedPieceCoordinate, squareButton, deepCopyArrayList(chessboardCopy));
             for(Node node : board.getChessBoard().getChildren()){
                 if(node instanceof Button button){
                     if (piece.getChessPieceColor().equals("white") && button.getUserData() != null && button.getUserData().toString().equals("white_king")){
-                        currentKing = new King(button.getText(),button.getUserData().toString(),true);
+                        currentKing = new King(button.getText(),button.getUserData().toString(),true, chessboardCopy);
                         isPieceClicked = true;
+                        break;
                     } else if (piece.getChessPieceColor().equals("black") && button.getUserData() != null && button.getUserData().toString().equals("black_king")) {
-                        currentKing = new King(button.getText(),button.getUserData().toString(),true);
+                        currentKing = new King(button.getText(),button.getUserData().toString(),true, chessboardCopy);
                         isPieceClicked = true;
+                        break;
                     }
                 }
             }
@@ -135,7 +142,7 @@ public class Game {
                 return new Bishop(i+""+j, pieceName, false);
             case "white_king":
             case "black_king":
-                return new King(i+""+j, pieceName, true);
+                return new King(i + "" + j, pieceName, true, null);
             case "white_queen":
             case "black_queen":
                 return new Queen(i+""+j, pieceName, false);

@@ -76,7 +76,7 @@ public class BoardLogic implements ChessPieceImages, Util {
         return false;
     }
 
-    public void updateChessBordMove(String clickedButtonCoordinate, Button destinationButton, List<Node> children) {
+    public void updateChessBoardMove(String clickedButtonCoordinate, Button destinationButton, List<Node> children) {
         setOriginalColor();
         ImageView pieceImage = new ImageView();
         String chessPieceName = "";

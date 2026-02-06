@@ -27,11 +27,14 @@ public class King extends Piece implements Movable {
     private ArrayList<String> upLeft = new ArrayList<>();
     private ArrayList<String> downRight = new ArrayList<>();
     private ArrayList<String> downLeft = new ArrayList<>();
+    private List<Node> chessboardCopy;
 
-    public King(String currentCoordinate, String chessPieceName, boolean jump) {
+    public King(String currentCoordinate, String chessPieceName, boolean jump, List<Node> chessboardCopy) {
         super(currentCoordinate, chessPieceName, jump);
+        this.chessboardCopy = chessboardCopy;
         playKing(currentCoordinate);
     }
+
 
     public void playKing(String currentCoordinate) {
         int i = Integer.parseInt(String.valueOf(currentCoordinate.charAt(0)));

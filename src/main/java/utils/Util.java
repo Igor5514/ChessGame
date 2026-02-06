@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface Util {
 
-    default List<Button> deepCopyArrayList(List<Node> list){
-        List<Button> nodes = new ArrayList<>();
+    default List<Node> deepCopyArrayList(List<Node> list){
+        List<Node> nodes = new ArrayList<>();
 
         for(int i = 0; i < list.size(); i++){
             if(list.get(i) instanceof Button button){
