@@ -32,7 +32,9 @@ public class King extends Piece implements Movable {
     public King(String currentCoordinate, String chessPieceName, boolean jump, List<Node> chessboardCopy) {
         super(currentCoordinate, chessPieceName, jump);
         this.chessboardCopy = chessboardCopy;
-        playKing(currentCoordinate);
+        if(chessboardCopy == null){
+            playKing(currentCoordinate);
+        }
     }
 
 
@@ -40,6 +42,8 @@ public class King extends Piece implements Movable {
         int i = Integer.parseInt(String.valueOf(currentCoordinate.charAt(0)));
         int j = Integer.parseInt(String.valueOf(currentCoordinate.charAt(1)));
 
+
+        System.out.println(chessboardCopy);
         for (int k = i - 1; k <= i + 1; k++) {
             for (int n = j - 1; n <= j + 1; n++) {
                 String coordinate = k + "" + n;

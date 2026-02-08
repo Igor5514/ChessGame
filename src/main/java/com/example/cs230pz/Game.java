@@ -24,6 +24,7 @@ public class Game implements Util {
     private final Player player1;
     private final Player player2;
     King currentKing = null;
+    Piece piece = null;
 
     public Game(Player player1, Player player2) {
         this.player1 = player1;
@@ -41,11 +42,10 @@ public class Game implements Util {
         if (whiteTurn(squareButton) || squareButton.getUserData() == null || isPieceClicked) {
             if (!isPieceClicked) {
                 if (squareButton.getUserData() != null) {
-                    Piece piece = handleClick(squareButton);
+                    piece = handleClick(squareButton);
                     clickedPieceCoordinate = squareButton.getText();
                     clickedPieceName = squareButton.getUserData().toString();
                     boardLogic.updateChessBoardClick(piece);
-                    makeInstanceOfKing(piece, squareButton);
                     isPieceClicked = true;
                 }
             } else {
@@ -53,16 +53,24 @@ public class Game implements Util {
                     boardLogic.setOriginalColor();
                     isPieceClicked = false;
                     currentKing = null;
+                    piece = null;
                 } else {
+                    makeInstanceOfKing(piece, squareButton);
                     if(isInCheck){
                         if(currentKing != null && !currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(),clickedPieceCoordinate, squareButton.getText(), clickedPieceName.substring(0, 5))){
                             executeMove(squareButton);
+                            piece = null;
                         }
+                        System.out.println("first one");
+                        setToDefaultStateAndHighlight();
                     }else {
                         if (currentKing != null && currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(),clickedPieceCoordinate, squareButton.getText(), clickedPieceName.substring(0, 5))) {
                             isInCheck = true;
+                            System.out.println("second one");
+                            setToDefaultStateAndHighlight();
                         } else {
                             executeMove(squareButton);
+                            piece = null;
                         }
                     }
                 }
@@ -83,7 +91,7 @@ public class Game implements Util {
         isPieceClicked = false;
         isInCheck = false;
         currentKing = null;
-        boardLogic.setOpoonentPawn(false);
+        boardLogic.setOpponentPawn(false);
     }
 
     public void makeInstanceOfKing(Piece piece, Button squareButton){
@@ -112,6 +120,12 @@ public class Game implements Util {
         } else {
             return checkForPlayingPermission(button, "black");
         }
+    }
+
+    public void setToDefaultStateAndHighlight(){
+        boardLogic.setOriginalColor();
+        boardLogic.highlightCheckedKing(piece, board.getChessBoard().getChildren());
+        isPieceClicked = false;
     }
 
     public boolean checkForPlayingPermission(Button button, String pieceType){

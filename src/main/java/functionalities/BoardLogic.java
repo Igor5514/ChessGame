@@ -14,7 +14,7 @@ public class BoardLogic implements ChessPieceImages, Util {
 
     private GridPane chessBoard;
     private final Set<String> enabledCoordinatesList = new HashSet<>();
-    private boolean isOpoonentPawn = false;
+    private boolean isOpponentPawn = false;
     String[] pieces = {"white_rook","black_rook","white_knight","black_knight","white_bishop","black_bishop","white_queen",
     "black_queen","white_pawn","black_pawn"};
 
@@ -60,7 +60,7 @@ public class BoardLogic implements ChessPieceImages, Util {
             paintSquare(button, piece, coordinateArrayList);
             return false;
         }else if(!handlePawnMovesAndAttacks(coordinateArrayList,buttonCoordinate,userData, piece, button)) {
-            isOpoonentPawn = false;
+            isOpponentPawn = false;
             return false;
         } else if (userData == null && coordinateArrayList.contains(buttonCoordinate)) {
             enabledCoordinatesList.add(buttonCoordinate);
@@ -76,10 +76,11 @@ public class BoardLogic implements ChessPieceImages, Util {
         return false;
     }
 
-    public void updateChessBoardMove(String clickedButtonCoordinate, Button destinationButton, List<Node> children) {
+    public void updateChessBoardMove(String clickedButtonCoordinate, Button destinationButton, List<Node> boardCopy) {
         setOriginalColor();
         ImageView pieceImage = new ImageView();
         String chessPieceName = "";
+        List<Node> children = boardCopy == null ? chessBoard.getChildren() : boardCopy;
 
         for (Node node : children) {
             if (node instanceof Button button && button.getText().equals(clickedButtonCoordinate)) {
@@ -152,9 +153,9 @@ public class BoardLogic implements ChessPieceImages, Util {
         int y = Integer.parseInt(String.valueOf(pieceCoordinate.charAt(1)));
         String blackCoordinate = (x + 2) + "" + y;
         String whiteCoordinate = (x - 2) + "" + y;
-        if(isOpoonentPawn && button.getText().equals(whiteCoordinate)) {
+        if(isOpponentPawn && button.getText().equals(whiteCoordinate)) {
             return false;
-        }else if(isOpoonentPawn && button.getText().equals(blackCoordinate)) {
+        }else if(isOpponentPawn && button.getText().equals(blackCoordinate)) {
             return false;
         }
         boolean isWhite = pieceColor.equals("white");
@@ -162,7 +163,7 @@ public class BoardLogic implements ChessPieceImages, Util {
             String coordinate1 = (isWhite ? (x - 1) : (x + 1))  + "" + y;
             String coordinate2 = (isWhite ? (x - 2) : (x + 2)) + "" + y;
             if (button.getText().equals(coordinate1) || button.getText().equals(coordinate2)) {
-                isOpoonentPawn = true;
+                isOpponentPawn = true;
                 return false;
             } else {
                 enabledCoordinatesList.add(coordinate1);
@@ -230,6 +231,16 @@ public class BoardLogic implements ChessPieceImages, Util {
         }
     }
 
+    public void highlightCheckedKing(Piece piece, List<Node> board){
+        for (Node node : board) {
+            Button button = (Button) node;
+            String matchingWord = piece.getChessPieceColor() + "_" + "king";
+            if (button.getUserData() != null && button.getUserData().equals(matchingWord)) {
+                chessState(button);
+            }
+        }
+    }
+
     public String checkForPromotion(String clickedPieceName, Button button){
         if(clickedPieceName.equals("white_pawn")){
             int x = Integer.parseInt(String.valueOf(button.getText().charAt(0)));
@@ -272,11 +283,11 @@ public class BoardLogic implements ChessPieceImages, Util {
         return false;
     }
 
-    public boolean isOpoonentPawn() {
-        return isOpoonentPawn;
+    public boolean isOpponentPawn() {
+        return isOpponentPawn;
     }
 
-    public void setOpoonentPawn(boolean opoonentPawn) {
-        isOpoonentPawn = opoonentPawn;
+    public void setOpponentPawn(boolean opponentPawn) {
+        isOpponentPawn = opponentPawn;
     }
 }
