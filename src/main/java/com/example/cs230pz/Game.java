@@ -56,22 +56,11 @@ public class Game implements Util {
                     piece = null;
                 } else {
                     makeInstanceOfKing(piece, squareButton);
-                    if(isInCheck){
-                        if(currentKing != null && !currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(),clickedPieceCoordinate, squareButton.getText(), clickedPieceName.substring(0, 5))){
-                            executeMove(squareButton);
-                            piece = null;
-                        }
-                        System.out.println("first one");
+
+                    if(currentKing != null && currentKing.checkForOpponents(currentKing.getCurrentCoordinate(),currentKing.getChessPieceColor())) {
                         setToDefaultStateAndHighlight();
-                    }else {
-                        if (currentKing != null && currentKing.checkForOpponents(board.getChessBoard(), currentKing.getCurrentCoordinate(),clickedPieceCoordinate, squareButton.getText(), clickedPieceName.substring(0, 5))) {
-                            isInCheck = true;
-                            System.out.println("second one");
-                            setToDefaultStateAndHighlight();
-                        } else {
-                            executeMove(squareButton);
-                            piece = null;
-                        }
+                    }else{
+                        executeMove(squareButton);
                     }
                 }
             }
@@ -96,8 +85,10 @@ public class Game implements Util {
 
     public void makeInstanceOfKing(Piece piece, Button squareButton){
         if(!(piece instanceof King)){
+
             List<Node> chessboardCopy = deepCopyArrayList(board.getChessBoard().getChildren());
-            boardLogic.updateChessBoardMove(clickedPieceCoordinate, squareButton, deepCopyArrayList(chessboardCopy));
+            boardLogic.updateChessBoardMove(clickedPieceCoordinate, squareButton, chessboardCopy);
+
             for(Node node : board.getChessBoard().getChildren()){
                 if(node instanceof Button button){
                     if (piece.getChessPieceColor().equals("white") && button.getUserData() != null && button.getUserData().toString().equals("white_king")){

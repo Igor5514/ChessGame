@@ -76,13 +76,12 @@ public class BoardLogic implements ChessPieceImages, Util {
         return false;
     }
 
-    public void updateChessBoardMove(String clickedButtonCoordinate, Button destinationButton, List<Node> boardCopy) {
+    public void updateChessBoardMove(String clickedButtonCoordinate, Button destinationButton, List<Node> chessBoard) {
         setOriginalColor();
         ImageView pieceImage = new ImageView();
         String chessPieceName = "";
-        List<Node> children = boardCopy == null ? chessBoard.getChildren() : boardCopy;
 
-        for (Node node : children) {
+        for (Node node : chessBoard) {
             if (node instanceof Button button && button.getText().equals(clickedButtonCoordinate)) {
                 chessPieceName = (String) button.getUserData();
                 button.setUserData(null);
@@ -92,7 +91,7 @@ public class BoardLogic implements ChessPieceImages, Util {
             }
         }
 
-        for (Node node : children) {
+        for (Node node : chessBoard) {
             if (node instanceof Button button && button.getText().equals(destinationButton.getText())) {
                 if(checkForPromotion(chessPieceName, destinationButton) != null){
                     button.setUserData(checkForPromotion(chessPieceName, destinationButton));

@@ -5,20 +5,17 @@ import utils.Movable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import utils.Util;
 
 import java.util.*;
 
-public class King extends Piece implements Movable {
+public class King extends Piece implements Movable, Util {
 
     private final String[] parallel = {"up", "right", "left", "down"};
     private final String[] diagonal = {"upLeft", "upRight", "downLeft", "downRight"};
-    private boolean isUpdateCoordinatePresent = false;
-    private boolean isPieceOnKingsPath = false;
-    private boolean isEnemyPieceOnKingsEnd = false;
     private final ArrayList<String> kingMoves = new ArrayList<>();
     private final ArrayList<String> pawnCords = new ArrayList<>();
     private final ArrayList<String> knightCords = new ArrayList<>();
-    private final Set<String> checkForCheckSet = new HashSet<>();
     private ArrayList<String> up = new ArrayList<>();
     private ArrayList<String> right = new ArrayList<>();
     private ArrayList<String> down = new ArrayList<>();
@@ -35,6 +32,7 @@ public class King extends Piece implements Movable {
         if(chessboardCopy == null){
             playKing(currentCoordinate);
         }
+
     }
 
 
@@ -42,8 +40,6 @@ public class King extends Piece implements Movable {
         int i = Integer.parseInt(String.valueOf(currentCoordinate.charAt(0)));
         int j = Integer.parseInt(String.valueOf(currentCoordinate.charAt(1)));
 
-
-        System.out.println(chessboardCopy);
         for (int k = i - 1; k <= i + 1; k++) {
             for (int n = j - 1; n <= j + 1; n++) {
                 String coordinate = k + "" + n;
@@ -135,35 +131,33 @@ public class King extends Piece implements Movable {
         return coordinatesMap;
     }
 
-    public boolean checkForOpponents(GridPane chessBoard, String kingCoordinate,String clickedPieceCoordinate,String updateCoordinate, String kingColor) {
+    public boolean checkForOpponents(String kingCoordinate, String kingColor) {
         checkForChess(kingCoordinate, kingColor);
         Map<String, ArrayList<String>> coordinatesMap = getKingCoordinates();
         BoardLogic boardLogic = new BoardLogic();
-        List<Node> children = chessBoard.getChildren();
+
         for (Map.Entry<String, ArrayList<String>> entry : coordinatesMap.entrySet()) {
             String arrayListValue = entry.getKey();
             ArrayList<String> movementCoordinatesArrayList = entry.getValue();
-            int size = children.size() -1;
+            int size = chessboardCopy.size() - 1;
             boolean asc = boardLogic.isIncreasing(movementCoordinatesArrayList, "white_king");
-            for (int j = (asc ? 0 : size); (asc ? j <= size : j>= 0); j+=(asc ? 1 : -1)) {
-                Button button = (Button) children.get(j);
-                if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 1){
-                    clearAllLists();
-                    return true;
-                }else if(preValidator(button,updateCoordinate,movementCoordinatesArrayList,arrayListValue,clickedPieceCoordinate,kingColor) == 2){
-                    break;
-                }
-            }
-            if(isEnemyPieceOnKingsEnd){
-                if(!checkForCheckSet.contains(updateCoordinate)){
-                    clearAllLists();
-                    return true;
+
+            for (int i = (asc ? 0 : size), j = 0;
+                 (asc ? i <= size : i >= 0) && j < movementCoordinatesArrayList.size(); i = (asc ? i+1 : i-1)) {
+                Button button = (Button) chessboardCopy.get(i);
+                String movementCoordinate = movementCoordinatesArrayList.get(j);
+                if(button.getText().equals(movementCoordinate)){
+
+                    if(checkForMatching(arrayListValue, button.getUserData(), kingColor).equals(KingAttackStatus.IRRELEVANT_PIECE)){
+                        break;
+                    }
+                    if(checkForMatching(arrayListValue, button.getUserData(), kingColor).equals(KingAttackStatus.ENEMY_PIECE)){
+                        return true;
+                    }
+                    j++;
                 }
             }
 
-            isUpdateCoordinatePresent = false;
-            isEnemyPieceOnKingsEnd = false;
-            isPieceOnKingsPath = false;
         }
         clearAllLists();
         return false;
@@ -181,118 +175,60 @@ public class King extends Piece implements Movable {
         return false;
     }
 
-    public int preValidator(Button button, String updateCoordinate, ArrayList<String> movementCoordinatesArrayList, String arrayListValue, String clickedPieceCoordinate, String kingColor){
-        if(button.getText().equals(updateCoordinate)) {
-            updateChecker(updateCoordinate, button.getText(), movementCoordinatesArrayList);
-        }
-        if (button.getUserData() != null) {
-            if (checkForMatching(arrayListValue,clickedPieceCoordinate, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 1) {
-                return 1;
-            }else if(checkForMatching(arrayListValue,clickedPieceCoordinate, button.getText(), button.getUserData().toString(), movementCoordinatesArrayList, kingColor) == 2){
-                return 2;
-            }
-        }
-        if(movementCoordinatesArrayList.contains(button.getText())){
-            checkForCheckSet.add(button.getText());
-        }
-        return 3;
-    }
+    public KingAttackStatus checkForMatching(String arrayListValue, Object userData,String kingColor) {
+        String buttonUserData = "";
 
-    public void updateChecker(String updateCoordinate,String squareCoordinate, ArrayList<String> movementCoordinatesArrayList){
-        if (movementCoordinatesArrayList.contains(squareCoordinate)) {
-            if(squareCoordinate.equals(updateCoordinate)){
-                isUpdateCoordinatePresent = true;
-            }
-        }
-    }
-
-
-
-    public int checkForMatching(String arrayListValue,String clickedPieceCoordinate, String squareCoordinate, String buttonUserData, ArrayList<String> movementCoordinatesArrayList,String kingColor) {
-        if (Arrays.asList(parallel).contains(arrayListValue)) {
-            if (movementCoordinatesArrayList.contains(squareCoordinate)) {
-                if(squareCoordinate.equals(clickedPieceCoordinate)){
-                    isPieceOnKingsPath = true;
-                    return 3;
-                }
+        if(userData != null){
+            buttonUserData = userData.toString();
+            if (Arrays.asList(parallel).contains(arrayListValue)) {
                 if(kingColor.equals("white")){
                     if(buttonUserData.startsWith("white")){
-                        return 2;
+                        return KingAttackStatus.IRRELEVANT_PIECE;
                     }
                     if(buttonUserData.equals("black_rook") || buttonUserData.equals("black_queen")){
-                        if(isPieceOnKingsPath){
-                            isEnemyPieceOnKingsEnd = true;
-                        }
-                        if(isUpdateCoordinatePresent){
-                            return 2;
-                        }
-                        return 1;
+                        return KingAttackStatus.ENEMY_PIECE;
                     }
                     if(buttonUserData.startsWith("black")){
-                        return 2;
+                        return KingAttackStatus.IRRELEVANT_PIECE;
                     }
                 }else if(kingColor.equals("black")){
                     if(buttonUserData.startsWith("black")){
-                        return 2;
+                        return KingAttackStatus.IRRELEVANT_PIECE;
                     }
                     if(buttonUserData.equals("white_rook") || buttonUserData.equals("white_queen")){
-                        if(isPieceOnKingsPath){
-                            isEnemyPieceOnKingsEnd = true;
-                        }
-                        if(isUpdateCoordinatePresent){
-                            return 2;
-                        }
-                        return 1;
+                        return KingAttackStatus.ENEMY_PIECE;
                     }
                     if(buttonUserData.startsWith("white")){
-                        return 2;
+                        return KingAttackStatus.IRRELEVANT_PIECE;
                     }
                 }
-                return 3;
-            }
-        } else if (Arrays.asList(diagonal).contains(arrayListValue)) {
-            if (movementCoordinatesArrayList.contains(squareCoordinate)) {
-                if(squareCoordinate.equals(clickedPieceCoordinate)){
-                    isPieceOnKingsPath = true;
-                    return 3;
-                }
-                if(kingColor.equals("white")){
-                    if(buttonUserData.startsWith("white")){
-                        return 2;
+            } else if (Arrays.asList(diagonal).contains(arrayListValue)) {
+                if (kingColor.equals("white")) {
+                    if (buttonUserData.startsWith("white")) {
+                        return KingAttackStatus.IRRELEVANT_PIECE;
                     }
                     if ((buttonUserData.equals("black_bishop") || buttonUserData.equals("black_queen"))) {
-                        if(isPieceOnKingsPath){
-                            isEnemyPieceOnKingsEnd = true;
-                        }
-                        if(isUpdateCoordinatePresent){
-                            return 2;
-                        }
-                        return 1;
+                        return KingAttackStatus.ENEMY_PIECE;
                     }
-                    if(buttonUserData.startsWith("black")){
-                        return 2;
+                    if (buttonUserData.startsWith("black")) {
+                        return KingAttackStatus.IRRELEVANT_PIECE;
                     }
-                }else if(kingColor.equals("black")){
-                    if(buttonUserData.startsWith("black")){
-                        return 2;
+                } else if (kingColor.equals("black")) {
+                    if (buttonUserData.startsWith("black")) {
+                        return KingAttackStatus.IRRELEVANT_PIECE;
                     }
                     if ((buttonUserData.equals("white_bishop") || buttonUserData.equals("white_queen"))) {
-                        if(isPieceOnKingsPath){
-                            isEnemyPieceOnKingsEnd = true;
-                        }
-                        if(isUpdateCoordinatePresent){
-                            return 2;
-                        }
-                        return 1;
+                        return KingAttackStatus.ENEMY_PIECE;
                     }
-                    if(buttonUserData.startsWith("white")){
-                        return 2;
+                    if (buttonUserData.startsWith("white")) {
+                        return KingAttackStatus.IRRELEVANT_PIECE;
                     }
                 }
-                return 3;
+            }else {
+                return KingAttackStatus.CONTINUE;
             }
         }
-        return 3;
+        return KingAttackStatus.CONTINUE;
     }
 
     public void clearAllLists(){

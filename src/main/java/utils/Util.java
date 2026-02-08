@@ -23,5 +23,22 @@ public interface Util {
         return nodes;
     }
 
+    default void printBoard(List<Node> chessboardCopy){
+        for (Node cord : chessboardCopy){
+            Button button = (Button) cord;
+
+            System.out.print(button.getText() + " ");
+            if(button.getUserData() != null){
+                System.out.print(button.getUserData().toString() + " | ");
+            }else{
+                System.out.print("null"  + " | ");
+            }
+
+            if(button.getText().endsWith("8")){
+                System.out.println();
+            }
+        }
+    }
+
 
 }
