@@ -19,7 +19,7 @@ public class Game implements Util {
     private String clickedPieceName;
     private boolean pieceMoved = false;
     GameState gameState = GameState.getInstance();
-    boolean isWhiteTurn = gameState.isWhiteTurn();
+    boolean turnPermission = gameState.isWhiteTurn();
     private boolean isInCheck = false;
     private final Player player1;
     private final Player player2;
@@ -39,7 +39,7 @@ public class Game implements Util {
     }
 
     public void handleButtonClick(Button squareButton) {
-        if (whiteTurn(squareButton) || squareButton.getUserData() == null || isPieceClicked) {
+        if (checkForPermission(squareButton) || squareButton.getUserData() == null || isPieceClicked) {
             if (!isPieceClicked) {
                 if (squareButton.getUserData() != null) {
                     piece = handleClick(squareButton);
@@ -55,13 +55,21 @@ public class Game implements Util {
                     currentKing = null;
                     piece = null;
                 } else {
-                    makeInstanceOfKing(piece, squareButton);
+                    if(!(piece instanceof King)){
+                        makeInstanceOfKing(piece, squareButton);
 
-                    if(currentKing != null && currentKing.checkForOpponents(currentKing.getCurrentCoordinate(),currentKing.getChessPieceColor())) {
-                        setToDefaultStateAndHighlight();
-                    }else{
+                        if(currentKing != null && currentKing.checkForOpponents(currentKing.getCurrentCoordinate(),currentKing.getChessPieceColor())) {
+                            setToDefaultStateAndHighlight();
+                        }else{
+                            executeMove(squareButton);
+                        }
+                    }else {
+                        King king = (King) piece;
+
+
                         executeMove(squareButton);
                     }
+
                 }
             }
         }
@@ -72,10 +80,12 @@ public class Game implements Util {
         Piece piece = handleClick(squareButton);
         pieceMoved = true;
         changeTurn();
-        if (!piece.getChessPieceType().equals("pawn")) {
-            boardLogic.checkForChessState(piece.getAllCoordinates(), piece);
-        } else {
+        if (piece.getChessPieceType().equals("pawn")) {
             boardLogic.checkForChessStatePawn(piece);
+        } else if(piece.getChessPieceType().equals("knight")){
+            boardLogic.checkForChessStateKnight(piece.getAllCoordinates(), piece);
+        }else {
+            boardLogic.checkForChessState(piece.getAllCoordinates(), piece);
         }
         isPieceClicked = false;
         isInCheck = false;
@@ -105,8 +115,8 @@ public class Game implements Util {
         }
     }
 
-    public boolean whiteTurn(Button button) {
-        if (isWhiteTurn) {
+    public boolean checkForPermission(Button button) {
+        if (turnPermission) {
             return checkForPlayingPermission(button, "white");
         } else {
             return checkForPlayingPermission(button, "black");
@@ -161,10 +171,10 @@ public class Game implements Util {
     }
 
     public void changeTurn(){
-        isWhiteTurn = !isWhiteTurn;
+        turnPermission = !turnPermission;
     }
 
-    public boolean isWhiteTurn() {
+    public boolean isTurnPermission() {
         return GameState.getInstance().isWhiteTurn();
     }
 

@@ -12,7 +12,6 @@ import java.util.*;
 public class King extends Piece implements Movable, Util {
 
     private final String[] parallel = {"up", "right", "left", "down"};
-    private final String[] diagonal = {"upLeft", "upRight", "downLeft", "downRight"};
     private final ArrayList<String> kingMoves = new ArrayList<>();
     private final ArrayList<String> pawnCords = new ArrayList<>();
     private final ArrayList<String> knightCords = new ArrayList<>();
@@ -176,57 +175,31 @@ public class King extends Piece implements Movable, Util {
     }
 
     public KingAttackStatus checkForMatching(String arrayListValue, Object userData,String kingColor) {
-        String buttonUserData = "";
+        String buttonUserData;
+        String buttonUserDataColor;
+        String checkColor = kingColor.equals("white") ? "black" : "white";
 
         if(userData != null){
             buttonUserData = userData.toString();
+            buttonUserDataColor = buttonUserData.startsWith("white") ? "white" : "black";
             if (Arrays.asList(parallel).contains(arrayListValue)) {
-                if(kingColor.equals("white")){
-                    if(buttonUserData.startsWith("white")){
-                        return KingAttackStatus.IRRELEVANT_PIECE;
-                    }
-                    if(buttonUserData.equals("black_rook") || buttonUserData.equals("black_queen")){
-                        return KingAttackStatus.ENEMY_PIECE;
-                    }
-                    if(buttonUserData.startsWith("black")){
-                        return KingAttackStatus.IRRELEVANT_PIECE;
-                    }
-                }else if(kingColor.equals("black")){
-                    if(buttonUserData.startsWith("black")){
-                        return KingAttackStatus.IRRELEVANT_PIECE;
-                    }
-                    if(buttonUserData.equals("white_rook") || buttonUserData.equals("white_queen")){
-                        return KingAttackStatus.ENEMY_PIECE;
-                    }
-                    if(buttonUserData.startsWith("white")){
-                        return KingAttackStatus.IRRELEVANT_PIECE;
-                    }
-                }
-            } else if (Arrays.asList(diagonal).contains(arrayListValue)) {
-                if (kingColor.equals("white")) {
-                    if (buttonUserData.startsWith("white")) {
-                        return KingAttackStatus.IRRELEVANT_PIECE;
-                    }
-                    if ((buttonUserData.equals("black_bishop") || buttonUserData.equals("black_queen"))) {
-                        return KingAttackStatus.ENEMY_PIECE;
-                    }
-                    if (buttonUserData.startsWith("black")) {
-                        return KingAttackStatus.IRRELEVANT_PIECE;
-                    }
-                } else if (kingColor.equals("black")) {
-                    if (buttonUserData.startsWith("black")) {
-                        return KingAttackStatus.IRRELEVANT_PIECE;
-                    }
-                    if ((buttonUserData.equals("white_bishop") || buttonUserData.equals("white_queen"))) {
-                        return KingAttackStatus.ENEMY_PIECE;
-                    }
-                    if (buttonUserData.startsWith("white")) {
-                        return KingAttackStatus.IRRELEVANT_PIECE;
-                    }
-                }
-            }else {
-                return KingAttackStatus.CONTINUE;
+                return checkForMatchingValidator(kingColor, "_rook", buttonUserDataColor, buttonUserData, checkColor);
+            } else {
+                return checkForMatchingValidator(kingColor, "_bishop", buttonUserDataColor, buttonUserData, checkColor);
             }
+        }
+        return KingAttackStatus.CONTINUE;
+    }
+
+    public KingAttackStatus checkForMatchingValidator(String kingColor, String piece , String buttonUserDataColor, String buttonUserData, String checkColor){
+        if(kingColor.equals(buttonUserDataColor)){
+            return KingAttackStatus.IRRELEVANT_PIECE;
+        }
+        if(buttonUserData.equals(checkColor + piece) || buttonUserData.equals(checkColor + "_queen")){
+            return KingAttackStatus.ENEMY_PIECE;
+        }
+        if(buttonUserDataColor.equals(checkColor)){
+            return KingAttackStatus.IRRELEVANT_PIECE;
         }
         return KingAttackStatus.CONTINUE;
     }
