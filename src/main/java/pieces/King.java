@@ -8,6 +8,7 @@ import javafx.scene.layout.GridPane;
 import utils.Util;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class King extends Piece implements Movable, Util {
 
@@ -70,7 +71,13 @@ public class King extends Piece implements Movable, Util {
         coordinateSet.addAll(knightMoves(true,false,true,true,i,  i, j, 2,1,7));
         coordinateSet.addAll(knightMoves(false,false,true,false,j, i, j, 1,2,2));
 
-        knightCords.addAll(coordinateSet);
+
+        Set<String> sortedSet =
+                coordinateSet.stream()
+                        .sorted(Comparator.comparingInt(Integer::parseInt))
+                        .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        knightCords.addAll(sortedSet);
 
         if(kingColor.equals("black")){
             if(i != 8 || j != 1){
@@ -146,7 +153,6 @@ public class King extends Piece implements Movable, Util {
                 Button button = (Button) chessboardCopy.get(i);
                 String movementCoordinate = movementCoordinatesArrayList.get(j);
                 if(button.getText().equals(movementCoordinate)){
-
                     if(checkForMatching(arrayListValue, button.getUserData(), kingColor).equals(KingAttackStatus.IRRELEVANT_PIECE)){
                         break;
                     }

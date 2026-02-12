@@ -225,44 +225,23 @@ public class BoardLogic implements ChessPieceImages, Util {
             int cordListSize = coordinateArrayList.size();
 
             for (int i = (asc ? 0 : size), k = 0;
-                 (asc ? i <= size : i >= 0) && k < cordListSize; i = (asc ? i+1 : i-1)){
+                 (asc ? i <= size : i >= 0) && k < cordListSize; i = (asc ? i + 1 : i - 1)) {
                 Button button = (Button) children.get(i);
                 Object data = button.getUserData();
 
-                if(button.getText().equals(coordinateArrayList.get(k))){
-                    if(data != null && !data.toString().startsWith(piece.getChessPieceColor())){
-                        if(!button.getUserData().toString().endsWith("king")) {
-                            break;
-                        } else if (button.getUserData().toString().endsWith("king")) {
+                if (button.getText().equals(coordinateArrayList.get(k))) {
+                    if (data != null && !data.toString().startsWith(piece.getChessPieceColor())) {
+                        if (button.getUserData().toString().endsWith("king")) {
                             chessState(button);
                             return;
                         }
                     }
 
                     k++;
-                    if(k == cordListSize) {
+                    if (k == cordListSize) {
                         break;
                     }
                 }
-            }
-        }
-    }
-
-    public void checkForChessStateKnight(List<ArrayList<String>> allCoordinates, Piece piece){
-        List<Node> children = chessBoard.getChildren();
-        ArrayList<String> knightMoves = allCoordinates.get(0);
-
-        for(int i = 0, k = 0; i < children.size() && k < knightMoves.size(); i++){
-            Button button = (Button) children.get(i);
-            Object data = button.getUserData();
-
-            if(button.getText().equals(knightMoves.get(k))){
-                if(data != null && !data.toString().startsWith(piece.getChessPieceColor()) && button.getUserData().toString().endsWith("king")){
-                    chessState(button);
-                    return;
-
-                }
-                k++;
             }
         }
     }

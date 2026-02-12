@@ -82,8 +82,6 @@ public class Game implements Util {
         changeTurn();
         if (piece.getChessPieceType().equals("pawn")) {
             boardLogic.checkForChessStatePawn(piece);
-        } else if(piece.getChessPieceType().equals("knight")){
-            boardLogic.checkForChessStateKnight(piece.getAllCoordinates(), piece);
         }else {
             boardLogic.checkForChessState(piece.getAllCoordinates(), piece);
         }
