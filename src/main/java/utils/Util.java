@@ -4,8 +4,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import objects.Field;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public interface Util {
 
@@ -21,6 +21,15 @@ public interface Util {
             }
         }
         return nodes;
+    }
+
+    default Set<String> sortASet(Set<String> coordinateSet){
+        Set<String> sortedSet =
+                coordinateSet.stream()
+                        .sorted(Comparator.comparingInt(Integer::parseInt))
+                        .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        return sortedSet;
     }
 
     default void printBoard(List<Node> chessboardCopy){

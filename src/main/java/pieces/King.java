@@ -4,11 +4,9 @@ import functionalities.BoardLogic;
 import utils.Movable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
 import utils.Util;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class King extends Piece implements Movable, Util {
 
@@ -50,7 +48,7 @@ public class King extends Piece implements Movable, Util {
         }
     }
 
-    public void checkForChess(String kingCoordinate, String kingColor) {
+    public void calculateCoordinates(String kingCoordinate, String kingColor) {
         Set<String> coordinateSet = new HashSet<>();
 
         int i = Integer.parseInt(String.valueOf(kingCoordinate.charAt(0)));
@@ -72,12 +70,7 @@ public class King extends Piece implements Movable, Util {
         coordinateSet.addAll(knightMoves(false,false,true,false,j, i, j, 1,2,2));
 
 
-        Set<String> sortedSet =
-                coordinateSet.stream()
-                        .sorted(Comparator.comparingInt(Integer::parseInt))
-                        .collect(Collectors.toCollection(LinkedHashSet::new));
-
-        knightCords.addAll(sortedSet);
+        knightCords.addAll(sortASet(coordinateSet));
 
         if(kingColor.equals("black")){
             if(i != 8 || j != 1){
@@ -138,7 +131,16 @@ public class King extends Piece implements Movable, Util {
     }
 
     public boolean checkForOpponents(String kingCoordinate, String kingColor) {
-        checkForChess(kingCoordinate, kingColor);
+        calculateCoordinates(kingCoordinate, kingColor);
+
+        if(majorAndMinorPiecesValidator(kingColor) || knightValidator(kingColor) || pawnValidator(kingColor)){
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean majorAndMinorPiecesValidator(String kingColor){
         Map<String, ArrayList<String>> coordinatesMap = getKingCoordinates();
         BoardLogic boardLogic = new BoardLogic();
 
@@ -150,13 +152,13 @@ public class King extends Piece implements Movable, Util {
 
             for (int i = (asc ? 0 : size), j = 0;
                  (asc ? i <= size : i >= 0) && j < movementCoordinatesArrayList.size(); i = (asc ? i+1 : i-1)) {
+
                 Button button = (Button) chessboardCopy.get(i);
                 String movementCoordinate = movementCoordinatesArrayList.get(j);
                 if(button.getText().equals(movementCoordinate)){
-                    if(checkForMatching(arrayListValue, button.getUserData(), kingColor).equals(KingAttackStatus.IRRELEVANT_PIECE)){
+                    if(checkForMatching(arrayListValue, button.getUserData(), kingColor).equals(KingAttackStatus.IRRELEVANT_PIECE)) {
                         break;
-                    }
-                    if(checkForMatching(arrayListValue, button.getUserData(), kingColor).equals(KingAttackStatus.ENEMY_PIECE)){
+                    }else if(checkForMatching(arrayListValue, button.getUserData(), kingColor).equals(KingAttackStatus.ENEMY_PIECE)){
                         return true;
                     }
                     j++;
@@ -168,15 +170,25 @@ public class King extends Piece implements Movable, Util {
         return false;
     }
 
-    public boolean pawnValidator(String kingCoordinate, ArrayList<String> pawnCords, Button squareButton){
+    public boolean knightValidator(String kingColor){
+        int size = chessboardCopy.size();
 
+        for(int i = 0, k = 0; i < size && k < knightCords.size(); i++){
+            Button button = (Button) chessboardCopy.get(i);
+            Object buttonUserData = button.getUserData();
+
+            if(button.getText().equals(knightCords.get(k))){
+                if(buttonUserData != null && !(buttonUserData.toString().startsWith(kingColor)) && buttonUserData.toString().endsWith("knight")){
+                    return true;
+                }
+                k++;
+            }
+        }
 
         return false;
     }
 
-    public boolean knightValidator(String kingCoordinate, ArrayList<String> pawnCords, Button squareButton){
-
-
+    public boolean pawnValidator(String kingColor){
         return false;
     }
 
@@ -227,5 +239,13 @@ public class King extends Piece implements Movable, Util {
         List<ArrayList<String>> coordinatesArrayList = new ArrayList<>();
         coordinatesArrayList.add(kingMoves);
         return coordinatesArrayList;
+    }
+
+    public List<Node> getChessboardCopy() {
+        return chessboardCopy;
+    }
+
+    public void setChessboardCopy(List<Node> chessboardCopy) {
+        this.chessboardCopy = chessboardCopy;
     }
 }

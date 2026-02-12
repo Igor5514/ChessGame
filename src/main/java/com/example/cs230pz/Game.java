@@ -64,10 +64,14 @@ public class Game implements Util {
                             executeMove(squareButton);
                         }
                     }else {
-                        King king = (King) piece;
+                        List<Node> chessboardCopy = deepCopyArrayList(board.getChessBoard().getChildren());
+                        boardLogic.updateChessBoardMove(clickedPieceCoordinate, squareButton, chessboardCopy);
 
+                        King tempKing = new King(squareButton.getText(), piece.getChessPieceName(), true,chessboardCopy);
 
-                        executeMove(squareButton);
+                        if(!tempKing.checkForOpponents(tempKing.getCurrentCoordinate(), tempKing.getChessPieceColor())){
+                            executeMove(squareButton);
+                        }
                     }
 
                 }
@@ -82,6 +86,8 @@ public class Game implements Util {
         changeTurn();
         if (piece.getChessPieceType().equals("pawn")) {
             boardLogic.checkForChessStatePawn(piece);
+        }else if(piece.getChessPieceType().equals("knight")){
+            boardLogic.checkForChessStateKnight(piece.getAllCoordinates(), piece);
         }else {
             boardLogic.checkForChessState(piece.getAllCoordinates(), piece);
         }
@@ -98,12 +104,12 @@ public class Game implements Util {
             boardLogic.updateChessBoardMove(clickedPieceCoordinate, squareButton, chessboardCopy);
 
             for(Node node : board.getChessBoard().getChildren()){
-                if(node instanceof Button button){
-                    if (piece.getChessPieceColor().equals("white") && button.getUserData() != null && button.getUserData().toString().equals("white_king")){
+                if(node instanceof Button button && button.getUserData() != null){
+                    if (piece.getChessPieceColor().equals("white") && button.getUserData().toString().equals("white_king")){
                         currentKing = new King(button.getText(),button.getUserData().toString(),true, chessboardCopy);
                         isPieceClicked = true;
                         break;
-                    } else if (piece.getChessPieceColor().equals("black") && button.getUserData() != null && button.getUserData().toString().equals("black_king")) {
+                    } else if (piece.getChessPieceColor().equals("black")  && button.getUserData().toString().equals("black_king")) {
                         currentKing = new King(button.getText(),button.getUserData().toString(),true, chessboardCopy);
                         isPieceClicked = true;
                         break;

@@ -1,11 +1,12 @@
 package pieces;
 
 import utils.Movable;
+import utils.Util;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Knight extends Piece implements Movable {
+public class Knight extends Piece implements Movable, Util {
 
     ArrayList<String> knightMoves = new ArrayList<>();
 
@@ -24,12 +25,7 @@ public class Knight extends Piece implements Movable {
         coordinateSet.addAll(knightMoves(true,false,true,true,i,  i, j, 2,1,7));
         coordinateSet.addAll(knightMoves(false,false,true,false,j, i, j, 1,2,2));
 
-        Set<String> sortedSet =
-                coordinateSet.stream()
-                        .sorted(Comparator.comparingInt(Integer::parseInt))
-                        .collect(Collectors.toCollection(LinkedHashSet::new));
-
-        knightMoves.addAll(sortedSet);
+        knightMoves.addAll(sortASet(coordinateSet));
     }
 
 
