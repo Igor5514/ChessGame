@@ -1,6 +1,7 @@
 package com.example.cs230pz;
 
 import functionalities.BoardLogic;
+import functionalities.Castling;
 import functionalities.GameState;
 import objects.Player;
 import javafx.scene.Node;
@@ -14,9 +15,9 @@ public class Game implements Util {
 
     private ChessBoard board;
     private BoardLogic boardLogic;
+    private Castling castling;
     private boolean isPieceClicked = false;
     private String clickedPieceCoordinate;
-    private String clickedPieceName;
     private boolean pieceMoved = false;
     GameState gameState = GameState.getInstance();
     boolean turnPermission = gameState.isWhiteTurn();
@@ -33,7 +34,7 @@ public class Game implements Util {
 
     public void setBoard(ChessBoard board) {
         this.board = board;
-        this.boardLogic = new BoardLogic(board.getChessBoard());
+        this.boardLogic = new BoardLogic(board.getChessBoard(), this);
         board.setStartingPosition();
         board.setButtonHandlers(this);
     }
@@ -44,7 +45,6 @@ public class Game implements Util {
                 if (squareButton.getUserData() != null) {
                     piece = handleClick(squareButton);
                     clickedPieceCoordinate = squareButton.getText();
-                    clickedPieceName = squareButton.getUserData().toString();
                     boardLogic.updateChessBoardClick(piece);
                     isPieceClicked = true;
                 }
@@ -65,7 +65,7 @@ public class Game implements Util {
                         }
                     }else {
                         List<Node> chessboardCopy = deepCopyArrayList(board.getChessBoard().getChildren());
-                        boardLogic.updateChessBoardMove(clickedPieceCoordinate, squareButton, chessboardCopy);
+                        boardLogic.updateChessBoardMove(null, clickedPieceCoordinate, squareButton, chessboardCopy);
 
                         King tempKing = new King(squareButton.getText(), piece.getChessPieceName(), true,chessboardCopy);
 
@@ -80,7 +80,7 @@ public class Game implements Util {
     }
 
     public void executeMove(Button squareButton){
-        boardLogic.updateChessBoardMove(clickedPieceCoordinate, squareButton, board.getChessBoard().getChildren());
+        boardLogic.updateChessBoardMove(piece, clickedPieceCoordinate, squareButton, board.getChessBoard().getChildren());
         Piece piece = handleClick(squareButton);
         pieceMoved = true;
         changeTurn();
@@ -99,9 +99,8 @@ public class Game implements Util {
 
     public void makeInstanceOfKing(Piece piece, Button squareButton){
         if(!(piece instanceof King)){
-
             List<Node> chessboardCopy = deepCopyArrayList(board.getChessBoard().getChildren());
-            boardLogic.updateChessBoardMove(clickedPieceCoordinate, squareButton, chessboardCopy);
+            boardLogic.updateChessBoardMove(null, clickedPieceCoordinate, squareButton, chessboardCopy);
 
             for(Node node : board.getChessBoard().getChildren()){
                 if(node instanceof Button button && button.getUserData() != null){
@@ -131,6 +130,27 @@ public class Game implements Util {
         boardLogic.setOriginalColor();
         boardLogic.highlightCheckedKing(piece, board.getChessBoard().getChildren());
         isPieceClicked = false;
+    }
+
+    public void executeCastling(){
+        
+    }
+
+    public void executedMovePiece(Piece piece){
+        switch (piece.getChessPieceName()){
+            case "white_king":
+                castling.setWhiteKingMoved(true);
+                break;
+            case "black_king":
+                castling.setBlackKingMoved(true);
+                break;
+            case "white_rook":
+                castling.setWhiteRookMoved(true);
+                break;
+            case "black_rook":
+                castling.setBlackRookMoved(true);
+                break;
+        }
     }
 
     public boolean checkForPlayingPermission(Button button, String pieceType){

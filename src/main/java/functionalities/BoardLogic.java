@@ -1,5 +1,6 @@
 package functionalities;
 
+import com.example.cs230pz.Game;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -13,16 +14,17 @@ import java.util.*;
 public class BoardLogic implements ChessPieceImages, Util {
 
     private GridPane chessBoard;
+    private Game game;
     private final Set<String> enabledCoordinatesList = new HashSet<>();
     private boolean isOpponentPawn = false;
 
+    public BoardLogic(GridPane chessBoard, Game game) {
+        this.chessBoard = chessBoard;
+        this.game = game;
+    }
 
     public BoardLogic(){
 
-    }
-
-    public BoardLogic(GridPane chessBoard) {
-        this.chessBoard = chessBoard;
     }
 
     public void updateChessBoardClick(Piece piece) {
@@ -80,7 +82,7 @@ public class BoardLogic implements ChessPieceImages, Util {
         return false;
     }
 
-    public void updateChessBoardMove(String clickedButtonCoordinate, Button destinationButton, List<Node> chessBoard) {
+    public void updateChessBoardMove(Piece piece, String clickedButtonCoordinate, Button destinationButton, List<Node> chessBoard) {
         setOriginalColor();
         ImageView pieceImage = new ImageView();
         String chessPieceName = "";
@@ -108,6 +110,9 @@ public class BoardLogic implements ChessPieceImages, Util {
                 }else {
                     button.setGraphic(pieceImage);
                     button.setUserData(chessPieceName);
+                    if(piece != null){
+                        game.executedMovePiece(piece);
+                    }
                     break;
                 }
             }
