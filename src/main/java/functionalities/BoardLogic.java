@@ -88,7 +88,8 @@ public class BoardLogic implements ChessPieceImages, Util {
         String chessPieceName = "";
 
         for (Node node : chessBoard) {
-            if (node instanceof Button button && button.getText().equals(clickedButtonCoordinate)) {
+            Button button = (Button) node;
+            if (button.getText().equals(clickedButtonCoordinate)) {
                 chessPieceName = (String) button.getUserData();
                 button.setUserData(null);
                 pieceImage = (ImageView) button.getGraphic();
@@ -98,7 +99,8 @@ public class BoardLogic implements ChessPieceImages, Util {
         }
 
         for (Node node : chessBoard) {
-            if (node instanceof Button button && button.getText().equals(destinationButton.getText())) {
+            Button button = (Button) node;
+            if (button.getText().equals(destinationButton.getText())) {
                 if(checkForPromotion(chessPieceName, destinationButton) != null){
                     button.setUserData(checkForPromotion(chessPieceName, destinationButton));
                     if(chessPieceName.startsWith("white")){
@@ -324,6 +326,8 @@ public class BoardLogic implements ChessPieceImages, Util {
 
     public void chessState(Button button) {
         button.setStyle("-fx-background-color: #ff1a1a;-fx-text-fill: transparent;");
+        game.setInCheck(true);
+
     }
 
     public boolean checkForKingMoves() {

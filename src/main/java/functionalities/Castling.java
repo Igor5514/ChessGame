@@ -1,5 +1,6 @@
 package functionalities;
 
+import com.example.cs230pz.Game;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import pieces.Piece;
@@ -13,44 +14,58 @@ public class Castling {
     private boolean blackKingMoved;
     private boolean whiteRookMoved;
     private boolean blackRookMoved;
+    private Game game;
 
-    public Castling(List<Node> chessBoard, boolean whiteKingMoved, boolean blackKingMoved, boolean whiteRookMoved, boolean blackRookMoved) {
+    public Castling(Game game, List<Node> chessBoard, boolean whiteKingMoved, boolean blackKingMoved, boolean whiteRookMoved, Boolean blackRookMoved) {
         this.chessBoard = chessBoard;
         this.whiteKingMoved = whiteKingMoved;
         this.blackKingMoved = blackKingMoved;
         this.whiteRookMoved = whiteRookMoved;
         this.blackRookMoved = blackRookMoved;
+        this.game = game;
     }
 
-    public boolean validateForCastling(Piece king){
-        if(king.getChessPieceColor().equals("white") && !whiteKingMoved && !whiteRookMoved){
-            return checkForCastling(false);
-        }else if(king.getChessPieceColor().equals("black") && !blackKingMoved && !blackRookMoved){
-            return checkForCastling(true);
+    public boolean validateCastling(Piece king, String destinationCoordinate){
+        if(!game.isInCheck()){
+            if(king.getChessPieceColor().equals("white") && !whiteKingMoved && !whiteRookMoved){
+                return validateCastlingPositions(king, destinationCoordinate);
+            }else if(king.getChessPieceColor().equals("black") && !blackKingMoved && !blackRookMoved){
+                return validateCastlingPositions(king , destinationCoordinate);
+            }
         }
+
         return false;
     }
 
-    public boolean checkForCastling(boolean asc){
+    public boolean validateCastlingPositions(Piece king, String destinationCoordinate){
         int count = 0;
-        for(int i = (asc ? 0 : 4); (asc ? i < 4 : i > 0); i = (asc ? i+1 : i-1)){
-            Button button = (Button) chessBoard.get(i);
-            Object buttonData = button.getUserData();
-            if(count == 0 && buttonData != null && !button.getUserData().toString().endsWith("rook")){
-                return false;
-            }
+        boolean asc = king.getChessPieceColor().equals("black");
+        if(checkForMatchingCoordinates(destinationCoordinate, king)){
+            for(int i = (asc ? 4 : 63); (asc ? i <= 7 : i >= 60); i = (asc ? i+1 : i-1)){
+                Button button = (Button) chessBoard.get(i);
+                Object buttonData = button.getUserData();
+                if(count == 0 && buttonData != null && !button.getUserData().toString().endsWith("rook")){
+                    return false;
+                }
 
-            if((count == 1 || count == 2) && buttonData != null){
-                return false;
-            }
+                if((count == 1 || count == 2) && buttonData != null){
+                    return false;
+                }
 
-            if(count == 3 && !buttonData.toString().endsWith("king")) {
-                return false;
+                if(count == 3 && buttonData != null && !buttonData.toString().endsWith("king")) {
+                    return false;
+                }
+                count++;
             }
-            count++;
         }
-        return true;
 
+        return true;
+    }
+
+    public boolean checkForMatchingCoordinates(String destinationCoordinate, Piece king){
+        if(king.getChessPieceColor().equals("white") && destinationCoordinate.equals("86")){
+            return true;
+        } else return king.getChessPieceColor().equals("black") && destinationCoordinate.equals("16");
     }
 
     public boolean isWhiteKingMoved() {

@@ -14,14 +14,15 @@ import java.util.List;
 public class Game implements Util {
 
     private ChessBoard board;
+    private List<Node> chessBoardNodes;
     private BoardLogic boardLogic;
-    private Castling castling;
     private boolean isPieceClicked = false;
     private String clickedPieceCoordinate;
     private boolean pieceMoved = false;
     GameState gameState = GameState.getInstance();
     boolean turnPermission = gameState.isWhiteTurn();
-    private boolean isInCheck = false;
+    private Boolean isInCheck = false;
+    private Castling castling;
     private final Player player1;
     private final Player player2;
     King currentKing = null;
@@ -35,52 +36,62 @@ public class Game implements Util {
     public void setBoard(ChessBoard board) {
         this.board = board;
         this.boardLogic = new BoardLogic(board.getChessBoard(), this);
+        chessBoardNodes = board.getChessBoard().getChildren();
+        castling = new Castling(this, chessBoardNodes,false, false, false, false);
         board.setStartingPosition();
         board.setButtonHandlers(this);
     }
 
     public void handleButtonClick(Button squareButton) {
         if (checkForPermission(squareButton) || squareButton.getUserData() == null || isPieceClicked) {
-            if (!isPieceClicked) {
-                if (squareButton.getUserData() != null) {
-                    piece = handleClick(squareButton);
-                    clickedPieceCoordinate = squareButton.getText();
-                    boardLogic.updateChessBoardClick(piece);
-                    isPieceClicked = true;
-                }
+            if (!isPieceClicked && squareButton.getUserData() != null) {
+                piece = handleClick(squareButton);
+                clickedPieceCoordinate = squareButton.getText();
+                boardLogic.updateChessBoardClick(piece);
+                isPieceClicked = true;
+            } else if (clickedPieceCoordinate.equals(squareButton.getText())) {
+                boardLogic.setOriginalColor();
+                isPieceClicked = false;
+                currentKing = null;
+                piece = null;
             } else {
-                if (clickedPieceCoordinate.equals(squareButton.getText())) {
-                    boardLogic.setOriginalColor();
-                    isPieceClicked = false;
-                    currentKing = null;
-                    piece = null;
-                } else {
-                    if(!(piece instanceof King)){
-                        makeInstanceOfKing(piece, squareButton);
 
-                        if(currentKing != null && currentKing.checkForOpponents(currentKing.getCurrentCoordinate(),currentKing.getChessPieceColor())) {
-                            setToDefaultStateAndHighlight();
-                        }else{
-                            executeMove(squareButton);
-                        }
-                    }else {
-                        List<Node> chessboardCopy = deepCopyArrayList(board.getChessBoard().getChildren());
-                        boardLogic.updateChessBoardMove(null, clickedPieceCoordinate, squareButton, chessboardCopy);
-
-                        King tempKing = new King(squareButton.getText(), piece.getChessPieceName(), true,chessboardCopy);
-
-                        if(!tempKing.checkForOpponents(tempKing.getCurrentCoordinate(), tempKing.getChessPieceColor())){
-                            executeMove(squareButton);
-                        }
-                    }
-
-                }
+                validatePermissionForMoving(squareButton);
             }
         }
     }
 
+    public void validatePermissionForMoving(Button squareButton){
+        String destinationCoordinate = squareButton.getText();
+
+        if(!(piece instanceof King)){
+            makeInstanceOfKing(squareButton);
+
+            if(currentKing != null && currentKing.checkForOpponents(currentKing.getCurrentCoordinate(),currentKing.getChessPieceColor())) {
+                setToDefaultStateAndHighlight();
+            }else{
+                if(piece instanceof Rook && castling.validateCastling(currentKing, destinationCoordinate)){
+                    System.out.println(castling.validateCastling(currentKing, destinationCoordinate));
+                    executeCastling(squareButton);
+                }else{
+                    executeMove(squareButton);
+                }
+            }
+        } else {
+            List<Node> chessboardCopy = deepCopyArrayList(chessBoardNodes);
+            boardLogic.updateChessBoardMove(null, clickedPieceCoordinate, squareButton, chessboardCopy);
+
+            King tempKing = new King(squareButton.getText(), piece.getChessPieceName(), true,chessboardCopy);
+
+            if(!tempKing.checkForOpponents(tempKing.getCurrentCoordinate(), tempKing.getChessPieceColor())){
+                executeMove(squareButton);
+            }
+            isPieceClicked = false;
+        }
+    }
+
     public void executeMove(Button squareButton){
-        boardLogic.updateChessBoardMove(piece, clickedPieceCoordinate, squareButton, board.getChessBoard().getChildren());
+        boardLogic.updateChessBoardMove(piece, clickedPieceCoordinate, squareButton, chessBoardNodes);
         Piece piece = handleClick(squareButton);
         pieceMoved = true;
         changeTurn();
@@ -91,18 +102,15 @@ public class Game implements Util {
         }else {
             boardLogic.checkForChessState(piece.getAllCoordinates(), piece);
         }
-        isPieceClicked = false;
-        isInCheck = false;
-        currentKing = null;
-        boardLogic.setOpponentPawn(false);
+        setToDefaultState();
     }
 
-    public void makeInstanceOfKing(Piece piece, Button squareButton){
+    public void makeInstanceOfKing(Button squareButton){
         if(!(piece instanceof King)){
-            List<Node> chessboardCopy = deepCopyArrayList(board.getChessBoard().getChildren());
+            List<Node> chessboardCopy = deepCopyArrayList(chessBoardNodes);
             boardLogic.updateChessBoardMove(null, clickedPieceCoordinate, squareButton, chessboardCopy);
 
-            for(Node node : board.getChessBoard().getChildren()){
+            for(Node node : chessBoardNodes){
                 if(node instanceof Button button && button.getUserData() != null){
                     if (piece.getChessPieceColor().equals("white") && button.getUserData().toString().equals("white_king")){
                         currentKing = new King(button.getText(),button.getUserData().toString(),true, chessboardCopy);
@@ -118,6 +126,17 @@ public class Game implements Util {
         }
     }
 
+    public void executeCastling(Button destinationButtonRook){
+        String kingCoordinate = currentKing.getCurrentCoordinate();
+        Button destinationButtonKing = new Button(kingCoordinate.charAt(0) + "7");
+        destinationButtonKing.setUserData(currentKing.getChessPieceName());
+        boardLogic.updateChessBoardMove(piece, kingCoordinate, destinationButtonKing, board.getChessBoard().getChildren());
+        boardLogic.updateChessBoardMove(piece, clickedPieceCoordinate, destinationButtonRook, board.getChessBoard().getChildren());
+        pieceMoved = true;
+        changeTurn();
+        setToDefaultState();
+    }
+
     public boolean checkForPermission(Button button) {
         if (turnPermission) {
             return checkForPlayingPermission(button, "white");
@@ -126,14 +145,17 @@ public class Game implements Util {
         }
     }
 
+    public void setToDefaultState(){
+        isPieceClicked = false;
+        isInCheck = false;
+        currentKing = null;
+        boardLogic.setOpponentPawn(false);
+    }
+
     public void setToDefaultStateAndHighlight(){
         boardLogic.setOriginalColor();
         boardLogic.highlightCheckedKing(piece, board.getChessBoard().getChildren());
         isPieceClicked = false;
-    }
-
-    public void executeCastling(){
-        
     }
 
     public void executedMovePiece(Piece piece){
@@ -208,5 +230,13 @@ public class Game implements Util {
 
     public Player getPlayer2() {
         return player2;
+    }
+
+    public Boolean isInCheck() {
+        return isInCheck;
+    }
+
+    public void setInCheck(Boolean inCheck) {
+        isInCheck = inCheck;
     }
 }
