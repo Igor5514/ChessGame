@@ -98,6 +98,7 @@ public class BoardLogic implements ChessPieceImages, Util {
             }
         }
 
+
         for (Node node : chessBoard) {
             Button button = (Button) node;
             if (button.getText().equals(destinationButton.getText())) {

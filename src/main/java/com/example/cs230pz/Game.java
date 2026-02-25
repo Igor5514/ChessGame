@@ -55,36 +55,43 @@ public class Game implements Util {
                 currentKing = null;
                 piece = null;
             } else {
-
                 validatePermissionForMoving(squareButton);
             }
         }
     }
 
-    public void validatePermissionForMoving(Button squareButton){
-        String destinationCoordinate = squareButton.getText();
+    public void validatePermissionForMoving(Button destinationButton){
+        String destinationCoordinate = destinationButton.getText();
 
         if(!(piece instanceof King)){
-            makeInstanceOfKing(squareButton);
+            makeInstanceOfKing(destinationButton);
 
             if(currentKing != null && currentKing.checkForOpponents(currentKing.getCurrentCoordinate(),currentKing.getChessPieceColor())) {
                 setToDefaultStateAndHighlight();
             }else{
                 if(piece instanceof Rook && castling.validateCastling(currentKing, destinationCoordinate)){
-                    System.out.println(castling.validateCastling(currentKing, destinationCoordinate));
-                    executeCastling(squareButton);
+                    executeCastling(destinationButton);
                 }else{
-                    executeMove(squareButton);
+                    executeMove(destinationButton);
                 }
             }
         } else {
             List<Node> chessboardCopy = deepCopyArrayList(chessBoardNodes);
-            boardLogic.updateChessBoardMove(null, clickedPieceCoordinate, squareButton, chessboardCopy);
+            boardLogic.updateChessBoardMove(null, clickedPieceCoordinate, destinationButton, chessboardCopy);
 
-            King tempKing = new King(squareButton.getText(), piece.getChessPieceName(), true,chessboardCopy);
 
-            if(!tempKing.checkForOpponents(tempKing.getCurrentCoordinate(), tempKing.getChessPieceColor())){
-                executeMove(squareButton);
+            if(destinationButton.getUserData() != null){
+                King tempKing = new King(destinationButton.getText(), piece.getChessPieceName(), true, chessBoardNodes);
+                String enemyColor = tempKing.getChessPieceColor().equals("white") ? "black" : "white";
+                if(tempKing.checkForOpponents(destinationCoordinate, enemyColor)){
+                    executeMove(destinationButton);
+                }
+            }else {
+                King tempKing = new King(destinationButton.getText(), piece.getChessPieceName(), true, chessboardCopy);
+
+                if (!tempKing.checkForOpponents(tempKing.getCurrentCoordinate(), tempKing.getChessPieceColor())) {
+                    executeMove(destinationButton);
+                }
             }
             isPieceClicked = false;
         }
